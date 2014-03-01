@@ -1,0 +1,181 @@
+version 2
+run General-0-20140226-23:56:33-1229
+attr configname General
+attr datetime 20140226-23:56:33
+attr experiment General
+attr inifile omnetpp.ini
+attr iterationvars ""
+attr iterationvars2 $repetition=0
+attr measurement ""
+attr network CSFlatNet
+attr processid 1229
+attr repetition 0
+attr replication #0
+attr resultdir results
+attr runnumber 0
+attr seedset 0
+
+vector 10  CSFlatNet.rte[0].ppp[0].queue  queueLength:vector  ETV
+attr interpolationmode  sample-hold
+attr title  "queue length, vector"
+vector 11  CSFlatNet.rte[0].ppp[0].ppp  txState:vector  ETV
+attr interpolationmode  sample-hold
+attr title  "tx state, vector"
+vector 21  CSFlatNet.rte[0].ppp[1].queue  queueLength:vector  ETV
+attr interpolationmode  sample-hold
+attr title  "queue length, vector"
+vector 22  CSFlatNet.rte[0].ppp[1].ppp  txState:vector  ETV
+attr interpolationmode  sample-hold
+attr title  "tx state, vector"
+vector 81  CSFlatNet.client[0].ppp[0].queue  queueLength:vector  ETV
+attr interpolationmode  sample-hold
+attr title  "queue length, vector"
+vector 82  CSFlatNet.client[0].ppp[0].ppp  txState:vector  ETV
+attr interpolationmode  sample-hold
+attr title  "tx state, vector"
+vector 99  CSFlatNet.server.ppp[0].queue  queueLength:vector  ETV
+attr interpolationmode  sample-hold
+attr title  "queue length, vector"
+vector 100  CSFlatNet.server.ppp[0].ppp  txState:vector  ETV
+attr interpolationmode  sample-hold
+attr title  "tx state, vector"
+vector 122  CSFlatNet.client[0].tcp  tcpRcvQueueBytes  ETV
+vector 109  CSFlatNet.client[0].tcp  "advertised window"  ETV
+vector 108  CSFlatNet.client[0].tcp  "receive window"  ETV
+vector 111  CSFlatNet.client[0].tcp  "sent ack"  ETV
+vector 78  CSFlatNet.client[0].ppp[0].queue  rcvdPk:vector(packetBytes)  ETV
+attr interpolationmode  none
+attr title  "received packets, vector(packetBytes)"
+vector 80  CSFlatNet.client[0].ppp[0].queue  queueingTime:vector  ETV
+attr interpolationmode  none
+attr title  "queueing time, vector"
+vector 87  CSFlatNet.client[0].ppp[0].ppp  rcvdPkFromHL:vector(packetBytes)  ETV
+attr interpolationmode  none
+attr source  packetReceivedFromUpper
+attr title  "packets received from higher layer, vector(packetBytes)"
+vector 83  CSFlatNet.client[0].ppp[0].ppp  txPk:vector(packetBytes)  ETV
+attr interpolationmode  none
+attr source  packetSentToLower
+attr title  "packets transmitted, vector(packetBytes)"
+vector 13  CSFlatNet.rte[0].ppp[0].ppp  rxPkOk:vector(packetBytes)  ETV
+attr interpolationmode  none
+attr source  rxPkOk
+attr title  "packets received OK, vector(packetBytes)"
+vector 17  CSFlatNet.rte[0].ppp[0].ppp  passedUpPk:vector(packetBytes)  ETV
+attr interpolationmode  none
+attr source  packetSentToUpper
+attr title  "packets passed to higher layer, vector(packetBytes)"
+vector 18  CSFlatNet.rte[0].ppp[1].queue  rcvdPk:vector(packetBytes)  ETV
+attr interpolationmode  none
+attr title  "received packets, vector(packetBytes)"
+vector 20  CSFlatNet.rte[0].ppp[1].queue  queueingTime:vector  ETV
+attr interpolationmode  none
+attr title  "queueing time, vector"
+vector 27  CSFlatNet.rte[0].ppp[1].ppp  rcvdPkFromHL:vector(packetBytes)  ETV
+attr interpolationmode  none
+attr source  packetReceivedFromUpper
+attr title  "packets received from higher layer, vector(packetBytes)"
+vector 23  CSFlatNet.rte[0].ppp[1].ppp  txPk:vector(packetBytes)  ETV
+attr interpolationmode  none
+attr source  packetSentToLower
+attr title  "packets transmitted, vector(packetBytes)"
+vector 102  CSFlatNet.server.ppp[0].ppp  rxPkOk:vector(packetBytes)  ETV
+attr interpolationmode  none
+attr source  rxPkOk
+attr title  "packets received OK, vector(packetBytes)"
+vector 106  CSFlatNet.server.ppp[0].ppp  passedUpPk:vector(packetBytes)  ETV
+attr interpolationmode  none
+attr source  packetSentToUpper
+attr title  "packets passed to higher layer, vector(packetBytes)"
+vector 96  CSFlatNet.server.ppp[0].queue  rcvdPk:vector(packetBytes)  ETV
+attr interpolationmode  none
+attr title  "received packets, vector(packetBytes)"
+vector 98  CSFlatNet.server.ppp[0].queue  queueingTime:vector  ETV
+attr interpolationmode  none
+attr title  "queueing time, vector"
+vector 105  CSFlatNet.server.ppp[0].ppp  rcvdPkFromHL:vector(packetBytes)  ETV
+attr interpolationmode  none
+attr source  packetReceivedFromUpper
+attr title  "packets received from higher layer, vector(packetBytes)"
+vector 101  CSFlatNet.server.ppp[0].ppp  txPk:vector(packetBytes)  ETV
+attr interpolationmode  none
+attr source  packetSentToLower
+attr title  "packets transmitted, vector(packetBytes)"
+vector 24  CSFlatNet.rte[0].ppp[1].ppp  rxPkOk:vector(packetBytes)  ETV
+attr interpolationmode  none
+attr source  rxPkOk
+attr title  "packets received OK, vector(packetBytes)"
+vector 28  CSFlatNet.rte[0].ppp[1].ppp  passedUpPk:vector(packetBytes)  ETV
+attr interpolationmode  none
+attr source  packetSentToUpper
+attr title  "packets passed to higher layer, vector(packetBytes)"
+vector 7  CSFlatNet.rte[0].ppp[0].queue  rcvdPk:vector(packetBytes)  ETV
+attr interpolationmode  none
+attr title  "received packets, vector(packetBytes)"
+vector 9  CSFlatNet.rte[0].ppp[0].queue  queueingTime:vector  ETV
+attr interpolationmode  none
+attr title  "queueing time, vector"
+vector 16  CSFlatNet.rte[0].ppp[0].ppp  rcvdPkFromHL:vector(packetBytes)  ETV
+attr interpolationmode  none
+attr source  packetReceivedFromUpper
+attr title  "packets received from higher layer, vector(packetBytes)"
+vector 12  CSFlatNet.rte[0].ppp[0].ppp  txPk:vector(packetBytes)  ETV
+attr interpolationmode  none
+attr source  packetSentToLower
+attr title  "packets transmitted, vector(packetBytes)"
+vector 84  CSFlatNet.client[0].ppp[0].ppp  rxPkOk:vector(packetBytes)  ETV
+attr interpolationmode  none
+attr source  rxPkOk
+attr title  "packets received OK, vector(packetBytes)"
+vector 88  CSFlatNet.client[0].ppp[0].ppp  passedUpPk:vector(packetBytes)  ETV
+attr interpolationmode  none
+attr source  packetSentToUpper
+attr title  "packets passed to higher layer, vector(packetBytes)"
+vector 112  CSFlatNet.client[0].tcp  "rcvd seq"  ETV
+vector 113  CSFlatNet.client[0].tcp  "rcvd ack"  ETV
+108	2	0.000795874504	7504
+109	2	0.000795874504	7504
+111	2	0.000795874504	0
+112	30	0.000921074504	0
+113	30	0.000921074504	199
+122	2	0.000795874504	0
+7	25	0.000899374504	20
+9	25	0.000899374504	0
+10	0	0	0
+11	0	0	0
+11	26	0.000899374504	1
+11	27	0.000920974504	0
+12	26	0.000899374504	27
+13	8	0.000836774504	51
+16	26	0.000899374504	20
+17	8	0.000836774504	44
+18	11	0.000836774504	44
+20	11	0.000836774504	0
+21	0	0	0
+22	0	0	0
+22	12	0.000836774504	1
+22	13	0.000877574504	0
+23	12	0.000836774504	51
+24	22	0.000899374504	27
+27	12	0.000836774504	44
+28	22	0.000899374504	20
+78	5	0.000795874504	44
+80	5	0.000795874504	0
+81	0	0	0
+82	0	0	0
+82	6	0.000795874504	1
+82	7	0.000836674504	0
+83	6	0.000795874504	51
+84	28	0.000921074504	27
+87	6	0.000795874504	44
+88	28	0.000921074504	20
+96	19	0.000877674504	20
+98	19	0.000877674504	0
+99	0	0	0
+100	0	0	0
+100	20	0.000877674504	1
+100	21	0.000899274504	0
+101	20	0.000877674504	27
+102	14	0.000877674504	51
+105	20	0.000877674504	20
+106	14	0.000877674504	44
