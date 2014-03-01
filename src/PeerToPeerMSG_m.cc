@@ -1,5 +1,5 @@
 //
-// Generated file, do not edit! Created by opp_msgc 4.3 from PeerToPeer.msg.
+// Generated file, do not edit! Created by opp_msgc 4.3 from PeerToPeerMSG.msg.
 //
 
 // Disable warnings about unused variables, empty switch stmts, etc:
@@ -10,7 +10,7 @@
 
 #include <iostream>
 #include <sstream>
-#include "PeerToPeer_m.h"
+#include "PeerToPeerMSG_m.h"
 
 // Template rule which fires if a struct or class doesn't have operator<<
 template<typename T>

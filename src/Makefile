@@ -2,7 +2,7 @@
 # OMNeT++/OMNEST Makefile for CS381_Client_Server
 #
 # This file was generated with the command:
-#  opp_makemake -f --deep -I../../inet/src/linklayer/ethernet -I../../inet/src/linklayer/ieee80211/radio -I../../inet/src/networklayer/common -I../../inet/src -I../../inet/src/networklayer/icmpv6 -I../../inet/src/world/obstacles -I../../inet/src/networklayer/xmipv6 -I../../inet/src/networklayer/contract -I../../inet/src/mobility -I../../inet/src/networklayer/manetrouting/base -I../../inet/src/networklayer/autorouting/ipv4 -I../../inet/src/linklayer/ieee80211/mgmt -I../../inet/src/util -I../../inet/src/linklayer/common -I../../inet/src/transport/contract -I../../inet/src/status -I../../inet/src/linklayer/radio/propagation -I../../inet/src/linklayer/ieee80211/radio/errormodel -I../../inet/src/linklayer/radio -I../../inet/src/util/headerserializers/tcp -I../../inet/src/networklayer/ipv4 -I../../inet/src/util/headerserializers/ipv4 -I../../inet/src/base -I../../inet/src/util/headerserializers -I../../inet/src/world/radio -I../../inet/src/linklayer/ieee80211/mac -I../../inet/src/networklayer/ipv6 -I../../inet/src/transport/sctp -I../../inet/src/util/headerserializers/udp -I../../inet/src/networklayer/ipv6tunneling -I../../inet/src/battery/models -I../../inet/src/applications/pingapp -I../../inet/src/linklayer/contract -I../../inet/src/util/headerserializers/sctp -I../../inet/src/transport/tcp_common -I../../inet/src/networklayer/arp -I../../inet/src/transport/udp -L../../inet/out/$(CONFIGNAME)/src -linet -DINET_IMPORT -KINET_PROJ=../../inet
+#  opp_makemake -f --deep -I/home/rangerz/development/omnetpp-4.3.1/samples/inet/src/linklayer/ethernet -I/home/rangerz/development/omnetpp-4.3.1/samples/inet/src/linklayer/ieee80211/radio -I/home/rangerz/development/omnetpp-4.3.1/samples/inet/src/networklayer/common -I/home/rangerz/development/omnetpp-4.3.1/samples/inet/src -I/home/rangerz/development/omnetpp-4.3.1/samples/inet/src/networklayer/icmpv6 -I/home/rangerz/development/omnetpp-4.3.1/samples/inet/src/world/obstacles -I/home/rangerz/development/omnetpp-4.3.1/samples/inet/src/networklayer/xmipv6 -I/home/rangerz/development/omnetpp-4.3.1/samples/inet/src/networklayer/contract -I/home/rangerz/development/omnetpp-4.3.1/samples/inet/src/mobility -I/home/rangerz/development/omnetpp-4.3.1/samples/inet/src/networklayer/manetrouting/base -I/home/rangerz/development/omnetpp-4.3.1/samples/inet/src/networklayer/autorouting/ipv4 -I/home/rangerz/development/omnetpp-4.3.1/samples/inet/src/linklayer/ieee80211/mgmt -I/home/rangerz/development/omnetpp-4.3.1/samples/inet/src/util -I/home/rangerz/development/omnetpp-4.3.1/samples/inet/src/linklayer/common -I/home/rangerz/development/omnetpp-4.3.1/samples/inet/src/transport/contract -I/home/rangerz/development/omnetpp-4.3.1/samples/inet/src/status -I/home/rangerz/development/omnetpp-4.3.1/samples/inet/src/linklayer/radio/propagation -I/home/rangerz/development/omnetpp-4.3.1/samples/inet/src/linklayer/ieee80211/radio/errormodel -I/home/rangerz/development/omnetpp-4.3.1/samples/inet/src/linklayer/radio -I/home/rangerz/development/omnetpp-4.3.1/samples/inet/src/util/headerserializers/tcp -I/home/rangerz/development/omnetpp-4.3.1/samples/inet/src/networklayer/ipv4 -I/home/rangerz/development/omnetpp-4.3.1/samples/inet/src/util/headerserializers/ipv4 -I/home/rangerz/development/omnetpp-4.3.1/samples/inet/src/base -I/home/rangerz/development/omnetpp-4.3.1/samples/inet/src/util/headerserializers -I/home/rangerz/development/omnetpp-4.3.1/samples/inet/src/world/radio -I/home/rangerz/development/omnetpp-4.3.1/samples/inet/src/linklayer/ieee80211/mac -I/home/rangerz/development/omnetpp-4.3.1/samples/inet/src/networklayer/ipv6 -I/home/rangerz/development/omnetpp-4.3.1/samples/inet/src/transport/sctp -I/home/rangerz/development/omnetpp-4.3.1/samples/inet/src/util/headerserializers/udp -I/home/rangerz/development/omnetpp-4.3.1/samples/inet/src/networklayer/ipv6tunneling -I/home/rangerz/development/omnetpp-4.3.1/samples/inet/src/battery/models -I/home/rangerz/development/omnetpp-4.3.1/samples/inet/src/applications/pingapp -I/home/rangerz/development/omnetpp-4.3.1/samples/inet/src/linklayer/contract -I/home/rangerz/development/omnetpp-4.3.1/samples/inet/src/util/headerserializers/sctp -I/home/rangerz/development/omnetpp-4.3.1/samples/inet/src/transport/tcp_common -I/home/rangerz/development/omnetpp-4.3.1/samples/inet/src/networklayer/arp -I/home/rangerz/development/omnetpp-4.3.1/samples/inet/src/transport/udp -L/home/rangerz/development/omnetpp-4.3.1/samples/inet/out/$(CONFIGNAME)/src -linet -DINET_IMPORT -KINET_PROJ=/home/rangerz/development/omnetpp-4.3.1/samples/inet
 #
 
 # Name of target to be created (-o option)
@@ -15,51 +15,51 @@ USERIF_LIBS = $(ALL_ENV_LIBS) # that is, $(TKENV_LIBS) $(CMDENV_LIBS)
 
 # C++ include paths (with -I)
 INCLUDE_PATH = \
-    -I../../inet/src/linklayer/ethernet \
-    -I../../inet/src/linklayer/ieee80211/radio \
-    -I../../inet/src/networklayer/common \
-    -I../../inet/src \
-    -I../../inet/src/networklayer/icmpv6 \
-    -I../../inet/src/world/obstacles \
-    -I../../inet/src/networklayer/xmipv6 \
-    -I../../inet/src/networklayer/contract \
-    -I../../inet/src/mobility \
-    -I../../inet/src/networklayer/manetrouting/base \
-    -I../../inet/src/networklayer/autorouting/ipv4 \
-    -I../../inet/src/linklayer/ieee80211/mgmt \
-    -I../../inet/src/util \
-    -I../../inet/src/linklayer/common \
-    -I../../inet/src/transport/contract \
-    -I../../inet/src/status \
-    -I../../inet/src/linklayer/radio/propagation \
-    -I../../inet/src/linklayer/ieee80211/radio/errormodel \
-    -I../../inet/src/linklayer/radio \
-    -I../../inet/src/util/headerserializers/tcp \
-    -I../../inet/src/networklayer/ipv4 \
-    -I../../inet/src/util/headerserializers/ipv4 \
-    -I../../inet/src/base \
-    -I../../inet/src/util/headerserializers \
-    -I../../inet/src/world/radio \
-    -I../../inet/src/linklayer/ieee80211/mac \
-    -I../../inet/src/networklayer/ipv6 \
-    -I../../inet/src/transport/sctp \
-    -I../../inet/src/util/headerserializers/udp \
-    -I../../inet/src/networklayer/ipv6tunneling \
-    -I../../inet/src/battery/models \
-    -I../../inet/src/applications/pingapp \
-    -I../../inet/src/linklayer/contract \
-    -I../../inet/src/util/headerserializers/sctp \
-    -I../../inet/src/transport/tcp_common \
-    -I../../inet/src/networklayer/arp \
-    -I../../inet/src/transport/udp \
+    -I$(INET_PROJ)/src/linklayer/ethernet \
+    -I$(INET_PROJ)/src/linklayer/ieee80211/radio \
+    -I$(INET_PROJ)/src/networklayer/common \
+    -I$(INET_PROJ)/src \
+    -I$(INET_PROJ)/src/networklayer/icmpv6 \
+    -I$(INET_PROJ)/src/world/obstacles \
+    -I$(INET_PROJ)/src/networklayer/xmipv6 \
+    -I$(INET_PROJ)/src/networklayer/contract \
+    -I$(INET_PROJ)/src/mobility \
+    -I$(INET_PROJ)/src/networklayer/manetrouting/base \
+    -I$(INET_PROJ)/src/networklayer/autorouting/ipv4 \
+    -I$(INET_PROJ)/src/linklayer/ieee80211/mgmt \
+    -I$(INET_PROJ)/src/util \
+    -I$(INET_PROJ)/src/linklayer/common \
+    -I$(INET_PROJ)/src/transport/contract \
+    -I$(INET_PROJ)/src/status \
+    -I$(INET_PROJ)/src/linklayer/radio/propagation \
+    -I$(INET_PROJ)/src/linklayer/ieee80211/radio/errormodel \
+    -I$(INET_PROJ)/src/linklayer/radio \
+    -I$(INET_PROJ)/src/util/headerserializers/tcp \
+    -I$(INET_PROJ)/src/networklayer/ipv4 \
+    -I$(INET_PROJ)/src/util/headerserializers/ipv4 \
+    -I$(INET_PROJ)/src/base \
+    -I$(INET_PROJ)/src/util/headerserializers \
+    -I$(INET_PROJ)/src/world/radio \
+    -I$(INET_PROJ)/src/linklayer/ieee80211/mac \
+    -I$(INET_PROJ)/src/networklayer/ipv6 \
+    -I$(INET_PROJ)/src/transport/sctp \
+    -I$(INET_PROJ)/src/util/headerserializers/udp \
+    -I$(INET_PROJ)/src/networklayer/ipv6tunneling \
+    -I$(INET_PROJ)/src/battery/models \
+    -I$(INET_PROJ)/src/applications/pingapp \
+    -I$(INET_PROJ)/src/linklayer/contract \
+    -I$(INET_PROJ)/src/util/headerserializers/sctp \
+    -I$(INET_PROJ)/src/transport/tcp_common \
+    -I$(INET_PROJ)/src/networklayer/arp \
+    -I$(INET_PROJ)/src/transport/udp \
     -I.
 
 # Additional object and library files to link with
 EXTRA_OBJS =
 
 # Additional libraries (-L, -l options)
-LIBS = -L../../inet/out/$(CONFIGNAME)/src  -linet
-LIBS += -Wl,-rpath,`abspath ../../inet/out/$(CONFIGNAME)/src`
+LIBS = -L$(INET_PROJ)/out/$(CONFIGNAME)/src  -linet
+LIBS += -Wl,-rpath,`abspath $(INET_PROJ)/out/$(CONFIGNAME)/src`
 
 # Output directory
 PROJECT_OUTPUT_DIR = ../out
@@ -67,15 +67,15 @@ PROJECTRELATIVE_PATH = src
 O = $(PROJECT_OUTPUT_DIR)/$(CONFIGNAME)/$(PROJECTRELATIVE_PATH)
 
 # Object files for local .cc and .msg files
-OBJS = $O/Peer.o $O/PeerToPeer_m.o $O/PeerToTrackerMsg_m.o
+OBJS = $O/Peer.o $O/PeerToPeerMSG_m.o $O/PeerToTrackerMsg_m.o
 
 # Message files
 MSGFILES = \
-    PeerToPeer.msg \
+    PeerToPeerMSG.msg \
     PeerToTrackerMsg.msg
 
 # Other makefile variables (-K)
-INET_PROJ=../../inet
+INET_PROJ=/home/rangerz/development/omnetpp-4.3.1/samples/inet
 
 #------------------------------------------------------------------------------
 
@@ -168,8 +168,8 @@ $O/Peer.o: Peer.cc \
 	$(INET_PROJ)/src/transport/contract/TCPCommand_m.h \
 	$(INET_PROJ)/src/transport/contract/TCPSocket.h \
 	$(INET_PROJ)/src/transport/contract/TCPSocketMap.h
-$O/PeerToPeer_m.o: PeerToPeer_m.cc \
-	PeerToPeer_m.h
+$O/PeerToPeerMSG_m.o: PeerToPeerMSG_m.cc \
+	PeerToPeerMSG_m.h
 $O/PeerToTrackerMsg_m.o: PeerToTrackerMsg_m.cc \
 	PeerToTrackerMsg_m.h
 

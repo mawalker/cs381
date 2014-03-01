@@ -28,7 +28,7 @@ package CS381_ClientServer;
 // we want our application to support the TCPApp interface
 import inet.applications.ITCPApp;
 
-simple TrackerServer like ITCPApp
+simple Tracker like ITCPApp
 {
 	parameters:
         string localAddress = default (""); // may be left empty ("")

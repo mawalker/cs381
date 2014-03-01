@@ -1,9 +1,9 @@
 //
-// Generated file, do not edit! Created by opp_msgc 4.3 from PeerToPeer.msg.
+// Generated file, do not edit! Created by opp_msgc 4.3 from PeerToPeerMSG.msg.
 //
 
-#ifndef _PEERTOPEER_M_H_
-#define _PEERTOPEER_M_H_
+#ifndef _PEERTOPEERMSG_M_H_
+#define _PEERTOPEERMSG_M_H_
 
 #include <omnetpp.h>
 
@@ -16,7 +16,7 @@
 
 
 /**
- * Enum generated from <tt>PeerToPeer.msg</tt> by opp_msgc.
+ * Enum generated from <tt>PeerToPeerMSG.msg</tt> by opp_msgc.
  * <pre>
  * enum P2P_MSG_TYPE {
  *     P2P_REQUEST = 0;
@@ -30,7 +30,7 @@ enum P2P_MSG_TYPE {
 };
 
 /**
- * Class generated from <tt>PeerToPeer.msg</tt> by opp_msgc.
+ * Class generated from <tt>PeerToPeerMSG.msg</tt> by opp_msgc.
  * <pre>
  * packet P2P_Packet
  * {
@@ -68,7 +68,7 @@ inline void doPacking(cCommBuffer *b, P2P_Packet& obj) {obj.parsimPack(b);}
 inline void doUnpacking(cCommBuffer *b, P2P_Packet& obj) {obj.parsimUnpack(b);}
 
 /**
- * Class generated from <tt>PeerToPeer.msg</tt> by opp_msgc.
+ * Class generated from <tt>PeerToPeerMSG.msg</tt> by opp_msgc.
  * <pre>
  * packet P2P_Req extends P2P_Packet
  * {
@@ -110,7 +110,7 @@ inline void doPacking(cCommBuffer *b, P2P_Req& obj) {obj.parsimPack(b);}
 inline void doUnpacking(cCommBuffer *b, P2P_Req& obj) {obj.parsimUnpack(b);}
 
 /**
- * Class generated from <tt>PeerToPeer.msg</tt> by opp_msgc.
+ * Class generated from <tt>PeerToPeerMSG.msg</tt> by opp_msgc.
  * <pre>
  * packet P2P_Resp extends P2P_Packet
  * {
@@ -159,4 +159,4 @@ inline void doPacking(cCommBuffer *b, P2P_Resp& obj) {obj.parsimPack(b);}
 inline void doUnpacking(cCommBuffer *b, P2P_Resp& obj) {obj.parsimUnpack(b);}
 
 
-#endif // _PEERTOPEER_M_H_
+#endif // _PEERTOPEERMSG_M_H_

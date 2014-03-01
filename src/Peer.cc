@@ -12,7 +12,7 @@
 // in the INET framework
 
 
-//#include "ClientServerAppMsg_m.h"    // generated header from the message file
+#include "PeerToPeerMSG_m.h"    // generated header from the message file
 #include "Peer.h"               // our header
 
 #include "IPvXAddressResolver.h"     // manages both IPv4 and IPV6 addess resolution

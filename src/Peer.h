@@ -43,31 +43,31 @@ private:
     int fileSize_;           // size of file to be transferred.
     int numAttempts_;        // number of times to request the same file
     TCPDataTransferMode dataTransferMode_; // indicates the approach used to transfer data
-    TCPSocket *socket_;   // our socket that talks to the server
+    TCPSocket *socket_;      // our socket that talks to the server
 
-    int numPeers_;           // indicates how many peers we are to connect to
-    vector<string> connectAddresses_;  // address of our peers
-    int numberOfChunksInFile_;
-    string trackerAddress_;
+    int numPeers_;                       // # of peers total
+    vector<string> connectAddresses_;    // address of our peers
+    int numberOfChunksInFile_;           // # of chunks in file
+    string trackerAddress_;              // tracker address
 
-    int numberOfConnectedPeers_;
+    int numberOfConnectedPeers_;         // # of peers connected
 
-    int initialCountOfOwnedChunks_;
+    int initialCountOfOwnedChunks_;      // how many chunks did I start with.
 
-    cOutVector numberOfchunksToDownload;
+    cOutVector numberOfchunksToDownload; // chunks left to download.
 
-    vector<int> ownedChunks_;
-    vector<int> chunksToDownloadVector_;
+    vector<int> ownedChunks_;            // chunks that I have
+    vector<int> chunksToDownloadVector_; // chunks left to get
 
-    set<string> peers_; // set of all peers
-    map<string, vector<int> > peers_to_chunk_;
+    set<string> peers_;                  // set of all peers
+    map<string, vector<int> > peers_to_chunk_; // map of what peers have what chunks
 
     // need a map to decide which chunk to download when peer to peer conn is established
     map<int, int> conn_to_chunk_;
 
-    vector<string> connectedPeers_;
+    vector<string> connectedPeers_;   // list of peers connected to
 
-    TCPSocket *trackerSocket_;
+    TCPSocket *trackerSocket_;        // socket to tracker
 
     void insertChunkInOrder(int);
     void deleteChunkFromToDownloadList(int);
@@ -101,6 +101,8 @@ protected:
     /** Invoked from handleMessage(). Should be defined to handle self-messages. */
     virtual void handleTimer(cMessage *msg);
 
+
+
     /** @name Utility functions */
 
     //@{
@@ -111,14 +113,20 @@ protected:
     virtual void close(void);
 
     /** Sends a request and response */
-    virtual void sendRequest(int connId);
+    virtual void sendP2TRequest(int connId, enum P2T_MSG_TYPE prt_msg_type);
+    virtual void sendRequest(int connId, int chunk);
+    virtual void sendResponse(int connId, int chunk);
+    virtual void connectAndDownloadChunks();
 
     /** Handle the incoming response packet */
- //   virtual void handleResponse(CS_Resp *response);
-
+    //   virtual void handleResponse(CS_Resp *response);
     /** When running under GUI, it displays the given string next to the icon */
     virtual void setStatusString(const char *s);
     //@}
+
+
+
+
 
     /** @name overridden TCPSocket::CallbackInterface callback methods */
 
