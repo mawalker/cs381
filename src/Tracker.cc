@@ -90,23 +90,143 @@ void Tracker::initialize(int stage) {
 
 }
 
-void Tracker::close(void) {
-}
-
 /** This is the all-encompassing event handling function. It is our responsibility to
  *  figure out what to do with every event, which is appln-specific */
 void Tracker::handleMessage(cMessage *msg) {
 
+    if (msg->isSelfMessage()) {
+        EV<< "Error There is no self message sent" << endl;
+    }
+    else {
+
+        TCPSocket *socket = this->socketMap_.findSocketFor(msg);
+        if (!socket) {
+
+            int connId = cmd->getConnId();
+            TCPSocket *new_socket = new TCPSocket(msg);
+
+            // register ourselves as the callback object
+            bool *passive = new bool(true);
+            new_socket->setCallbackObject(this, passive);
+
+            // do not forget to set the outgoing gate
+            new_socket->setOutputGate(gate("tcpOut"));
+
+            // another thing I learned the hard way is that we must set up the data trasnfer
+            // mode for this new socket
+            new_socket->setDataTransferMode(
+                    this->socket_->getDataTransferMode());
+
+            // now save this socket in our map
+            this->socketMap_.addSocket(new_socket);
+
+            // process the message
+            new_socket->processMessage(msg);
+
+        } else {
+            // let that socket process the message
+            socket->processMessage(msg);
+        }
+
+    }
 }
 
-/** handle incoming data. Could be a request or response */
+        /** handle incoming data. Could be a request or response */
 void Tracker::socketDataArrived(int connID, void *, cPacket *msg, bool) {
 
+    EV<< "=== Peer: " << this->localAddress_
+    << " received socketDataArrived message. ===" << endl;
+
+    // incoming request may be of different types
+    P2T_Packet *packet = dynamic_cast<P2T_Packet *>(msg);
+    if (!packet) {
+        return;
+    }
+
+    switch ((P2T_MSG_TYPE) packet->getType()) {
+        case P2T_REFRESH_MESSAGE:
+        // TODO do anything here or just pass through? to re-register
+        case P2T_REGISTRATION_REQUEST: {
+            Ownership_Message *req = dynamic_cast<Ownership_Message *>(msg);
+            if (!req) {
+                EV << "Arriving packet is not of type Ownership_Message" << endl;
+            } else {
+                setStatusString("Registration or Refresh Request");
+                string requestorId = req->getId();
+
+                int chunkSize = req->getOwned_chunksArraySize();
+                // create vector from chunklist array
+                vector<int> chunkList;
+
+                for (int i = 0; i < chunkSize; i++) {
+                    chunkList.push_back(req->getOwned_chunks(i));
+                }
+                EV << "Arriving packet: Requestor ID = " << requestorId
+                << ", Owned Chunks size= " << chunkSize << endl;
+
+                // remove the element if existing
+                map<string, vector<int> >::iterator it;
+                it = this->peers_to_chunk_.find(requestorId);
+                if (it != this->peers_to_chunk_.end())
+                this->peers_to_chunk_.erase(it);
+
+                // add this key-value pair to the map
+                this->peers_to_chunk_.insert(
+                        pair<string, vector<int> >(requestorId, chunkList));
+
+                // add peer to peer list
+                this->peers_.insert(req->getId());
+
+                // now send a response
+                this->sendResponse(connID);
+            }
+        }
+        break;
+        case P2T_LEAVE_MESSAGE: {
+            P2T_LEAVE_Msg *req = dynamic_cast<P2T_LEAVE_Msg *>(msg);
+            if (!req) {
+                EV << "Arriving packet is not of type P2T_LEAVE_Msg" << endl;
+            } else {
+                setStatusString("Leave Message");
+                string requestorId = req->getId();
+                EV << "Arriving packet: Responder ID = " << requestorId << endl;
+
+                // remove peer from and close connection
+
+                // remove the element if existing
+                map<string, vector<int> >::iterator it;
+                it = this->peers_to_chunk_.find(requestorId);
+                if (it != this->peers_to_chunk_.end())
+                this->peers_to_chunk_.erase(it);
+
+                // remove peer from peer list
+                this->peers_.erase(req->getId());
+                // close the socket
+                TCPSocket *socket = this->socketMap_.findSocketFor(msg);
+                socket->close();
+                this->socketMap_.removeSocket(socket);
+
+            }
+        }
+        break;
+        default:
+        EV << ">>> unknown incoming request type <<< " << endl;
+        break;
+    }
+
+    // cleanup
+    delete msg;
 }
 
 // send a response
 void Tracker::sendResponse(int connId) { // const char *id, unsigned long size) {
 
+}
+
+void Tracker::close(void) {
+    EV<< "=== Peer: " << this->localAddress_ << " received close () message"
+    << endl;
+    this->socket_->close();
 }
 
 void Tracker::finish() {
