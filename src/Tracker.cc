@@ -17,8 +17,8 @@
 #include "Tracker.h"
 
 #include "IPvXAddressResolver.h"     // manages both IPv4 and IPV6 addess resolution
-
-Define_Module(Tracker);
+Define_Module(Tracker)
+;
 
 Tracker::Tracker(void) :
         myID_(), localPort_(0), socket_(NULL) {
@@ -30,9 +30,12 @@ Tracker::~Tracker() {
 // the initialize method. We initialize the parameter. Connection to the server is done after an event is triggered
 void Tracker::initialize(int stage) {
 
+    // This is so other parts of our simulation are initialized first.
+    // this module will be initialized on the 4th stage with # = 3, Stages =(0,1,2,3)
     cSimpleModule::initialize(stage);
-    if (stage != 3)
+    if (stage != 3) {
         return;
+    }
 
     // obtain the values of parameters
     this->localAddress_ = this->par("localAddress").stringValue();
@@ -44,6 +47,15 @@ void Tracker::initialize(int stage) {
     // are not concerned with the actual content. But if we really wanted to do it
     // that way, then we will do BYTESTREAM
     string dataTransferMode = this->par("dataTransferMode").stringValue();
+
+    map<string, vector<int> > mymap;
+    this->peers_to_chunk_map_ = mymap;
+
+
+
+
+
+
 
     // create a new socket for the listening role
     this->socket_ = new TCPSocket();
@@ -211,10 +223,9 @@ void Tracker::socketDataArrived(int connID, void *, cPacket *msg, bool) {
 }
 
 // send a request to the other side
-void Tracker::sendRequest (int connId, const char *id, const char *fname)
-{
-    EV << "=== Server: " << this->localAddress_ << " sendRequest. "
-       << "Sending ID: " << id << ", file name " << fname << " ===" << endl;
+void Tracker::sendRequest(int connId, const char *id, const char *fname) {
+    EV<< "=== Server: " << this->localAddress_ << " sendRequest. "
+    << "Sending ID: " << id << ", file name " << fname << " ===" << endl;
 
     // this is a hack because the TCPSocketMap does not allow us to search based on
     // connection ID. So we have to take a circuitous route to get to the socket
@@ -234,7 +245,7 @@ void Tracker::sendRequest (int connId, const char *id, const char *fname)
         req->setId (id);
         req->setFname (fname);
         // need to set the byte length else nothing gets sent as I found the hard way
-        req->setByteLength (32);  // I think we can set any length we want :-)
+        req->setByteLength (32);// I think we can set any length we want :-)
 
         socket->send (req);
     }
@@ -244,10 +255,9 @@ void Tracker::sendRequest (int connId, const char *id, const char *fname)
 }
 
 // send a response
-void Tracker::sendResponse (int connId, const char *id, unsigned long size)
-{
-    EV << "=== Server: " << this->localAddress_ << " sendResponse. "
-       << "Sending ID: " << id << ", size: " << size << " ===" << endl;
+void Tracker::sendResponse(int connId, const char *id, unsigned long size) {
+    EV<< "=== Server: " << this->localAddress_ << " sendResponse. "
+    << "Sending ID: " << id << ", size: " << size << " ===" << endl;
 
     // this is a hack because the TCPSocketMap does not allow us to search based on
     // connection ID. So we have to take a circuitous route to get to the socket
@@ -265,7 +275,7 @@ void Tracker::sendResponse (int connId, const char *id, unsigned long size)
         resp->setId (id);
         resp->setSize (size);
         // need to set the byte length else nothing gets sent as I found the hard way
-        resp->setByteLength (1024);  // I think we can set any length we want :-)
+        resp->setByteLength (1024);// I think we can set any length we want :-)
 
         socket->send (resp);
     }
@@ -275,33 +285,32 @@ void Tracker::sendResponse (int connId, const char *id, unsigned long size)
 }
 
 // this method is used to flash messages during animation where we can see bubbles on the screen.
-void Tracker::setStatusString(const char *s)
-{
+void Tracker::setStatusString(const char *s) {
     if (ev.isGUI ()) {
         getDisplayString ().setTagArg ("t", 0, s);
         bubble (s);
     }
 }
 
-void Tracker::socketPeerClosed (int connID, void *){
+void Tracker::socketPeerClosed(int connID, void *) {
 
     // delete socket from the map
-    cMessage *temp_msg = new cMessage ("temp");
-    TCPCommand *temp_cmd = new TCPCommand ();
-    temp_cmd->setConnId (connID);
-    temp_msg->setControlInfo (temp_cmd);
+    cMessage *temp_msg = new cMessage("temp");
+    TCPCommand *temp_cmd = new TCPCommand();
+    temp_cmd->setConnId(connID);
+    temp_msg->setControlInfo(temp_cmd);
 
-    TCPSocket *socket = this->socketMap_.findSocketFor (temp_msg);
+    TCPSocket *socket = this->socketMap_.findSocketFor(temp_msg);
 
     if (!socket) {
-        EV << ">>> Cannot find socket to send request <<< " << endl;
+        EV<< ">>> Cannot find socket to send request <<< " << endl;
     } else {
 
         this->socketMap_.removeSocket(socket);
     }
 
-    EV << "=== Server: " << this->localAddress_ << " received socketPeerClosed message" << endl;
-    EV << "socket closed for connID = " << connID << endl;
+    EV<< "=== Server: " << this->localAddress_ << " received socketPeerClosed message" << endl;
+    EV<< "socket closed for connID = " << connID << endl;
 
     delete socket; // cleanup
     delete temp_msg;

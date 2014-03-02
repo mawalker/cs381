@@ -39,11 +39,17 @@ private:
     // any C++ data members
     string myID_;            // my ID (used in debugging)
     string server_;         // name of server
+
+    string localAddress_;    // our local address
+    int localPort_;          // our local port we will listen on
+
     int connectPort_;        // port of the server to connect to
     int fileSize_;           // size of file to be transferred.
     int numAttempts_;        // number of times to request the same file
     TCPDataTransferMode dataTransferMode_; // indicates the approach used to transfer data
     TCPSocket *socket_;      // our socket that talks to the server
+
+    bool startAsSeed_;
 
     int numPeers_;                       // # of peers total
     vector<string> connectAddresses_;    // address of our peers

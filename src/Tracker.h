@@ -23,9 +23,9 @@ using namespace std;
 #include "INETDefs.h"       // this contains imp definitions from the INET
 #include "TCPSocket.h"      // this is needed for sockets
 #include "TCPSocketMap.h"   // this is needed to maintain multiple connected
-                            // sockets from other peers
+// sockets from other peers
 
-class Tracker : public cSimpleModule, public TCPSocket::CallbackInterface{
+class Tracker: public cSimpleModule, public TCPSocket::CallbackInterface {
 public:
     Tracker();
     virtual ~Tracker();
@@ -34,45 +34,106 @@ private:
 
     // organizing the data members according to the parameters defined in the NED file and then
     // any C++ data members
+
+    /**
+     * These values are obtained from INI file
+     */
     string myID_;            // my ID (used in debugging)
-    //string  server_;         // name of server
+
+    TCPSocket *socket_;   // our main listening socket
+    TCPSocketMap socketMap_; // maps of sockets we maintain
+
     int localPort_;        // server's local port
     string localAddress_;    // our local address
-    //int fileSize_;           // size of file to be transferred.
-    //int numAttempts_;        // number of times to request the same file
-    //TCPDataTransferMode dataTransferMode_;  // indicates the approach used to transfer data
-    TCPSocket    *socket_;   // our socket that talks to the server
-    TCPSocketMap socketMap_; // map of sockets we maintain
+
+    TCPDataTransferMode dataTransferMode_; // indicates the approach used to transfer data
+
+    int numPeers_;           // indicates how many peers we are to connected to
+    int numPeersInSim_;     // indicates the number of peers in the whole sim.
+    vector<string> connectAddresses_;  // address of our peers
+    int connectPort_;        // ports of the peer we connect to
+
+    set<string> peers_;
+    map<string, vector<int> > peers_to_chunk_map_;
+
+    void insertChunkInOrder(vector<int> &, int);
 
 protected:
 
+    /** @name cComponent initialization and member methods */
+
+    //@{
     /**
      * Initialization. Should be redefined to perform or schedule a connect().
      */
-    virtual void initialize (int stage);
+    virtual void initialize(int stage); // impl. as other examples and return on !=3
+
+    /**
+     * define how many initialization stages are we going to need.
+     */
+    virtual int numInitStages(void) const {
+        return 4; // just leave as is, 'just works'
+    }
+
+    /**
+     * Records basic statistics: numSessions, packetsSent, packetsRcvd,
+     * bytesSent, bytesRcvd. Redefine to record different or more statistics
+     * at the end of the simulation.
+     */
+    virtual void finish();
+
     /**
      * For self-messages it invokes handleTimer(); messages arriving from TCP
      * will get dispatched to the appropriate socketXXX() functions.
      */
-    virtual void handleMessage (cMessage *msg);
+    virtual void handleMessage(cMessage *msg);
+    //@}
+
+    /** @name Utility functions */
+
+    //@{
+    /** Issues an active OPEN to the address/port given as module parameters */
+    virtual void connect(int i);
+
+    /** Issues CLOSE command */
+    virtual void close(void);
+
+    /** Sends a response */
+    virtual void sendResponse(int connId);
+
+    /** When running under GUI, it displays the given string next to the icon */
+    virtual void setStatusString(const char *s);
+    //@}
+
+    /** @name TCPSocket::CallbackInterface callback methods */
+
     //@{
     /** Does nothing but update statistics/status. Redefine to perform or schedule first sending. */
     virtual void socketEstablished(int connId, void *yourPtr);
+
     /**
      * Does nothing but update statistics/status. Redefine to perform or schedule next sending.
-     * Beware: this funcion deletes the incoming message, which might not be what you want.
+     * Beware: this function deletes the incoming message, which might not be what you want.
      */
-    virtual void socketDataArrived(int connId, void *yourPtr, cPacket *msg, bool urgent);
-
-    /** When running under GUI, it displays the given string next to the icon */
-    virtual void setStatusString (const char *s);
-
-    /** Sends a request and response */
-    virtual void sendRequest (int connId, const char *id, const char *fname);
-    virtual void sendResponse (int connId, const char *id, unsigned long size);
+    virtual void socketDataArrived(int connId, void *yourPtr, cPacket *msg,
+            bool urgent);
 
     /** Since remote TCP closed, invokes close(). Redefine if you want to do something else. */
     virtual void socketPeerClosed(int connId, void *yourPtr);
+
+    /** Does nothing but update statistics/status. Redefine if you want to do something else, such as opening a new connection. */
+    virtual void socketClosed(int connId, void *yourPtr);
+
+    /** Does nothing but update statistics/status. Redefine if you want to try reconnecting after a delay. */
+    virtual void socketFailure(int connId, void *yourPtr, int code);
+
+    /** Redefine to handle incoming TCPStatusInfo. */
+    virtual void socketStatusArrived(int connId, void *yourPtr,
+            TCPStatusInfo *status) {
+        delete status;
+    }
+    //@}
+
 };
 
 #endif /* Tracker_H_ */
