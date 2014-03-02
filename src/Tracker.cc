@@ -44,7 +44,6 @@ void Tracker::initialize(int stage) {
     this->connectPort_ = this->par("connectPort");
     this->numPeersInSim_ = this->par("numPeersInSim");
 
-
     map<string, vector<int> > mymap; // construct empty map
     this->peers_to_chunk_map_ = mymap; // assign it to peers_to_chunk_map_
 

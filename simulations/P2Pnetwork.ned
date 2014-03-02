@@ -70,18 +70,18 @@ network P2PFlatNet
         }
 
     connections:
-        
+
         for i=0..6 do {
-        	peer[i].pppg++ <--> ethernetline <--> rte[0].pppg++;
+            peer[i].pppg++ <--> ethernetline <--> rte[0].pppg++;
         }
-        
-//        peer[0].pppg++ <--> ethernetline <--> rte[0].pppg++;
-//        peer[1].pppg++ <--> ethernetline <--> rte[0].pppg++;
-//        peer[2].pppg++ <--> ethernetline <--> rte[0].pppg++;
-//        peer[3].pppg++ <--> ethernetline <--> rte[0].pppg++;
-//        peer[4].pppg++ <--> ethernetline <--> rte[0].pppg++;
-//        peer[5].pppg++ <--> ethernetline <--> rte[0].pppg++;
-//        peer[6].pppg++ <--> ethernetline <--> rte[0].pppg++;
+
+        //        peer[0].pppg++ <--> ethernetline <--> rte[0].pppg++;
+        //        peer[1].pppg++ <--> ethernetline <--> rte[0].pppg++;
+        //        peer[2].pppg++ <--> ethernetline <--> rte[0].pppg++;
+        //        peer[3].pppg++ <--> ethernetline <--> rte[0].pppg++;
+        //        peer[4].pppg++ <--> ethernetline <--> rte[0].pppg++;
+        //        peer[5].pppg++ <--> ethernetline <--> rte[0].pppg++;
+        //        peer[6].pppg++ <--> ethernetline <--> rte[0].pppg++;
         tracker.pppg++ <--> ethernetline <--> rte[0].pppg++;
 
   //      rte[0].pppg++ <--> fiberline <--> rte[1].pppg++;

@@ -30,17 +30,17 @@ import inet.applications.ITCPApp;
 
 simple Tracker like ITCPApp
 {
-	parameters:
-        string localAddress = default (""); // may be left empty ("")
-        int localPort = default (1000); // port number to listen on
+    parameters:
+        string localAddress = default(""); // may be left empty ("")
+        int localPort = default(1000); // port number to listen on
         //int numPeers = default (7);	// one peer to connect to
-        string connectAddresses = default ("");  // server addresses (may be symbolic)
-        int connectPort = default (1000); // port number of the peer to connect to
-        string dataTransferMode @enum ("bytecount","object","bytestream") = default ("object");
-        string peers_to_chunk = default ("");
+        string connectAddresses = default("");  // server addresses (may be symbolic)
+        int connectPort = default(1000); // port number of the peer to connect to
+        string dataTransferMode @enum("bytecount","object","bytestream") = default("object");
+        string peers_to_chunk = default("");
         int numPeersInSim = default(2);
-        @display ("i=block/app");
- 
+        @display("i=block/app");
+
     gates:
         input tcpIn @labels(TCPCommand/up);
         output tcpOut @labels(TCPCommand/down);
@@ -48,19 +48,19 @@ simple Tracker like ITCPApp
 
 simple Peer like ITCPApp
 {
-	parameters:
-        string localAddress = default (""); // may be left empty ("")
-        int localPort = default (1000); // port number to listen on
-        int numPeers = default (2);	// peers to connect to
-        string connectAddresses = default ("");  // server addresses (may be symbolic)
-        int connectPort = default (1000); // port number of the peer to connect to
-        string dataTransferMode @enum ("bytecount","object","bytestream") = default ("object");
+    parameters:
+        string localAddress = default(""); // may be left empty ("")
+        int localPort = default(1000); // port number to listen on
+        int numPeers = default(2);	// peers to connect to
+        string connectAddresses = default("");  // server addresses (may be symbolic)
+        int connectPort = default(1000); // port number of the peer to connect to
+        string dataTransferMode @enum("bytecount","object","bytestream") = default("object");
         string trackerAddress = default("");
         int numPeersInSim = default(2);
         int numberOfChunksInFile = default(50);
         bool startAsSeed = default(false);
-        @display ("i=block/app");
- 
+        @display("i=block/app");
+
     gates:
         input tcpIn @labels(TCPCommand/up);
         output tcpOut @labels(TCPCommand/down);
