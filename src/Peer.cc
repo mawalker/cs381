@@ -38,10 +38,9 @@ void Peer::initialize(int stage) {
 
     // get values from the parameters from the ini file
     this->myID_ = this->par("myID").stringValue();
-    this->server_ = this->par("connectAddress").stringValue();
+
     this->connectPort_ = this->par("connectPort");
     this->fileSize_ = this->par("fileSize");
-    this->numAttempts_ = this->par("numAttempts");
     this->startAsSeed_ = this->par("startAsSeed");
 
     // obtain the values of parameters
@@ -79,12 +78,12 @@ void Peer::initialize(int stage) {
     << " and server details: name = " << this->server_
     << " and port = " << this->connectPort_ << endl;
 
-   // initialize
-   vector<int> v;
-   this->ownedChunks_ = v;
-   this->chunksToDownload_ = v;
-   map<string, vector<int> > m;
-   this->peersToChunkMap_ = m;
+    // initialize
+    vector<int> v;
+    this->ownedChunks_ = v;
+    this->chunksToDownload_ = v;
+    map<string, vector<int> > m;
+    this->peersToChunkMap_ = m;
 
     // setup initial file state, either seed or leech
     if (this->startAsSeed_ == true) { // seed
@@ -179,19 +178,19 @@ void Peer::initialize(int stage) {
 }
 
 void Peer::sendP2TRequest(int connId, enum P2T_MSG_TYPE prt_msg_type) {
-    EV << "=== Peer: " << this->localAddress_ << " sendRequest. " << endl;
+    EV<< "=== Peer: " << this->localAddress_ << " sendRequest. " << endl;
 
-        cMessage *temp_msg = new cMessage("temp");
-        TCPCommand *temp_cmd = new TCPCommand();
-        temp_cmd->setConnId(connId);
-        temp_msg->setControlInfo(temp_cmd);
+    cMessage *temp_msg = new cMessage("temp");
+    TCPCommand *temp_cmd = new TCPCommand();
+    temp_cmd->setConnId(connId);
+    temp_msg->setControlInfo(temp_cmd);
 
-        TCPSocket *socket = this->socketMap_.findSocketFor(temp_msg);
-        if (!socket) {
-            EV << ">>> Cannot find socket to send request <<< " << endl;
-        } else {
+    TCPSocket *socket = this->socketMap_.findSocketFor(temp_msg);
+    if (!socket) {
+        EV << ">>> Cannot find socket to send request <<< " << endl;
+    } else {
 
-            switch (prt_msg_type) {
+        switch (prt_msg_type) {
             case P2T_REGISTRATION_REQUEST: {
                 Ownership_Message *req = new Ownership_Message();
                 req->setType((int) P2T_REGISTRATION_REQUEST);
@@ -227,128 +226,128 @@ void Peer::sendP2TRequest(int connId, enum P2T_MSG_TYPE prt_msg_type) {
                 break;
             }
             default:
-                EV << ">>> unknown incoming request type <<< " << endl;
-                break;
+            EV << ">>> unknown incoming request type <<< " << endl;
+            break;
 
-            }
         }
-        // cleanup
-        delete temp_msg;
+    }
+    // cleanup
+    delete temp_msg;
 
 }
 
 void Peer::sendResponse(int connId, int chunk) {
 
-    EV << "=== Peer: " << this->localAddress_ << " sendResponse. " << endl;
+    EV<< "=== Peer: " << this->localAddress_ << " sendResponse. " << endl;
 
     // this is a hack because the TCPSocketMap does not allow us to search based on
     // connection ID. So we have to take a circuitous route to get to the socket
-        cMessage *temp_msg = new cMessage("temp");
-        TCPCommand *temp_cmd = new TCPCommand();
-        temp_cmd->setConnId(connId);
-        temp_msg->setControlInfo(temp_cmd);
+    cMessage *temp_msg = new cMessage("temp");
+    TCPCommand *temp_cmd = new TCPCommand();
+    temp_cmd->setConnId(connId);
+    temp_msg->setControlInfo(temp_cmd);
 
-        TCPSocket *socket = this->socketMap_.findSocketFor(temp_msg);
-        if (!socket) {
-            EV << ">>> Cannot find socket to send request <<< " << endl;
-        } else {
+    TCPSocket *socket = this->socketMap_.findSocketFor(temp_msg);
+    if (!socket) {
+        EV << ">>> Cannot find socket to send request <<< " << endl;
+    } else {
 
-            P2P_Resp *resp = new P2P_Resp();
-            resp->setType((int) P2P_RESPONSE);
-            resp->setId(this->localAddress_.c_str());
-            resp->setRequestedChunk(chunk);
-            // need to set the byte length else nothing gets sent as I found the hard way
-            resp->setByteLength(1024); // I think we can set any length we want :-)
+        P2P_Resp *resp = new P2P_Resp();
+        resp->setType((int) P2P_RESPONSE);
+        resp->setId(this->localAddress_.c_str());
+        resp->setRequestedChunk(chunk);
+        // need to set the byte length else nothing gets sent as I found the hard way
+        resp->setByteLength(1024);// I think we can set any length we want :-)
 
-            // return the response chunk
-            socket->send(resp);
-        }
+        // return the response chunk
+        socket->send(resp);
+    }
 
     // cleanup
-        delete temp_msg;
+    delete temp_msg;
 
 }
 
 void Peer::connectAndDownloadChunks() {
 
-    EV << "PACKETS YET TO BE DOWNLOADED BY  " << this->localAddress_ << " : ";
+    EV<< "PACKETS YET TO BE DOWNLOADED BY  " << this->localAddress_ << " : ";
 
-       for (size_t i = 0; i < this->chunksToDownload_.size(); i++)
-           EV << this->chunksToDownload_[i] << " ";
+    for (size_t i = 0; i < this->chunksToDownload_.size(); i++)
+    EV << this->chunksToDownload_[i] << " ";
 
-       if (this->chunksToDownload_.size() == 0)
-           EV << endl << "FILE DOWNLOAD COMPLETED FOR " << this->localAddress_ << endl;
-       // need to connect to peers having chunk which we dont have
+    if (this->chunksToDownload_.size() == 0)
+    EV << endl << "FILE DOWNLOAD COMPLETED FOR " << this->localAddress_ << endl;
+    // need to connect to peers having chunk which we dont have
 
-       // loop through each peer and check which of them have to the chunk to download
-       // iterator for peer and chunk map
-       map<string, vector<int> >::iterator it;
+    // loop through each peer and check which of them have to the chunk to download
+    // iterator for peer and chunk map
+    map<string, vector<int> >::iterator it;
 
-       // should also handle the case foe refresh message
-       set<int> chunksAlreadyEnqueued;
+    // should also handle the case foe refresh message
+    set<int> chunksAlreadyEnqueued;
 
-       for (it = this->peersToChunkMap_.begin(); it != this->peersToChunkMap_.end();
-               ++it) {
+    for (it = this->peersToChunkMap_.begin(); it != this->peersToChunkMap_.end();
+            ++it) {
 
-           if (this->numPeersConnected_ >= this->numPeers_)
-               // already have sufficient connections, return
-               return;
+        if (this->numPeersConnected_ >= this->numPeers_)
+        // already have sufficient connections, return
+        return;
 
-           string peer = (*it).first.c_str();
+        string peer = (*it).first.c_str();
 
-           // need to make sure we are ourselves not this peer
-           if (peer.compare(this->localAddress_) == 0)
-               continue;
+        // need to make sure we are ourselves not this peer
+        if (peer.compare(this->localAddress_) == 0)
+        continue;
 
-           // make sure we are not already connected to this peer
-           bool peerFound = false;
-           for (size_t j = 0; j < this->peersConnected_.size(); j++) {
-               if (peer.compare(this->peersConnected_[j]) == 0) {
-                   peerFound = true;
-                   break;
-               }
-           }
+        // make sure we are not already connected to this peer
+        bool peerFound = false;
+        for (size_t j = 0; j < this->peersConnected_.size(); j++) {
+            if (peer.compare(this->peersConnected_[j]) == 0) {
+                peerFound = true;
+                break;
+            }
+        }
 
-           // already connected to this peer, lets move to next
-           if (peerFound)
-               continue;
+        // already connected to this peer, lets move to next
+        if (peerFound)
+        continue;
 
-           int chunkVectorSize = it->second.size();
-           vector<int> chunks = it->second;
-           for (int k = 0; k < chunkVectorSize; k++) {
+        int chunkVectorSize = it->second.size();
+        vector<int> chunks = it->second;
+        for (int k = 0; k < chunkVectorSize; k++) {
 
-               // need to find if this peer has this chunk
-               bool chunkFound = false;
+            // need to find if this peer has this chunk
+            bool chunkFound = false;
 
-               for (size_t i = 0; i < this->chunksToDownload_.size(); i++) {
+            for (size_t i = 0; i < this->chunksToDownload_.size(); i++) {
 
-                   // this means we have to download this chunk from peer
-                   if (chunks[k] == chunksToDownload_[i]) {
-                       set<int>::iterator setiter;
-                       setiter = chunksAlreadyEnqueued.find(chunks[k]);
+                // this means we have to download this chunk from peer
+                if (chunks[k] == chunksToDownload_[i]) {
+                    set<int>::iterator setiter;
+                    setiter = chunksAlreadyEnqueued.find(chunks[k]);
 
-                       // this chunk is already enqueued for download, we should look at next chunk in the peer
-                       if (setiter != chunksAlreadyEnqueued.end())
-                           break;
+                    // this chunk is already enqueued for download, we should look at next chunk in the peer
+                    if (setiter != chunksAlreadyEnqueued.end())
+                    break;
 
-                       // connect to this peer
-                       chunksAlreadyEnqueued.insert(chunks[k]);
-                       this->connToChunkMap_.insert(
-                               pair<int, int>(connect(peer), chunks[k]));
-                       this->peersConnected_.push_back(peer);
-                       this->numPeersConnected_++;
-                       chunkFound = true;
-                       break;
-                   }
-               }
-               if (chunkFound)
-                   break;
-           }
-       }
+                    // connect to this peer
+                    chunksAlreadyEnqueued.insert(chunks[k]);
+                    this->connToChunkMap_.insert(
+                            pair<int, int>(connect(peer), chunks[k]));
+                    this->peersConnected_.push_back(peer);
+                    this->numPeersConnected_++;
+                    chunkFound = true;
+                    break;
+                }
+            }
+            if (chunkFound)
+            break;
+        }
+    }
 }
 
-/** This is the all-encompassing event handling function. It is our responsibility to
- *  figure out what to do with every event, which is appln-specific */
+    /** This is the all-encompassing event handling function. It is our responsibility to
+     *  figure out what to do with every event, which is appln-specific */
 void Peer::handleMessage(cMessage *msg) {
     EV<< "Client received handleMessage message" << endl;
 
@@ -397,9 +396,9 @@ void Peer::finish() {
 
     /** handle the timeout method. We are using this as the initial method to kick start the process */
 void Peer::handleTimer(cMessage *msg) {
-    EV << "=== Peer: " << this->localAddress_
-            << " received handleTimer message. "
-            << "Send refresh request to Tracker" << endl;
+    EV<< "=== Peer: " << this->localAddress_
+    << " received handleTimer message. "
+    << "Send refresh request to Tracker" << endl;
 
     // perform cleanup
     delete (msg);
@@ -441,30 +440,181 @@ void Peer::socketEstablished(int connID, void *role) {
 
     /** handle incoming data. Could be a request or response */
 void Peer::socketDataArrived(int connID, void *, cPacket *msg, bool) {
-//    EV << "=== Client: " << this->myID_
-//       << " received socketDataArrived message. ===" << endl;
-//
-//    // incoming request may be of different types. The only thing we can handle as a client
-//    // is a response from the server and nothing else.
-//    CS_Resp *response = dynamic_cast<CS_Resp *> (msg);
-//    if (!response) {
-//      EV << "Arriving packet is not of type CS_Resp" << endl;
-//    } else {
-//       setStatusString ("Response Arrived");
-//
-//       EV << "Arriving packet: Responder ID = " << response->getId ()
-//          << ", packet size = " << response->getDataArraySize () << endl;
-//
-//       this->handleResponse (response);
-//    }
-//
-//    // cleanup the incoming message after it is handled.
-//    delete response;
-//
-//    // now that the response to our file request is received, our job is done
-//    // and so we close the connection
-//    this->close ();
+    EV<< "=== Peer: " << this->localAddress_
+        << " received socketDataArrived message. ===" << endl;
 
+        // incoming request may be of different types
+
+        P2T_Packet *packet = dynamic_cast<P2T_Packet *>(msg);
+        if (packet) {
+            // handle P2T message
+            switch ((P2T_MSG_TYPE) packet->getType()) {
+                case T2P_MEMBERSHIP_RESPONSE: {
+                    T2P_MEMBERSHIP_Res *res = dynamic_cast<T2P_MEMBERSHIP_Res *>(msg);
+                    if (!res) {
+                        EV << "Arriving packet is not of type T2P_MEMBERSHIP_Res"
+                        << endl;
+                    } else {
+                        setStatusString("Tracker Response");
+                        EV << "Response arrived from tracker" << endl;
+
+                        int sizeOfMessages = res->getPeer_to_chunk_ownershipArraySize();
+                        for (int i = 0; i < sizeOfMessages; i++) {
+                            Ownership_Message ownershipMessage =
+                            res->getPeer_to_chunk_ownership(i);
+                            string requestorId = ownershipMessage.getId();
+                            int chunkSize = ownershipMessage.getOwned_chunksArraySize();
+                            // create vector from chunklist array
+                            vector<int> chunkList;
+                            for (int i = 0; i < chunkSize; i++) {
+                                chunkList.push_back(
+                                        ownershipMessage.getOwned_chunks(i));
+                            }
+
+                            // add this key-value pair to the map
+                            this->peersToChunkMap_.insert(
+                                    pair<string, vector<int> >(requestorId, chunkList));
+
+                        }
+
+                        int numberOfPeers = res->getIdsArraySize();
+                        // add peer to peer list
+                        for (int i = 0; i < numberOfPeers; i++)
+                        this->peers_.insert(res->getIds(i));
+
+                        // Now we have the list of peers and their ownership of chunks
+                        // we should find which ones to connect and download chunks
+                        connectAndDownloadChunks();
+                    }
+                }
+                break;
+                default:
+                EV << ">>> unknown response type <<< " << endl;
+                break;
+            }
+
+        } else {
+            P2P_Packet *packet2 = dynamic_cast<P2P_Packet *>(msg);
+            if (!packet2) {
+                // message is not of handleable type
+                return;
+            }
+            switch ((P2P_MSG_TYPE) packet2->getType()) {
+                // Received a request from peer for a chunk
+                case P2P_REQUEST: {
+                    P2P_Req *req = dynamic_cast<P2P_Req *>(msg);
+                    if (!req) {
+                        EV << "Arriving packet is not of type P2P_Req" << endl;
+                    } else {
+                        setStatusString("Peer Request");
+                        EV << "Arriving packet: Requestor ID = " << req->getId()
+                        << ", Requested chunk = " << req->getChunk() << endl;
+
+                        // now send the desired response
+                        this->sendResponse(connID, req->getChunk());
+                    }
+                }
+                break;
+                // Received the chunk from peer
+                case P2P_RESPONSE: {
+                    P2P_Resp *resp = dynamic_cast<P2P_Resp *>(msg);
+                    if (!resp) {
+                        EV << "Arriving packet is not of type P2P_Resp" << endl;
+                    } else {
+                        setStatusString("Response");
+                        EV << "Arriving packet: Responder ID = " << resp->getId()
+                        << ", requested chunk = " << resp->getRequestedChunk()
+                        << endl;
+
+                        // add the chunk in the list of download chunks
+                        int chunk = resp->getRequestedChunk();
+
+                        insertChunkInOrder(chunk);
+                        deleteChunkFromToDownloadList(chunk);
+
+                        // record the number of chunks remaining
+                        int remainingChunkCount = this->ownedChunks_.size() - this->initialCountOfOwnedChunks_;
+
+                        if (remainingChunkCount >= 31) {
+                            this->sendP2TRequest(this->trackerSocket_->getConnectionId(),
+                                    P2T_DOWNLOAD_COMPLETE);
+                        }
+
+                        this->numberOfchunksToDownload.record(remainingChunkCount);
+
+                        this->sendP2TRequest(this->trackerSocket_->getConnectionId(),
+                                P2T_REFRESH_MESSAGE);
+
+                        EV << "Chunks remaining to be downloaded for peer " << this->localAddress_ << " : ";
+                        for(size_t i = 0; i < this->chunksToDownload_.size(); i++)
+                        EV << this->chunksToDownload_[i] << " ";
+
+                        // request for next chunk if all the chunks are not downloaded yet from the peer
+                        vector<int> peerChunklist = this->peersToChunkMap_.find(
+                                resp->getId())->second;
+                        int peerChunklistSize = peerChunklist.size();
+                        int chunkIndex = 0;
+                        for (int i = 0; i < peerChunklistSize; i++) {
+                            if (chunk == peerChunklist[i]) {
+                                // we found the just download chunk, need to see if next is available
+                                chunkIndex = i;
+                                break;
+                            }
+                        }
+
+                        // we have the index of downloaded chunk, from the next elements check if they are still to be downloaded
+                        int chunkTobeDownloaded = -1;
+                        for (int i = chunkIndex + 1; i < peerChunklistSize; i++) {
+                            int peerChunk = peerChunklist[i];
+                            // need to find if we have to download this chunk
+                            bool found = false;
+                            for (size_t j = 0; j < this->chunksToDownload_.size();
+                                    j++) {
+                                if (peerChunk == this->chunksToDownload_[j]) {
+                                    found = true;
+                                    break;
+                                }
+                            }
+                            // have to download
+                            if (found) {
+                                // save the index
+                                chunkTobeDownloaded = peerChunk;
+                                break;
+                            }
+                        }
+
+                        // no chunk to download, close the connection
+                        if (chunkTobeDownloaded == -1) {
+                            cMessage *temp_msg = new cMessage("temp");
+                            TCPCommand *temp_cmd = new TCPCommand();
+                            temp_cmd->setConnId(connID);
+                            temp_msg->setControlInfo(temp_cmd);
+                            TCPSocket *socket = this->socketMap_.findSocketFor(
+                                    temp_msg);
+
+                            EV << "Download completed with peer - " << resp->getId() << endl;
+                            EV << "PRESENTLY OWNED PACKETS BY -" << this->localAddress_ << " : ";
+                            for (size_t i = 0; i < this->ownedChunks_.size(); i++)
+                            EV << this->ownedChunks_[i] << " ";
+
+                            socket->close();
+                        } else {
+                            this->sendRequest(connID, chunkTobeDownloaded);
+                        }
+
+                    }
+
+                }
+                break;
+                default:
+                EV << ">>> unknown incoming request type <<< " << endl;
+                break;
+            }
+
+        }
+
+        // cleanup
+        delete msg;
 }
 
 void Peer::socketPeerClosed(int connID, void *) {
@@ -506,8 +656,8 @@ void Peer::socketFailure(int, void *, int code) {
 
 // connect to server in the active role
 int Peer::connect(string peer) {
-    EV << "=== Peer: " << this->localAddress_ << " received connect message"
-            << endl;
+    EV<< "=== Peer: " << this->localAddress_ << " received connect message"
+    << endl;
     EV << "issuing connect command\n";
     setStatusString("connecting");
 
@@ -533,8 +683,8 @@ int Peer::connect(string peer) {
 
     // debugging
     EV << "+++ Peer: " << this->localAddress_ << " created a new socket with "
-            << "connection ID = " << new_socket->getConnectionId() << " ==="
-            << endl;
+    << "connection ID = " << new_socket->getConnectionId() << " ==="
+    << endl;
 
     // save this socket in our outgoing connection map
     this->socketMap_.addSocket(new_socket);
@@ -564,7 +714,7 @@ void Peer::close() {
 
 // send a request to the other side
 void Peer::sendRequest(int connId, int chunk) {
-    EV << "=== Peer: " << this->localAddress_ << " sendRequest. " << endl;
+    EV<< "=== Peer: " << this->localAddress_ << " sendRequest. " << endl;
 
 // this is a hack because the TCPSocketMap does not allow us to search based on
 // connection ID. So we have to take a circuitous route to get to the socket
@@ -582,7 +732,7 @@ void Peer::sendRequest(int connId, int chunk) {
         req->setId(this->localAddress_.c_str());
         req->setChunk(chunk);
         // need to set the byte length else nothing gets sent as I found the hard way
-        req->setByteLength(32); // I think we can set any length we want :-)
+        req->setByteLength(32);// I think we can set any length we want :-)
 
         socket->send(req);
     }
@@ -591,7 +741,6 @@ void Peer::sendRequest(int connId, int chunk) {
     delete temp_msg;
 
 }
-
 
 void Peer::insertChunkInOrder(int chunkValue) {
 
@@ -623,8 +772,7 @@ void Peer::insertChunkInOrder(int chunkValue) {
 void Peer::deleteChunkFromToDownloadList(int chunkValue) {
     for (size_t i = 0; i < this->chunksToDownload_.size(); i++) {
         if (this->chunksToDownload_[i] == chunkValue) {
-            this->chunksToDownload_.erase(
-                    this->chunksToDownload_.begin() + i);
+            this->chunksToDownload_.erase(this->chunksToDownload_.begin() + i);
             return;
         }
     }

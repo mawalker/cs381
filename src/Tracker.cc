@@ -195,7 +195,7 @@ void Tracker::socketDataArrived(int connID, void *, cPacket *msg, bool) {
 
         }
         /*
-         * Catch when the download is complete, to end the simulation when they all have
+         * Catch when the Peer has all chunks, to end the simulation when they all have
          */
         case P2T_DOWNLOAD_COMPLETE: {
 

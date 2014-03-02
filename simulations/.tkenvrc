@@ -1,3 +1,5 @@
 # Partial Tkenv config file -- see $HOME/.tkenvrc as well
+inspector "P2PTorrentFlatNet" "P2PTorrentFlatNet" "2" "625x337+126+195:normal"
+inspector "P2PFlatNet" "P2PFlatNet" "2" "607x337+64+374:normal"
 inspector "CSFlatNet" "CSFlatNet" "2" "1301x744+65+24:normal"
 

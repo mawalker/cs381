@@ -26,7 +26,7 @@ import inet.nodes.inet.Router;
 import inet.networklayer.autorouting.ipv4.IPv4NetworkConfigurator;
 
 // this is a modified flat network taken from inet examples
-network P2PFlatNet
+network P2PTorrentFlatNet
 {
     parameters:
         int numPeersInSim = default(2);
@@ -52,7 +52,7 @@ network P2PFlatNet
         }
 
         // a whole bunch of routers
-        rte[1]: Router {
+        rte[numPeersInSim]: Router {
             parameters:
                 @display("is=vs");
         }
@@ -71,7 +71,7 @@ network P2PFlatNet
 
     connections:
 
-        for i=0..6 do {
+        for i=0..(numPeersInSim-1) {
             peer[i].pppg++ <--> ethernetline <--> rte[0].pppg++;
         }
 
@@ -83,6 +83,10 @@ network P2PFlatNet
         //        peer[5].pppg++ <--> ethernetline <--> rte[0].pppg++;
         //        peer[6].pppg++ <--> ethernetline <--> rte[0].pppg++;
         tracker.pppg++ <--> ethernetline <--> rte[0].pppg++;
+
+        for i=0..(numPeersInSim-1) {
+            rte[i].pppg++ <--> fiberline <--> rte[(i +1 ) %numPeersInSim].pppg++;
+        }
 
   //      rte[0].pppg++ <--> fiberline <--> rte[1].pppg++;
   //      rte[1].pppg++ <--> fiberline <--> rte[2].pppg++;

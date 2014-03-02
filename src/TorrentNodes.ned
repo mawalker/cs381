@@ -38,7 +38,9 @@ simple Tracker like ITCPApp
         int connectPort = default(1000); // port number of the peer to connect to
         string dataTransferMode @enum("bytecount","object","bytestream") = default("object");
         string peers_to_chunk = default("");
+        string myID = default("");
         int numPeersInSim = default(2);
+        int fileSize = default(100);
         @display("i=block/app");
 
     gates:
@@ -58,6 +60,8 @@ simple Peer like ITCPApp
         string trackerAddress = default("");
         int numPeersInSim = default(2);
         int numberOfChunksInFile = default(50);
+        string myID = default("");
+        int fileSize = default(100);
         bool startAsSeed = default(false);
         @display("i=block/app");
 
