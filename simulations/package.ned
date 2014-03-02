@@ -1,3 +1,3 @@
-package CS381_ClientServer.simulations;
+package CS381_Torrent_HW2.simulations;
 
 @license(LGPL);

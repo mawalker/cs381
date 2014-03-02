@@ -1,12 +1,12 @@
 #
-# OMNeT++/OMNEST Makefile for CS381_Client_Server
+# OMNeT++/OMNEST Makefile for CS381_Torrent_HW2
 #
 # This file was generated with the command:
 #  opp_makemake -f --deep -I/home/rangerz/development/omnetpp-4.3.1/samples/inet/src/linklayer/ethernet -I/home/rangerz/development/omnetpp-4.3.1/samples/inet/src/linklayer/ieee80211/radio -I/home/rangerz/development/omnetpp-4.3.1/samples/inet/src/networklayer/common -I/home/rangerz/development/omnetpp-4.3.1/samples/inet/src -I/home/rangerz/development/omnetpp-4.3.1/samples/inet/src/networklayer/icmpv6 -I/home/rangerz/development/omnetpp-4.3.1/samples/inet/src/world/obstacles -I/home/rangerz/development/omnetpp-4.3.1/samples/inet/src/networklayer/xmipv6 -I/home/rangerz/development/omnetpp-4.3.1/samples/inet/src/networklayer/contract -I/home/rangerz/development/omnetpp-4.3.1/samples/inet/src/mobility -I/home/rangerz/development/omnetpp-4.3.1/samples/inet/src/networklayer/manetrouting/base -I/home/rangerz/development/omnetpp-4.3.1/samples/inet/src/networklayer/autorouting/ipv4 -I/home/rangerz/development/omnetpp-4.3.1/samples/inet/src/linklayer/ieee80211/mgmt -I/home/rangerz/development/omnetpp-4.3.1/samples/inet/src/util -I/home/rangerz/development/omnetpp-4.3.1/samples/inet/src/linklayer/common -I/home/rangerz/development/omnetpp-4.3.1/samples/inet/src/transport/contract -I/home/rangerz/development/omnetpp-4.3.1/samples/inet/src/status -I/home/rangerz/development/omnetpp-4.3.1/samples/inet/src/linklayer/radio/propagation -I/home/rangerz/development/omnetpp-4.3.1/samples/inet/src/linklayer/ieee80211/radio/errormodel -I/home/rangerz/development/omnetpp-4.3.1/samples/inet/src/linklayer/radio -I/home/rangerz/development/omnetpp-4.3.1/samples/inet/src/util/headerserializers/tcp -I/home/rangerz/development/omnetpp-4.3.1/samples/inet/src/networklayer/ipv4 -I/home/rangerz/development/omnetpp-4.3.1/samples/inet/src/util/headerserializers/ipv4 -I/home/rangerz/development/omnetpp-4.3.1/samples/inet/src/base -I/home/rangerz/development/omnetpp-4.3.1/samples/inet/src/util/headerserializers -I/home/rangerz/development/omnetpp-4.3.1/samples/inet/src/world/radio -I/home/rangerz/development/omnetpp-4.3.1/samples/inet/src/linklayer/ieee80211/mac -I/home/rangerz/development/omnetpp-4.3.1/samples/inet/src/networklayer/ipv6 -I/home/rangerz/development/omnetpp-4.3.1/samples/inet/src/transport/sctp -I/home/rangerz/development/omnetpp-4.3.1/samples/inet/src/util/headerserializers/udp -I/home/rangerz/development/omnetpp-4.3.1/samples/inet/src/networklayer/ipv6tunneling -I/home/rangerz/development/omnetpp-4.3.1/samples/inet/src/battery/models -I/home/rangerz/development/omnetpp-4.3.1/samples/inet/src/applications/pingapp -I/home/rangerz/development/omnetpp-4.3.1/samples/inet/src/linklayer/contract -I/home/rangerz/development/omnetpp-4.3.1/samples/inet/src/util/headerserializers/sctp -I/home/rangerz/development/omnetpp-4.3.1/samples/inet/src/transport/tcp_common -I/home/rangerz/development/omnetpp-4.3.1/samples/inet/src/networklayer/arp -I/home/rangerz/development/omnetpp-4.3.1/samples/inet/src/transport/udp -L/home/rangerz/development/omnetpp-4.3.1/samples/inet/out/$(CONFIGNAME)/src -linet -DINET_IMPORT -KINET_PROJ=/home/rangerz/development/omnetpp-4.3.1/samples/inet
 #
 
 # Name of target to be created (-o option)
-TARGET = CS381_Client_Server$(EXE_SUFFIX)
+TARGET = CS381_Torrent_HW2$(EXE_SUFFIX)
 
 # User interface (uncomment one) (-u option)
 USERIF_LIBS = $(ALL_ENV_LIBS) # that is, $(TKENV_LIBS) $(CMDENV_LIBS)
@@ -67,7 +67,7 @@ PROJECTRELATIVE_PATH = src
 O = $(PROJECT_OUTPUT_DIR)/$(CONFIGNAME)/$(PROJECTRELATIVE_PATH)
 
 # Object files for local .cc and .msg files
-OBJS = $O/Peer.o $O/PeerToPeerMSG_m.o $O/PeerToTrackerMsg_m.o
+OBJS = $O/Peer.o $O/Tracker.o $O/PeerToPeerMSG_m.o $O/PeerToTrackerMsg_m.o
 
 # Message files
 MSGFILES = \
@@ -147,7 +147,7 @@ msgheaders: $(MSGFILES:.msg=_m.h)
 clean:
 	$(qecho) Cleaning...
 	$(Q)-rm -rf $O
-	$(Q)-rm -f CS381_Client_Server CS381_Client_Server.exe libCS381_Client_Server.so libCS381_Client_Server.a libCS381_Client_Server.dll libCS381_Client_Server.dylib
+	$(Q)-rm -f CS381_Torrent_HW2 CS381_Torrent_HW2.exe libCS381_Torrent_HW2.so libCS381_Torrent_HW2.a libCS381_Torrent_HW2.dll libCS381_Torrent_HW2.dylib
 	$(Q)-rm -f ./*_m.cc ./*_m.h
 
 cleanall: clean
@@ -160,6 +160,8 @@ depend:
 # DO NOT DELETE THIS LINE -- make depend depends on it.
 $O/Peer.o: Peer.cc \
 	Peer.h \
+	PeerToPeerMSG_m.h \
+	PeerToTrackerMsg_m.h \
 	$(INET_PROJ)/src/base/INETDefs.h \
 	$(INET_PROJ)/src/networklayer/contract/IPv4Address.h \
 	$(INET_PROJ)/src/networklayer/contract/IPv6Address.h \
@@ -172,4 +174,15 @@ $O/PeerToPeerMSG_m.o: PeerToPeerMSG_m.cc \
 	PeerToPeerMSG_m.h
 $O/PeerToTrackerMsg_m.o: PeerToTrackerMsg_m.cc \
 	PeerToTrackerMsg_m.h
+$O/Tracker.o: Tracker.cc \
+	PeerToTrackerMsg_m.h \
+	Tracker.h \
+	$(INET_PROJ)/src/base/INETDefs.h \
+	$(INET_PROJ)/src/networklayer/contract/IPv4Address.h \
+	$(INET_PROJ)/src/networklayer/contract/IPv6Address.h \
+	$(INET_PROJ)/src/networklayer/contract/IPvXAddress.h \
+	$(INET_PROJ)/src/networklayer/contract/IPvXAddressResolver.h \
+	$(INET_PROJ)/src/transport/contract/TCPCommand_m.h \
+	$(INET_PROJ)/src/transport/contract/TCPSocket.h \
+	$(INET_PROJ)/src/transport/contract/TCPSocketMap.h
 

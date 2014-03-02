@@ -139,7 +139,7 @@ void Peer::initialize(int stage) {
     << this->socket_->getConnectionId() << " +++" << endl;
 
     // now save this socket in our map
-    this->socketMap_.addSocket(this->socket_);
+    //   this->socketMap_.addSocket(this->socket_);
 
     // Create a connection to TRACKER and send REGISTRATION Message
     // make connection with TRACKER
@@ -162,7 +162,7 @@ void Peer::initialize(int stage) {
     tracker_socket->setDataTransferMode(this->socket_->getDataTransferMode());
 
     // now save this socket in our map
-    this->socketMap_.addSocket(tracker_socket);
+//    this->socketMap_.addSocket(tracker_socket);
 
     // issue a connect request to TRACKER
     tracker_socket->connect(
@@ -179,6 +179,15 @@ void Peer::initialize(int stage) {
 
     setStatusString("waiting");
 
+}
+
+void Peer::sendP2TRequest(int connId, enum P2T_MSG_TYPE prt_msg_type) {
+
+}
+
+void Peer::sendResponse(int connId, int chunk){}
+
+void Peer::connectAndDownloadChunks() {
 }
 
 /** This is the all-encompassing event handling function. It is our responsibility to
@@ -278,7 +287,7 @@ void Peer::socketEstablished(int connID, void *role) {
     setStatusString("ConnectionEstablished");
 
     // send requests to the server to whom we just got connected
-    this->sendRequest (connID);
+    //this->sendRequest (connID);
 }
 
     /** handle incoming data. Could be a request or response */
@@ -400,7 +409,7 @@ void Peer::close() {
 }
 
 // send a request to the other side
-void Peer::sendRequest(int connId) {
+void Peer::sendRequest(int connId, int chunk) {
     EV<< "=== Client: " << this->myID_ << " sendRequest. === " << endl;
 
     // for correctness, check for validity of the socket. But this should never happen because the only way

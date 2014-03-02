@@ -19,6 +19,8 @@ using namespace std;
 #include "INETDefs.h"       // this contains imp definitions from the INET
 #include "TCPSocket.h"      // this is needed for sockets
 #include "TCPSocketMap.h"   // this is needed to maintain multiple connected
+#include "PeerToPeerMSG_m.h"
+#include "PeerToTrackerMsg_m.h"
 // sockets from other peers
 
 /**
@@ -107,8 +109,6 @@ protected:
     /** Invoked from handleMessage(). Should be defined to handle self-messages. */
     virtual void handleTimer(cMessage *msg);
 
-
-
     /** @name Utility functions */
 
     //@{
@@ -129,10 +129,6 @@ protected:
     /** When running under GUI, it displays the given string next to the icon */
     virtual void setStatusString(const char *s);
     //@}
-
-
-
-
 
     /** @name overridden TCPSocket::CallbackInterface callback methods */
 
