@@ -92,16 +92,11 @@ protected:
     /** @name Utility functions */
 
     //@{
-    /** Issues an active OPEN to the address/port given as module parameters */
-    virtual void connect(int i);
-
     /** Issues CLOSE command */
     virtual void close(void);
 
     /** Sends a response */
     virtual void sendResponse(int connId);
-
-    virtual void sendRequest(int connId); //, const char *id, const char *fname);
 
     /** When running under GUI, it displays the given string next to the icon */
     virtual void setStatusString(const char *s);
