@@ -34,36 +34,36 @@ void Tracker::initialize(int stage) {
     this->localAddress_ = this->par("localAddress").stringValue();
     this->localPort_ = this->par("localPort");
     this->connectPort_ = this->par("connectPort");
-    this->numPeersInSim_ = this->par("numPeersInSim_");
+    this->numPeersInSim_ = this->par("numPeersInSim");
 
     map<string, vector<int> > mymap;
     this->peers_to_chunk_ = mymap;
     /// chunknumber2 chunknumber5 chunknumber8 peer4 ; chunknumber22  chunk9 chunknumber5 chunknumber8 peer8;
 
-    const char *str = this->par("peers_to_chunk").stringValue();
-    cStringTokenizer tokenizer = cStringTokenizer(str);
-    tokenizer.setDelimiter(";");
-    vector<string> tokenisedVector = tokenizer.asVector();
+//    const char *str = this->par("peers_to_chunk").stringValue();
+//    cStringTokenizer tokenizer = cStringTokenizer(str);
+//    tokenizer.setDelimiter(";");
+//    vector<string> tokenisedVector = tokenizer.asVector();
 
     this->numberOfSeeders.setName("number of seeders");
 
-    for (size_t i = 0; i < tokenisedVector.size(); i++) {
-        const char *str4 = tokenisedVector[i].c_str();
-        vector<string> tokenisedChunkVector = cStringTokenizer(str4).asVector();
-        string peername = tokenisedChunkVector.back();
-        tokenisedChunkVector.pop_back();
-        vector<int> chunkList;
-        for (size_t i = 0; i < tokenisedChunkVector.size(); i++) {
-            const char *str4 = tokenisedChunkVector[i].c_str();
-            std::stringstream s_str(str4);
-            int j;
-            s_str >> j;
-            insertChunkInOrder(chunkList, j);
-        }
-
-        this->peers_to_chunk_.insert(
-                pair<string, vector<int> >(peername, chunkList));
-    }
+//    for (size_t i = 0; i < tokenisedVector.size(); i++) {
+//        const char *str4 = tokenisedVector[i].c_str();
+//        vector<string> tokenisedChunkVector = cStringTokenizer(str4).asVector();
+//        string peername = tokenisedChunkVector.back();
+//        tokenisedChunkVector.pop_back();
+//        vector<int> chunkList;
+//        for (size_t i = 0; i < tokenisedChunkVector.size(); i++) {
+//            const char *str4 = tokenisedChunkVector[i].c_str();
+//            std::stringstream s_str(str4);
+//            int j;
+//            s_str >> j;
+//            insertChunkInOrder(chunkList, j);
+//        }
+//
+//        this->peers_to_chunk_.insert(
+//                pair<string, vector<int> >(peername, chunkList));
+//    }
 
     /*
      // here is a way to read a parameter array (see user manual section 4.5.4)

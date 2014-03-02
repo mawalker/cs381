@@ -54,6 +54,8 @@ private:
     vector<int> ownedChunks_;
     vector<int> chunksToDownloadVector_;
 
+    bool startAsSeed_;
+
     set<string> peers_; // set of all peers
     map<string, vector<int> > peers_to_chunk_;
 

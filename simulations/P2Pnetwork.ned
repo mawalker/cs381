@@ -52,7 +52,7 @@ network P2PTorrentFlatNet
         }
 
         // a whole bunch of routers
-        rte[numPeersInSim]: Router {
+        rte[1]: Router {
             parameters:
                 @display("is=vs");
         }
@@ -72,7 +72,7 @@ network P2PTorrentFlatNet
     connections:
 
         for i=0..(numPeersInSim-1) {
-            peer[i].pppg++ <--> ethernetline <--> rte[i].pppg++;
+            peer[i].pppg++ <--> ethernetline <--> rte[0].pppg++;
         }
 
         //        peer[0].pppg++ <--> ethernetline <--> rte[0].pppg++;
@@ -84,9 +84,9 @@ network P2PTorrentFlatNet
         //        peer[6].pppg++ <--> ethernetline <--> rte[0].pppg++;
         tracker.pppg++ <--> ethernetline <--> rte[0].pppg++;
 
-        for i=1..(numPeersInSim-1) {
-            rte[i].pppg++ <--> fiberline <--> rte[0].pppg++;
-        }
+//        for i=1..(numPeersInSim-1) {
+//            rte[i].pppg++ <--> fiberline <--> rte[0].pppg++;
+//        }
 
   //      rte[0].pppg++ <--> fiberline <--> rte[1].pppg++;
   //      rte[1].pppg++ <--> fiberline <--> rte[2].pppg++;

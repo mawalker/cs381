@@ -44,15 +44,19 @@ void Peer::initialize(int stage) {
     map<string, vector<int> > mymap;
     this->peers_to_chunk_ = mymap;
 
-    const char *str = this->par("ownedChunks").stringValue();
-    vector<string> tokenisedVector = cStringTokenizer(str).asVector();
-    for (size_t i = 0; i < tokenisedVector.size(); i++) {
-        const char *str4 = tokenisedVector[i].c_str();
-        std::stringstream s_str(str4);
-        int i;
-        s_str >> i;
-        insertChunkInOrder(i);
-    }
+    this->startAsSeed_ = this->par("startAsSeed");
+
+
+    // setup initial file state, either seed or leech
+     if (this->startAsSeed_ == true) { // seed
+         for (int i = 0; i < this->numberOfChunksInFile_; i++) {
+             insertChunkInOrder(i);
+         }
+     } else { // leech
+         for (int i = 0; i < this->numberOfChunksInFile_; i++) {
+             this->chunksToDownloadVector_.push_back(i);
+         }
+     }
 
     this->initialCountOfOwnedChunks_ = this->ownedChunks_.size();
 
