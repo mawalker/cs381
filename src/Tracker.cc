@@ -223,7 +223,63 @@ void Tracker::socketDataArrived(int connID, void *, cPacket *msg, bool) {
 
 // send a response
 void Tracker::sendResponse(int connId) { // const char *id, unsigned long size) {
+    EV<< "=== Peer: " << this->localAddress_ << " sendResponse. " << endl;
 
+    // this is a hack because the TCPSocketMap does not allow us to search based on
+    // connection ID. So we have to take a circuitous route to get to the socket
+    cMessage *temp_msg = new cMessage("temp");
+    TCPCommand *temp_cmd = new TCPCommand();
+    temp_cmd->setConnId(connId);
+    temp_msg->setControlInfo(temp_cmd);
+
+    TCPSocket *socket = this->socketMap_.findSocketFor(temp_msg);
+    if (!socket) {
+        EV << ">>> Cannot find socket to send request <<< " << endl;
+    } else {
+        T2P_MEMBERSHIP_Res *resp = new T2P_MEMBERSHIP_Res();
+
+        // response type enum
+        resp->setType((int) T2P_MEMBERSHIP_RESPONSE);
+
+        // set peer list
+        resp->setIdsArraySize(this->peers_.size());
+
+        set<string>::iterator iter;
+        int i = 0;
+        for (iter = this->peers_.begin(); iter != this->peers_.end(); iter++) {
+            resp->setIds(i++, (*iter).c_str());
+        }
+
+        // number of peer info whic tracker has
+        resp->setPeer_to_chunk_ownershipArraySize(this->peers_to_chunk_map_.size());
+
+        // iterator for peer and chunk map
+        map<string, vector<int> >::iterator it;
+
+        int k = 0;
+        for (it = this->peers_to_chunk_map_.begin();
+                it != this->peers_to_chunk_map_.end(); ++it) {
+            Ownership_Message *respOwnership = new Ownership_Message();
+            // set id for ownership message
+            respOwnership->setId((*it).first.c_str());
+            int chunkVectorSize = (*it).second.size();
+            respOwnership->setOwned_chunksArraySize(chunkVectorSize);
+
+            for (int i = 0; i < chunkVectorSize; i++) {
+                respOwnership->setOwned_chunks(i, (*it).second[i]);
+            }
+
+            resp->setPeer_to_chunk_ownership(k++, *respOwnership);
+
+        }
+        // need to set the byte length else nothing gets sent as I found the hard way
+        resp->setByteLength(1024);// I think we can set any length we want :-)
+
+        socket->send(resp);
+    }
+
+    // cleanup
+    delete temp_msg;
 }
 
 void Tracker::close(void) {
