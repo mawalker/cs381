@@ -1,20 +1,14 @@
-//
-// This program is free software: you can redistribute it and/or modify
-// it under the terms of the GNU Lesser General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-// 
-// This program is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU Lesser General Public License for more details.
-// 
-// You should have received a copy of the GNU Lesser General Public License
-// along with this program.  If not, see http://www.gnu.org/licenses/.
-// 
+/*
+ * P2PApp.h
+ *
+ *  Created on: Sep 22, 2012
+ *      Author: Aniruddha Gokhale
+ *      Class:  CS381
+ *      Institution: Vanderbilt University
+ */
 
-#ifndef Tracker_H_
-#define Tracker_H_
+#ifndef _BITTORENT_TRACKER_APP_H_
+#define _BITTORENT_TRACKER_APP_H_
 
 #include <string>
 #include <vector>
@@ -23,59 +17,68 @@ using namespace std;
 #include "INETDefs.h"       // this contains imp definitions from the INET
 #include "TCPSocket.h"      // this is needed for sockets
 #include "TCPSocketMap.h"   // this is needed to maintain multiple connected
-// sockets from other peers
+                            // sockets from other peers
 
-class Tracker: public cSimpleModule, public TCPSocket::CallbackInterface {
-public:
-    Tracker();
-    virtual ~Tracker();
 
-private:
+/**
+ * This is our application class that demonstrates a P2P capability.
+ *
+ * Each peer must have both the client and server capabilities.  Since we may be
+ * connected to a number of peers while many peers may connect to us, we are going
+ * to maintain a socket map for outgoing and incoming connections
+ */
+class Tracker : public cSimpleModule, public TCPSocket::CallbackInterface
+{
 
-    // organizing the data members according to the parameters defined in the NED file and then
-    // any C++ data members
+  public:
+    /**
+     *  constructor
+     */
+    Tracker (void);
 
     /**
-     * These values are obtained from INI file
+     * destructor
      */
-    string myID_;            // my ID (used in debugging)
+    virtual ~Tracker (void);
 
-    TCPSocket *socket_;   // our main listening socket
+  private:
+
+    TCPSocket    *socket_;   // our main listening socket
     TCPSocketMap socketMap_; // maps of sockets we maintain
 
-    int localPort_;        // server's local port
     string localAddress_;    // our local address
+    int localPort_;          // our local port we will listen on
 
-    TCPDataTransferMode dataTransferMode_; // indicates the approach used to transfer data
-
-    int numPeers_;           // indicates how many peers we are to connected to
-    int numPeersInSim_;     // indicates the number of peers in the whole sim.
-    int numSeedsInTorrent;
-
+    int numPeers_;           // indicates how many peers we are to connect to
     vector<string> connectAddresses_;  // address of our peers
     int connectPort_;        // ports of the peer we connect to
 
+    int numSeedsInTorrent_;
+    int numPeersInSim_;
+
+    cOutVector numberOfSeeders;
+
     set<string> peers_;
-    map<string, vector<int> > peers_to_chunk_map_;
+    map<string, vector<int> > peers_to_chunk_;
 
     void insertChunkInOrder(vector<int> &, int);
 
-protected:
-
-    /** @name cComponent initialization and member methods */
-
-    //@{
+  protected:
     /**
      * Initialization. Should be redefined to perform or schedule a connect().
      */
-    virtual void initialize(int stage); // impl. as other examples and return on !=3
+    virtual void initialize (int stage);
 
     /**
      * define how many initialization stages are we going to need.
      */
-    virtual int numInitStages(void) const {
-        return 4; // just leave as is, 'just works'
-    }
+    virtual int numInitStages (void) const { return 4; }
+
+    /**
+     * For self-messages it invokes handleTimer(); messages arriving from TCP
+     * will get dispatched to the socketXXX() functions.
+     */
+    virtual void handleMessage (cMessage *msg);
 
     /**
      * Records basic statistics: numSessions, packetsSent, packetsRcvd,
@@ -84,25 +87,22 @@ protected:
      */
     virtual void finish();
 
-    /**
-     * For self-messages it invokes handleTimer(); messages arriving from TCP
-     * will get dispatched to the appropriate socketXXX() functions.
-     */
-    virtual void handleMessage(cMessage *msg);
-    //@}
-
     /** @name Utility functions */
 
     //@{
+    /** Issues an active OPEN to the address/port given as module parameters */
+    virtual void connect (int i);
+
     /** Issues CLOSE command */
-    virtual void close(void);
+    virtual void close (void);
 
     /** Sends a response */
-    virtual void sendResponse(int connId);
+    virtual void sendResponse (int connId);
 
     /** When running under GUI, it displays the given string next to the icon */
-    virtual void setStatusString(const char *s);
+    virtual void setStatusString (const char *s);
     //@}
+
 
     /** @name TCPSocket::CallbackInterface callback methods */
 
@@ -114,8 +114,7 @@ protected:
      * Does nothing but update statistics/status. Redefine to perform or schedule next sending.
      * Beware: this function deletes the incoming message, which might not be what you want.
      */
-    virtual void socketDataArrived(int connId, void *yourPtr, cPacket *msg,
-            bool urgent);
+    virtual void socketDataArrived(int connId, void *yourPtr, cPacket *msg, bool urgent);
 
     /** Since remote TCP closed, invokes close(). Redefine if you want to do something else. */
     virtual void socketPeerClosed(int connId, void *yourPtr);
@@ -127,12 +126,11 @@ protected:
     virtual void socketFailure(int connId, void *yourPtr, int code);
 
     /** Redefine to handle incoming TCPStatusInfo. */
-    virtual void socketStatusArrived(int connId, void *yourPtr,
-            TCPStatusInfo *status) {
-        delete status;
-    }
+    virtual void socketStatusArrived(int connId, void *yourPtr, TCPStatusInfo *status) {delete status;}
     //@}
 
 };
 
-#endif /* Tracker_H_ */
+
+
+#endif /* _BITTORENT_TRACKER_APP_H_ */

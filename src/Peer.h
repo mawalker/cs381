@@ -1,16 +1,5 @@
-/*
- * Peer.h
- *
- *  Created on: Feb 1, 2014
- *      Author: Aniruddha Gokhale
- *      Class:  CS381
- *      Institution: Vanderbilt University
- */
-
-// An application logic for Client behavior. This code has been developed by
-// modifying the P2P sample
-#ifndef _CS381_PEER_H_
-#define _CS381_PEER_H_
+#ifndef _PEER_H_
+#define _PEER_H_
 
 #include <string>
 #include <vector>
@@ -19,64 +8,61 @@ using namespace std;
 #include "INETDefs.h"       // this contains imp definitions from the INET
 #include "TCPSocket.h"      // this is needed for sockets
 #include "TCPSocketMap.h"   // this is needed to maintain multiple connected
+// sockets from other peers
 #include "PeerToPeerMSG_m.h"
 #include "PeerToTrackerMsg_m.h"
-// sockets from other peers
-
 /**
- * This is our application class that demonstrates a CS capability.
+ * This is our application class that demonstrates a P2P capability.
  *
  * Each peer must have both the client and server capabilities.  Since we may be
  * connected to a number of peers while many peers may connect to us, we are going
  * to maintain a socket map for outgoing and incoming connections
  */
 class Peer: public cSimpleModule, public TCPSocket::CallbackInterface {
-    // note that the inheritance from the TCPSocket::CallbackInterface is needed to handle all socket-level events
+
 public:
+    /**
+     *  constructor
+     */
     Peer(void);
+
+    /**
+     * destructor
+     */
     virtual ~Peer(void);
 
 private:
-    // organizing the data members according to the parameters defined in the NED file and then
-    // any C++ data members
-    string myID_;            // my ID (used in debugging)
-    string server_;         // name of server
-    TCPSocketMap socketMap_; // map of sockets we maintain
+
+    TCPSocket *socket_;   // our main listening socket
+    TCPSocketMap socketMap_; // maps of sockets we maintain
 
     string localAddress_;    // our local address
     int localPort_;          // our local port we will listen on
 
-    int connectPort_;        // port of the server to connect to
-    int fileSize_;           // size of file to be transferred.
-    int numAttempts_;        // number of times to request the same file
-    TCPDataTransferMode dataTransferMode_; // indicates the approach used to transfer data
-    TCPSocket *socket_;      // our socket that talks to the server
+    int numPeers_;           // indicates how many peers we are to connect to
+    vector<string> connectAddresses_;  // address of our peers
+    int connectPort_;        // ports of the peer we connect to
+    int numberOfChunksInFile_;
+    string trackerAddress_;
 
-    bool startAsSeed_;
+    int numberOfConnectedPeers_;
 
-    int numPeers_;                       // # of peers total
-    vector<string> connectAddresses_;    // address of our peers
-    int numberOfChunksInFile_;           // # of chunks in file
-    string trackerAddress_;              // tracker address
+    int initialCountOfOwnedChunks_;
 
-    int numPeersConnected_;         // # of peers connected
+    cOutVector numberOfchunksToDownload;
 
-    int initialCountOfOwnedChunks_;      // how many chunks did I start with.
+    vector<int> ownedChunks_;
+    vector<int> chunksToDownloadVector_;
 
-    cOutVector numberOfchunksToDownload; // chunks left to download.
-
-    vector<int> ownedChunks_;            // chunks that I have
-    vector<int> chunksToDownload_; // chunks left to get
-
-    set<string> peers_;                  // set of all peers
-    map<string, vector<int> > peersToChunkMap_; // map of what peers have what chunks
+    set<string> peers_; // set of all peers
+    map<string, vector<int> > peers_to_chunk_;
 
     // need a map to decide which chunk to download when peer to peer conn is established
-    map<int, int> connToChunkMap_;
+    map<int, int> conn_to_chunk_;
 
-    vector<string> peersConnected_;   // list of peers connected to
+    vector<string> connectedPeers_;
 
-    TCPSocket *trackerSocket_;        // socket to tracker
+    TCPSocket *trackerSocket_;
 
     void insertChunkInOrder(int);
     void deleteChunkFromToDownloadList(int);
@@ -96,7 +82,7 @@ protected:
 
     /**
      * For self-messages it invokes handleTimer(); messages arriving from TCP
-     * will get dispatched to the appropriate socketXXX() functions.
+     * will get dispatched to the socketXXX() functions.
      */
     virtual void handleMessage(cMessage *msg);
 
@@ -114,7 +100,7 @@ protected:
 
     //@{
     /** Issues an active OPEN to the address/port given as module parameters */
-    virtual int connect (string peer);
+    virtual int connect(string peer);
 
     /** Issues CLOSE command */
     virtual void close(void);
@@ -125,13 +111,11 @@ protected:
     virtual void sendResponse(int connId, int chunk);
     virtual void connectAndDownloadChunks();
 
-    /** Handle the incoming response packet */
-    //   virtual void handleResponse(CS_Resp *response);
     /** When running under GUI, it displays the given string next to the icon */
     virtual void setStatusString(const char *s);
     //@}
 
-    /** @name overridden TCPSocket::CallbackInterface callback methods */
+    /** @name TCPSocket::CallbackInterface callback methods */
 
     //@{
     /** Does nothing but update statistics/status. Redefine to perform or schedule first sending. */
@@ -162,5 +146,4 @@ protected:
 
 };
 
-#endif /* _CS381_PEER_H_ */
-
+#endif /* Peer_H_ */

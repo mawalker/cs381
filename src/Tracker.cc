@@ -1,52 +1,80 @@
-//
-// This program is free software: you can redistribute it and/or modify
-// it under the terms of the GNU Lesser General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-// 
-// This program is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU Lesser General Public License for more details.
-// 
-// You should have received a copy of the GNU Lesser General Public License
-// along with this program.  If not, see http://www.gnu.org/licenses/.
-// 
+/*
+ * P2PApp.cc
+ *
+ *  Created on: Sep 22, 2012
+ *      Author: Aniruddha Gokhale
+ *      Class:  CS381
+ *      Institution: Vanderbilt University
+ */
 
-#include "PeerToTrackerMsg_m.h"    // generated header from the message file
-#include "Tracker.h"
+#include "Tracker.h"         // our header
+#include "PeerToPeerMSG_m.h"
+#include "PeerToTrackerMsg_m.h"
 
-#include "IPvXAddressResolver.h"     // manages both IPv4 and IPV6 address resolution
+#include "IPvXAddressResolver.h"
+
 Define_Module(Tracker)
 ;
 
 Tracker::Tracker(void) {
+    // nothing
 }
 
 Tracker::~Tracker() {
+    // nothing
 }
 
-// the initialize method. We initialize the parameter. Connection to the server is done after an event is triggered
+// the initialize method
 void Tracker::initialize(int stage) {
-
-    // Skip all but stage '3'
     cSimpleModule::initialize(stage);
-    if (stage != 3) {
+    if (stage != 3)
         return;
-    }
 
     // obtain the values of parameters
-
-    this->numSeedsInTorrent = 0;
-
     this->localAddress_ = this->par("localAddress").stringValue();
     this->localPort_ = this->par("localPort");
     this->connectPort_ = this->par("connectPort");
-    this->numPeersInSim_ = this->par("numPeersInSim");
+    this->numPeersInSim_ = this->par("numPeersInSim_");
 
-    map<string, vector<int> > mymap; // construct empty map
-    this->peers_to_chunk_map_ = mymap; // assign it to peers_to_chunk_map_
+    map<string, vector<int> > mymap;
+    this->peers_to_chunk_ = mymap;
+    /// chunknumber2 chunknumber5 chunknumber8 peer4 ; chunknumber22  chunk9 chunknumber5 chunknumber8 peer8;
 
+    const char *str = this->par("peers_to_chunk").stringValue();
+    cStringTokenizer tokenizer = cStringTokenizer(str);
+    tokenizer.setDelimiter(";");
+    vector<string> tokenisedVector = tokenizer.asVector();
+
+    this->numberOfSeeders.setName("number of seeders");
+
+    for (size_t i = 0; i < tokenisedVector.size(); i++) {
+        const char *str4 = tokenisedVector[i].c_str();
+        vector<string> tokenisedChunkVector = cStringTokenizer(str4).asVector();
+        string peername = tokenisedChunkVector.back();
+        tokenisedChunkVector.pop_back();
+        vector<int> chunkList;
+        for (size_t i = 0; i < tokenisedChunkVector.size(); i++) {
+            const char *str4 = tokenisedChunkVector[i].c_str();
+            std::stringstream s_str(str4);
+            int j;
+            s_str >> j;
+            insertChunkInOrder(chunkList, j);
+        }
+
+        this->peers_to_chunk_.insert(
+                pair<string, vector<int> >(peername, chunkList));
+    }
+
+    /*
+     // here is a way to read a parameter array (see user manual section 4.5.4)
+     const char *str2 = this->par ("connectAddresses").stringValue ();
+     this->connectAddresses_ = cStringTokenizer (str2).asVector();*/
+
+    // indicate what type of data transfer is going to be supported by our socket
+    // there are three choices supported in INET. For now we choose BYTECOUNT, i.e.,
+    // the underlying system will emulate the sending of that many bytes. We
+    // are not concerned with the actual content. But if we really wanted to do it
+    // that way, then we will do BYTESTREAM
     string dataTransferMode = this->par("dataTransferMode").stringValue();
 
     // create a new socket for the listening role
@@ -91,25 +119,47 @@ void Tracker::initialize(int stage) {
     this->socketMap_.addSocket(this->socket_);
 
     setStatusString("waiting");
-
 }
 
-/** This is the all-encompassing event handling function. It is our responsibility to
- *  figure out what to do with every event, which is appln-specific */
+/** the all serving handle message method */
 void Tracker::handleMessage(cMessage *msg) {
+    EV<< "=== Tracker: " << this->localAddress_
+    << " received handleMessage message" << endl;
 
-    if (msg->isSelfMessage()) {
-        EV<< "Error There is no self message sent" << endl;
-    }
+    // check if this was a self generated message, such as a timeout to wake us up to
+    // connect to a peer
+    // no need for this one in tracker
+    if (msg->isSelfMessage())
+    EV << "Error There is no self message sent" << endl;
     else {
-
+        // let the socket class process the message and make a call back on the
+        // appropriate method. But note that we need to determine which socket must
+        // handle this message: it could be connection establishment in our passive role
+        // or it could be ack to our active conn establishment or it could be a data packet
         TCPSocket *socket = this->socketMap_.findSocketFor(msg);
         if (!socket) {
+            // we are going to be here if we are a passive listener of incoming connection
+            // at which point a connection will be established. But there will not be a
+            // socket created yet for the data transfer. We create such a socket.
+
+            // make sure first that we are dealing with a TCP command
             TCPCommand *cmd = dynamic_cast<TCPCommand *>(msg->getControlInfo());
             if (!cmd) {
                 throw cRuntimeError(
-                        "TrackerApp::handleMessage: no TCPCommand control info in message (not from TCP?)");
+                        "Tracker::handleMessage: no TCPCommand control info in message (not from TCP?)");
             } else {
+                EV << "=== Tracker: " << this->localAddress_
+                << " **No socket yet ** ===" << endl;
+
+                int connId = cmd->getConnId();
+                // debugging
+                EV << "+++ Tracker: " << this->localAddress_
+                << " creating a new socket with " << "connection ID = "
+                << connId << " ===" << endl;
+
+                // notice that we must use the other constructor of TCPSocket so that it
+                // will use the underlying connID that was created after an incoming
+                // connection establishment message
                 TCPSocket *new_socket = new TCPSocket(msg);
 
                 // register ourselves as the callback object
@@ -118,11 +168,6 @@ void Tracker::handleMessage(cMessage *msg) {
 
                 // do not forget to set the outgoing gate
                 new_socket->setOutputGate(gate("tcpOut"));
-
-                // for the sake of correctness, we make sure the socket exists
-                if (!this->socket_) {  // no socket. How did we come here?
-                    throw cRuntimeError("ClientApp::handleMessage: no connection yet to server");
-                }
 
                 // another thing I learned the hard way is that we must set up the data trasnfer
                 // mode for this new socket
@@ -139,13 +184,36 @@ void Tracker::handleMessage(cMessage *msg) {
             // let that socket process the message
             socket->processMessage(msg);
         }
-
     }
 }
 
-        /** handle incoming data. Could be a request or response */
-void Tracker::socketDataArrived(int connID, void *, cPacket *msg, bool) {
+    /** this method is provided to clean things up when the simulation stops */
+void Tracker::finish() {
+    EV<< "=== finish called" << endl;
 
+    // cleanup all the sockets
+    this->socketMap_.deleteSockets();
+
+    std::string modulePath = getFullPath();
+}
+
+    /*************************************************/
+    /** implement all the callback interface methods */
+    /*************************************************/
+
+void Tracker::socketEstablished(int connID, void *role) {
+    EV<< "=== Tracker: " << this->localAddress_
+    << " received socketEstablished message on connID " << connID
+    << " ===" << endl;
+
+    setStatusString("ConnectionEstablished");
+
+    // tracker is passive, dont need to do anything
+
+}
+
+    /** handle incoming data. Could be a request or response */
+void Tracker::socketDataArrived(int connID, void *, cPacket *msg, bool) {
     EV<< "=== Peer: " << this->localAddress_
     << " received socketDataArrived message. ===" << endl;
 
@@ -157,7 +225,6 @@ void Tracker::socketDataArrived(int connID, void *, cPacket *msg, bool) {
 
     switch ((P2T_MSG_TYPE) packet->getType()) {
         case P2T_REFRESH_MESSAGE:
-        // TODO do anything here or just pass through? to re-register
         case P2T_REGISTRATION_REQUEST: {
             Ownership_Message *req = dynamic_cast<Ownership_Message *>(msg);
             if (!req) {
@@ -178,12 +245,12 @@ void Tracker::socketDataArrived(int connID, void *, cPacket *msg, bool) {
 
                 // remove the element if existing
                 map<string, vector<int> >::iterator it;
-                it = this->peers_to_chunk_map_.find(requestorId);
-                if (it != this->peers_to_chunk_map_.end())
-                this->peers_to_chunk_map_.erase(it);
+                it = this->peers_to_chunk_.find(requestorId);
+                if (it != this->peers_to_chunk_.end())
+                this->peers_to_chunk_.erase(it);
 
                 // add this key-value pair to the map
-                this->peers_to_chunk_map_.insert(
+                this->peers_to_chunk_.insert(
                         pair<string, vector<int> >(requestorId, chunkList));
 
                 // add peer to peer list
@@ -192,11 +259,8 @@ void Tracker::socketDataArrived(int connID, void *, cPacket *msg, bool) {
                 // now send a response
                 this->sendResponse(connID);
             }
-
         }
-        /*
-         * Catch when the Peer has all chunks, to end the simulation when they all have
-         */
+        break;
         case P2T_DOWNLOAD_COMPLETE: {
 
             P2T_DOWNLOAD_COMPLETE_Msg *req = dynamic_cast<P2T_DOWNLOAD_COMPLETE_Msg *>(msg);
@@ -204,14 +268,16 @@ void Tracker::socketDataArrived(int connID, void *, cPacket *msg, bool) {
                 EV << "Arriving packet is not of type P2T_DOWNLOAD_COMPLETE_Msg" << endl;
             } else {
 
-                this->numSeedsInTorrent++;
+                this->numSeedsInTorrent_++;
+                this->numberOfSeeders.record(numSeedsInTorrent_);
 
-                if (this->numSeedsInTorrent >= this->numPeersInSim_) {
+                if (this->numSeedsInTorrent_ >= this->numPeersInSim_) {
                     endSimulation();
                 }
 
             }
         }
+        break;
         default:
         EV << ">>> unknown incoming request type <<< " << endl;
         break;
@@ -221,8 +287,84 @@ void Tracker::socketDataArrived(int connID, void *, cPacket *msg, bool) {
     delete msg;
 }
 
+void Tracker::socketPeerClosed(int connID, void *) {
+    EV<< "=== Peer: " << this->localAddress_
+    << " received socketPeerClosed message" << endl;
+    EV << "peer closed for connID = " << connID << endl;
+
+}
+
+void Tracker::socketClosed(int, void *) {
+    EV<< "=== Peer: " << this->localAddress_
+    << " received socketClosed message" << endl;
+    // *redefine* to start another session etc.
+    EV << "connection closed\n";
+    setStatusString("closed");
+}
+
+void Tracker::socketFailure(int, void *, int code) {
+    EV<< "=== Peer: " << this->localAddress_
+    << " received socketFailure message" << endl;
+    // subclasses may override this function, and add code try to reconnect after a delay.
+    EV << "connection broken\n";
+    setStatusString("broken");
+
+}
+
+    /**********************************************************************/
+    /**           helper methods                                          */
+    /**********************************************************************/
+
+// connect to peer i
+void Tracker::connect(int i) {
+    EV<< "=== Peer: " << this->localAddress_ << " received connect message"
+    << endl;
+    EV << "issuing connect command\n";
+    setStatusString("connecting");
+
+    // we allocate a socket to be used for actively connecting to the peer and
+    // transferring data over it.
+    TCPSocket *new_socket = new TCPSocket();
+
+    // don't forget to set the output gate for this socket. I learned it the
+    // hard way :-(
+    new_socket->setOutputGate(gate("tcpOut"));
+
+    // another thing I learned the hard way is that we must set up the data transfer
+    // mode for this new socket
+    new_socket->setDataTransferMode(this->socket_->getDataTransferMode());
+
+    // issue a connect request
+    new_socket->connect(
+            IPvXAddressResolver().resolve(this->connectAddresses_[i].c_str()),
+            this->connectPort_);
+
+    // do not forget to set ourselves as the callback on this new socket
+    bool *passive = new bool(false);
+    new_socket->setCallbackObject(this, passive);
+
+    // debugging
+    EV << "+++ Peer: " << this->localAddress_ << " created a new socket with "
+    << "connection ID = " << new_socket->getConnectionId() << " ==="
+    << endl;
+
+    // save this socket in our outgoing connection map
+    this->socketMap_.addSocket(new_socket);
+}
+
+// close the peer side
+void Tracker::close() {
+    EV<< "=== Peer: " << this->localAddress_ << " received close () message"
+    << endl;
+    EV << "issuing CLOSE command\n";
+
+    setStatusString("closing");
+
+    this->socket_->close();
+}
+
 // send a response
-void Tracker::sendResponse(int connId) { // const char *id, unsigned long size) {
+void Tracker::sendResponse(int connId) {
     EV<< "=== Peer: " << this->localAddress_ << " sendResponse. " << endl;
 
     // this is a hack because the TCPSocketMap does not allow us to search based on
@@ -251,14 +393,14 @@ void Tracker::sendResponse(int connId) { // const char *id, unsigned long size) 
         }
 
         // number of peer info whic tracker has
-        resp->setPeer_to_chunk_ownershipArraySize(this->peers_to_chunk_map_.size());
+        resp->setPeer_to_chunk_ownershipArraySize(this->peers_to_chunk_.size());
 
         // iterator for peer and chunk map
         map<string, vector<int> >::iterator it;
 
         int k = 0;
-        for (it = this->peers_to_chunk_map_.begin();
-                it != this->peers_to_chunk_map_.end(); ++it) {
+        for (it = this->peers_to_chunk_.begin();
+                it != this->peers_to_chunk_.end(); ++it) {
             Ownership_Message *respOwnership = new Ownership_Message();
             // set id for ownership message
             respOwnership->setId((*it).first.c_str());
@@ -282,48 +424,35 @@ void Tracker::sendResponse(int connId) { // const char *id, unsigned long size) 
     delete temp_msg;
 }
 
-void Tracker::close(void) {
-    EV<< "=== Peer: " << this->localAddress_ << " received close () message"
-    << endl;
-    this->socket_->close();
-}
+void Tracker::insertChunkInOrder(vector<int> &chunkList, int chunkValue) {
 
-void Tracker::finish() {
-    // cleanup all the sockets
-    this->socketMap_.deleteSockets();
-}
-
-// this method is used to flash messages during animation where we can see bubbles on the screen.
-void Tracker::setStatusString(const char *s) {
-    if (ev.isGUI ()) {
-        getDisplayString ().setTagArg ("t", 0, s);
-        bubble (s);
+    if (chunkList.empty()) {
+        chunkList.push_back(chunkValue);
+        return;
     }
+
+    int chunkInsertionNumber = 0;
+    bool found = false;
+    for (size_t i = 0; i < chunkList.size(); i++) {
+        if (chunkList[i] > chunkValue) {
+            chunkInsertionNumber = i;
+            found = true;
+            break;
+        } else if (chunkList[i] == chunkValue)
+            // already have this chunk, ignore
+            return;
+    }
+
+    if (!found)
+        chunkInsertionNumber = chunkList.size();
+
+    chunkList.insert(chunkList.begin() + chunkInsertionNumber, chunkValue);
 }
 
-void Tracker::socketFailure(int connId, void *yourPtr, int code) {
-    EV<< "*** Tracker: " << this->localAddress_
-    << " received socketFailure message" << " from " << connId << endl;
-}
-
-    /** Called when the peer sends a connection established msg */
-void Tracker::socketEstablished(int connID, void *role) {
-    // is passive, shouldn't have to do anything
-    EV<< "*** Tracker: " << this->localAddress_
-    << " received socketEstablished message" << " from " << connID << endl;
-}
-
-    /** Called when the peer sends a connection closed msg */
-void Tracker::socketClosed(int connId, void *yourPtr) {
-    // this shouldn't happen in our simulation
-    EV<< "*** Tracker: " << this->localAddress_
-    << " received socketPeerClosed message" << " from " << connId << endl;
-}
-
-    /** Called when the peer sends a connection closed msg */
-void Tracker::socketPeerClosed(int connID, void *) {
-    // this shouldn't happen in our simulation
-    EV<< "*** Tracker: " << this->localAddress_
-    << " received socketPeerClosed message" << " from " << connID << endl;
+void Tracker::setStatusString(const char *s) {
+    if (ev.isGUI()) {
+        getDisplayString().setTagArg("t", 0, s);
+        bubble(s);
+    }
 }
 

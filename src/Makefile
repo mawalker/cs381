@@ -175,6 +175,7 @@ $O/PeerToPeerMSG_m.o: PeerToPeerMSG_m.cc \
 $O/PeerToTrackerMsg_m.o: PeerToTrackerMsg_m.cc \
 	PeerToTrackerMsg_m.h
 $O/Tracker.o: Tracker.cc \
+	PeerToPeerMSG_m.h \
 	PeerToTrackerMsg_m.h \
 	Tracker.h \
 	$(INET_PROJ)/src/base/INETDefs.h \
