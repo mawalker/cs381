@@ -41,6 +41,7 @@ private:
     // any C++ data members
     string myID_;            // my ID (used in debugging)
     string server_;         // name of server
+    TCPSocketMap socketMap_; // map of sockets we maintain
 
     string localAddress_;    // our local address
     int localPort_;          // our local port we will listen on
@@ -58,22 +59,22 @@ private:
     int numberOfChunksInFile_;           // # of chunks in file
     string trackerAddress_;              // tracker address
 
-    int numberOfConnectedPeers_;         // # of peers connected
+    int numPeersConnected_;         // # of peers connected
 
     int initialCountOfOwnedChunks_;      // how many chunks did I start with.
 
     cOutVector numberOfchunksToDownload; // chunks left to download.
 
     vector<int> ownedChunks_;            // chunks that I have
-    vector<int> chunksToDownloadVector_; // chunks left to get
+    vector<int> chunksToDownload_; // chunks left to get
 
     set<string> peers_;                  // set of all peers
-    map<string, vector<int> > peers_to_chunk_; // map of what peers have what chunks
+    map<string, vector<int> > peersToChunkMap_; // map of what peers have what chunks
 
     // need a map to decide which chunk to download when peer to peer conn is established
-    map<int, int> conn_to_chunk_;
+    map<int, int> connToChunkMap_;
 
-    vector<string> connectedPeers_;   // list of peers connected to
+    vector<string> peersConnected_;   // list of peers connected to
 
     TCPSocket *trackerSocket_;        // socket to tracker
 
@@ -113,7 +114,7 @@ protected:
 
     //@{
     /** Issues an active OPEN to the address/port given as module parameters */
-    virtual void connect();
+    virtual int connect (string peer);
 
     /** Issues CLOSE command */
     virtual void close(void);

@@ -17,8 +17,7 @@ enum P2T_MSG_TYPE {
     P2T_REGISTRATION_REQUEST = 0;
     P2T_REFRESH_MESSAGE = 1;    
     T2P_MEMBERSHIP_RESPONSE = 2;
-    P2T_LEAVE_MESSAGE = 3;
-    PTT_DOWNLOAD_COMPLETE = 4;
+    P2T_DOWNLOAD_COMPLETE = 3;
 };
 
 
@@ -35,22 +34,14 @@ packet Ownership_Message extends P2T_Packet
     int owned_chunks[];		// list of downloaded chunks 
 };
 
-
-// request to fetch the list of peers
-//packet P2T_PEERGROUPINFO_Req extends P2T_Packet
-//{
-//    string	id;		        // announce the requestor's ID
-//};
-
-
 // response containing multiple message of the format same as owned chunk
 packet T2P_MEMBERSHIP_Res extends P2T_Packet{
     string ids[];   
     Ownership_Message peer_to_chunk_ownership[];
 };
 
-// announced before leaving peer group
-packet P2T_LEAVE_Msg extends P2T_Packet
+// called when peer downloads everything
+packet P2T_DOWNLOAD_COMPLETE_Msg extends P2T_Packet
 {
-    string	id;		        // announce the requestor's ID
+    string	id;		        // Id of requestor
 };

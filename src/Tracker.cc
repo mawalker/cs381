@@ -131,7 +131,7 @@ void Tracker::socketFailure(int connId, void *yourPtr, int code) {
 void Tracker::socketEstablished(int connID, void *role) {
     // is passive, shouldn't have to do anything
     EV<< "*** Tracker: " << this->localAddress_
-    << " received socketEstablished message" << " from " << connId << endl;
+    << " received socketEstablished message" << " from " << connID << endl;
 }
 
     /** Called when the peer sends a connection closed msg */
@@ -145,6 +145,6 @@ void Tracker::socketClosed(int connId, void *yourPtr) {
 void Tracker::socketPeerClosed(int connID, void *) {
     // this shouldn't happen in our simulation
     EV<< "*** Tracker: " << this->localAddress_
-    << " received socketPeerClosed message" << " from " << connId << endl;
+    << " received socketPeerClosed message" << " from " << connID << endl;
 }
 

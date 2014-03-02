@@ -22,8 +22,7 @@
  *     P2T_REGISTRATION_REQUEST = 0;
  *     P2T_REFRESH_MESSAGE = 1;    
  *     T2P_MEMBERSHIP_RESPONSE = 2;
- *     P2T_LEAVE_MESSAGE = 3;
- *     PTT_DOWNLOAD_COMPLETE = 4;
+ *     P2T_DOWNLOAD_COMPLETE = 3;
  * };
  * </pre>
  */
@@ -31,8 +30,7 @@ enum P2T_MSG_TYPE {
     P2T_REGISTRATION_REQUEST = 0,
     P2T_REFRESH_MESSAGE = 1,
     T2P_MEMBERSHIP_RESPONSE = 2,
-    P2T_LEAVE_MESSAGE = 3,
-    PTT_DOWNLOAD_COMPLETE = 4
+    P2T_DOWNLOAD_COMPLETE = 3
 };
 
 /**
@@ -169,30 +167,30 @@ inline void doUnpacking(cCommBuffer *b, T2P_MEMBERSHIP_Res& obj) {obj.parsimUnpa
 /**
  * Class generated from <tt>PeerToTrackerMsg.msg</tt> by opp_msgc.
  * <pre>
- * packet P2T_LEAVE_Msg extends P2T_Packet
+ * packet P2T_DOWNLOAD_COMPLETE_Msg extends P2T_Packet
  * {
  *     string	id;		        
  * };
  * </pre>
  */
-class P2T_LEAVE_Msg : public ::P2T_Packet
+class P2T_DOWNLOAD_COMPLETE_Msg : public ::P2T_Packet
 {
   protected:
     opp_string id_var;
 
   private:
-    void copy(const P2T_LEAVE_Msg& other);
+    void copy(const P2T_DOWNLOAD_COMPLETE_Msg& other);
 
   protected:
     // protected and unimplemented operator==(), to prevent accidental usage
-    bool operator==(const P2T_LEAVE_Msg&);
+    bool operator==(const P2T_DOWNLOAD_COMPLETE_Msg&);
 
   public:
-    P2T_LEAVE_Msg(const char *name=NULL, int kind=0);
-    P2T_LEAVE_Msg(const P2T_LEAVE_Msg& other);
-    virtual ~P2T_LEAVE_Msg();
-    P2T_LEAVE_Msg& operator=(const P2T_LEAVE_Msg& other);
-    virtual P2T_LEAVE_Msg *dup() const {return new P2T_LEAVE_Msg(*this);}
+    P2T_DOWNLOAD_COMPLETE_Msg(const char *name=NULL, int kind=0);
+    P2T_DOWNLOAD_COMPLETE_Msg(const P2T_DOWNLOAD_COMPLETE_Msg& other);
+    virtual ~P2T_DOWNLOAD_COMPLETE_Msg();
+    P2T_DOWNLOAD_COMPLETE_Msg& operator=(const P2T_DOWNLOAD_COMPLETE_Msg& other);
+    virtual P2T_DOWNLOAD_COMPLETE_Msg *dup() const {return new P2T_DOWNLOAD_COMPLETE_Msg(*this);}
     virtual void parsimPack(cCommBuffer *b);
     virtual void parsimUnpack(cCommBuffer *b);
 
@@ -201,8 +199,8 @@ class P2T_LEAVE_Msg : public ::P2T_Packet
     virtual void setId(const char * id);
 };
 
-inline void doPacking(cCommBuffer *b, P2T_LEAVE_Msg& obj) {obj.parsimPack(b);}
-inline void doUnpacking(cCommBuffer *b, P2T_LEAVE_Msg& obj) {obj.parsimUnpack(b);}
+inline void doPacking(cCommBuffer *b, P2T_DOWNLOAD_COMPLETE_Msg& obj) {obj.parsimPack(b);}
+inline void doUnpacking(cCommBuffer *b, P2T_DOWNLOAD_COMPLETE_Msg& obj) {obj.parsimUnpack(b);}
 
 
 #endif // _PEERTOTRACKERMSG_M_H_

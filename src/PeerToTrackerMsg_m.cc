@@ -36,8 +36,7 @@ EXECUTE_ON_STARTUP(
     e->insert(P2T_REGISTRATION_REQUEST, "P2T_REGISTRATION_REQUEST");
     e->insert(P2T_REFRESH_MESSAGE, "P2T_REFRESH_MESSAGE");
     e->insert(T2P_MEMBERSHIP_RESPONSE, "T2P_MEMBERSHIP_RESPONSE");
-    e->insert(P2T_LEAVE_MESSAGE, "P2T_LEAVE_MESSAGE");
-    e->insert(PTT_DOWNLOAD_COMPLETE, "PTT_DOWNLOAD_COMPLETE");
+    e->insert(P2T_DOWNLOAD_COMPLETE, "P2T_DOWNLOAD_COMPLETE");
 );
 
 Register_Class(P2T_Packet);
@@ -910,23 +909,23 @@ void *T2P_MEMBERSHIP_ResDescriptor::getFieldStructPointer(void *object, int fiel
     }
 }
 
-Register_Class(P2T_LEAVE_Msg);
+Register_Class(P2T_DOWNLOAD_COMPLETE_Msg);
 
-P2T_LEAVE_Msg::P2T_LEAVE_Msg(const char *name, int kind) : P2T_Packet(name,kind)
+P2T_DOWNLOAD_COMPLETE_Msg::P2T_DOWNLOAD_COMPLETE_Msg(const char *name, int kind) : P2T_Packet(name,kind)
 {
     this->id_var = 0;
 }
 
-P2T_LEAVE_Msg::P2T_LEAVE_Msg(const P2T_LEAVE_Msg& other) : P2T_Packet(other)
+P2T_DOWNLOAD_COMPLETE_Msg::P2T_DOWNLOAD_COMPLETE_Msg(const P2T_DOWNLOAD_COMPLETE_Msg& other) : P2T_Packet(other)
 {
     copy(other);
 }
 
-P2T_LEAVE_Msg::~P2T_LEAVE_Msg()
+P2T_DOWNLOAD_COMPLETE_Msg::~P2T_DOWNLOAD_COMPLETE_Msg()
 {
 }
 
-P2T_LEAVE_Msg& P2T_LEAVE_Msg::operator=(const P2T_LEAVE_Msg& other)
+P2T_DOWNLOAD_COMPLETE_Msg& P2T_DOWNLOAD_COMPLETE_Msg::operator=(const P2T_DOWNLOAD_COMPLETE_Msg& other)
 {
     if (this==&other) return *this;
     P2T_Packet::operator=(other);
@@ -934,38 +933,38 @@ P2T_LEAVE_Msg& P2T_LEAVE_Msg::operator=(const P2T_LEAVE_Msg& other)
     return *this;
 }
 
-void P2T_LEAVE_Msg::copy(const P2T_LEAVE_Msg& other)
+void P2T_DOWNLOAD_COMPLETE_Msg::copy(const P2T_DOWNLOAD_COMPLETE_Msg& other)
 {
     this->id_var = other.id_var;
 }
 
-void P2T_LEAVE_Msg::parsimPack(cCommBuffer *b)
+void P2T_DOWNLOAD_COMPLETE_Msg::parsimPack(cCommBuffer *b)
 {
     P2T_Packet::parsimPack(b);
     doPacking(b,this->id_var);
 }
 
-void P2T_LEAVE_Msg::parsimUnpack(cCommBuffer *b)
+void P2T_DOWNLOAD_COMPLETE_Msg::parsimUnpack(cCommBuffer *b)
 {
     P2T_Packet::parsimUnpack(b);
     doUnpacking(b,this->id_var);
 }
 
-const char * P2T_LEAVE_Msg::getId() const
+const char * P2T_DOWNLOAD_COMPLETE_Msg::getId() const
 {
     return id_var.c_str();
 }
 
-void P2T_LEAVE_Msg::setId(const char * id)
+void P2T_DOWNLOAD_COMPLETE_Msg::setId(const char * id)
 {
     this->id_var = id;
 }
 
-class P2T_LEAVE_MsgDescriptor : public cClassDescriptor
+class P2T_DOWNLOAD_COMPLETE_MsgDescriptor : public cClassDescriptor
 {
   public:
-    P2T_LEAVE_MsgDescriptor();
-    virtual ~P2T_LEAVE_MsgDescriptor();
+    P2T_DOWNLOAD_COMPLETE_MsgDescriptor();
+    virtual ~P2T_DOWNLOAD_COMPLETE_MsgDescriptor();
 
     virtual bool doesSupport(cObject *obj) const;
     virtual const char *getProperty(const char *propertyname) const;
@@ -984,34 +983,34 @@ class P2T_LEAVE_MsgDescriptor : public cClassDescriptor
     virtual void *getFieldStructPointer(void *object, int field, int i) const;
 };
 
-Register_ClassDescriptor(P2T_LEAVE_MsgDescriptor);
+Register_ClassDescriptor(P2T_DOWNLOAD_COMPLETE_MsgDescriptor);
 
-P2T_LEAVE_MsgDescriptor::P2T_LEAVE_MsgDescriptor() : cClassDescriptor("P2T_LEAVE_Msg", "P2T_Packet")
+P2T_DOWNLOAD_COMPLETE_MsgDescriptor::P2T_DOWNLOAD_COMPLETE_MsgDescriptor() : cClassDescriptor("P2T_DOWNLOAD_COMPLETE_Msg", "P2T_Packet")
 {
 }
 
-P2T_LEAVE_MsgDescriptor::~P2T_LEAVE_MsgDescriptor()
+P2T_DOWNLOAD_COMPLETE_MsgDescriptor::~P2T_DOWNLOAD_COMPLETE_MsgDescriptor()
 {
 }
 
-bool P2T_LEAVE_MsgDescriptor::doesSupport(cObject *obj) const
+bool P2T_DOWNLOAD_COMPLETE_MsgDescriptor::doesSupport(cObject *obj) const
 {
-    return dynamic_cast<P2T_LEAVE_Msg *>(obj)!=NULL;
+    return dynamic_cast<P2T_DOWNLOAD_COMPLETE_Msg *>(obj)!=NULL;
 }
 
-const char *P2T_LEAVE_MsgDescriptor::getProperty(const char *propertyname) const
+const char *P2T_DOWNLOAD_COMPLETE_MsgDescriptor::getProperty(const char *propertyname) const
 {
     cClassDescriptor *basedesc = getBaseClassDescriptor();
     return basedesc ? basedesc->getProperty(propertyname) : NULL;
 }
 
-int P2T_LEAVE_MsgDescriptor::getFieldCount(void *object) const
+int P2T_DOWNLOAD_COMPLETE_MsgDescriptor::getFieldCount(void *object) const
 {
     cClassDescriptor *basedesc = getBaseClassDescriptor();
     return basedesc ? 1+basedesc->getFieldCount(object) : 1;
 }
 
-unsigned int P2T_LEAVE_MsgDescriptor::getFieldTypeFlags(void *object, int field) const
+unsigned int P2T_DOWNLOAD_COMPLETE_MsgDescriptor::getFieldTypeFlags(void *object, int field) const
 {
     cClassDescriptor *basedesc = getBaseClassDescriptor();
     if (basedesc) {
@@ -1025,7 +1024,7 @@ unsigned int P2T_LEAVE_MsgDescriptor::getFieldTypeFlags(void *object, int field)
     return (field>=0 && field<1) ? fieldTypeFlags[field] : 0;
 }
 
-const char *P2T_LEAVE_MsgDescriptor::getFieldName(void *object, int field) const
+const char *P2T_DOWNLOAD_COMPLETE_MsgDescriptor::getFieldName(void *object, int field) const
 {
     cClassDescriptor *basedesc = getBaseClassDescriptor();
     if (basedesc) {
@@ -1039,7 +1038,7 @@ const char *P2T_LEAVE_MsgDescriptor::getFieldName(void *object, int field) const
     return (field>=0 && field<1) ? fieldNames[field] : NULL;
 }
 
-int P2T_LEAVE_MsgDescriptor::findField(void *object, const char *fieldName) const
+int P2T_DOWNLOAD_COMPLETE_MsgDescriptor::findField(void *object, const char *fieldName) const
 {
     cClassDescriptor *basedesc = getBaseClassDescriptor();
     int base = basedesc ? basedesc->getFieldCount(object) : 0;
@@ -1047,7 +1046,7 @@ int P2T_LEAVE_MsgDescriptor::findField(void *object, const char *fieldName) cons
     return basedesc ? basedesc->findField(object, fieldName) : -1;
 }
 
-const char *P2T_LEAVE_MsgDescriptor::getFieldTypeString(void *object, int field) const
+const char *P2T_DOWNLOAD_COMPLETE_MsgDescriptor::getFieldTypeString(void *object, int field) const
 {
     cClassDescriptor *basedesc = getBaseClassDescriptor();
     if (basedesc) {
@@ -1061,7 +1060,7 @@ const char *P2T_LEAVE_MsgDescriptor::getFieldTypeString(void *object, int field)
     return (field>=0 && field<1) ? fieldTypeStrings[field] : NULL;
 }
 
-const char *P2T_LEAVE_MsgDescriptor::getFieldProperty(void *object, int field, const char *propertyname) const
+const char *P2T_DOWNLOAD_COMPLETE_MsgDescriptor::getFieldProperty(void *object, int field, const char *propertyname) const
 {
     cClassDescriptor *basedesc = getBaseClassDescriptor();
     if (basedesc) {
@@ -1074,7 +1073,7 @@ const char *P2T_LEAVE_MsgDescriptor::getFieldProperty(void *object, int field, c
     }
 }
 
-int P2T_LEAVE_MsgDescriptor::getArraySize(void *object, int field) const
+int P2T_DOWNLOAD_COMPLETE_MsgDescriptor::getArraySize(void *object, int field) const
 {
     cClassDescriptor *basedesc = getBaseClassDescriptor();
     if (basedesc) {
@@ -1082,13 +1081,13 @@ int P2T_LEAVE_MsgDescriptor::getArraySize(void *object, int field) const
             return basedesc->getArraySize(object, field);
         field -= basedesc->getFieldCount(object);
     }
-    P2T_LEAVE_Msg *pp = (P2T_LEAVE_Msg *)object; (void)pp;
+    P2T_DOWNLOAD_COMPLETE_Msg *pp = (P2T_DOWNLOAD_COMPLETE_Msg *)object; (void)pp;
     switch (field) {
         default: return 0;
     }
 }
 
-std::string P2T_LEAVE_MsgDescriptor::getFieldAsString(void *object, int field, int i) const
+std::string P2T_DOWNLOAD_COMPLETE_MsgDescriptor::getFieldAsString(void *object, int field, int i) const
 {
     cClassDescriptor *basedesc = getBaseClassDescriptor();
     if (basedesc) {
@@ -1096,14 +1095,14 @@ std::string P2T_LEAVE_MsgDescriptor::getFieldAsString(void *object, int field, i
             return basedesc->getFieldAsString(object,field,i);
         field -= basedesc->getFieldCount(object);
     }
-    P2T_LEAVE_Msg *pp = (P2T_LEAVE_Msg *)object; (void)pp;
+    P2T_DOWNLOAD_COMPLETE_Msg *pp = (P2T_DOWNLOAD_COMPLETE_Msg *)object; (void)pp;
     switch (field) {
         case 0: return oppstring2string(pp->getId());
         default: return "";
     }
 }
 
-bool P2T_LEAVE_MsgDescriptor::setFieldAsString(void *object, int field, int i, const char *value) const
+bool P2T_DOWNLOAD_COMPLETE_MsgDescriptor::setFieldAsString(void *object, int field, int i, const char *value) const
 {
     cClassDescriptor *basedesc = getBaseClassDescriptor();
     if (basedesc) {
@@ -1111,14 +1110,14 @@ bool P2T_LEAVE_MsgDescriptor::setFieldAsString(void *object, int field, int i, c
             return basedesc->setFieldAsString(object,field,i,value);
         field -= basedesc->getFieldCount(object);
     }
-    P2T_LEAVE_Msg *pp = (P2T_LEAVE_Msg *)object; (void)pp;
+    P2T_DOWNLOAD_COMPLETE_Msg *pp = (P2T_DOWNLOAD_COMPLETE_Msg *)object; (void)pp;
     switch (field) {
         case 0: pp->setId((value)); return true;
         default: return false;
     }
 }
 
-const char *P2T_LEAVE_MsgDescriptor::getFieldStructName(void *object, int field) const
+const char *P2T_DOWNLOAD_COMPLETE_MsgDescriptor::getFieldStructName(void *object, int field) const
 {
     cClassDescriptor *basedesc = getBaseClassDescriptor();
     if (basedesc) {
@@ -1132,7 +1131,7 @@ const char *P2T_LEAVE_MsgDescriptor::getFieldStructName(void *object, int field)
     return (field>=0 && field<1) ? fieldStructNames[field] : NULL;
 }
 
-void *P2T_LEAVE_MsgDescriptor::getFieldStructPointer(void *object, int field, int i) const
+void *P2T_DOWNLOAD_COMPLETE_MsgDescriptor::getFieldStructPointer(void *object, int field, int i) const
 {
     cClassDescriptor *basedesc = getBaseClassDescriptor();
     if (basedesc) {
@@ -1140,7 +1139,7 @@ void *P2T_LEAVE_MsgDescriptor::getFieldStructPointer(void *object, int field, in
             return basedesc->getFieldStructPointer(object, field, i);
         field -= basedesc->getFieldCount(object);
     }
-    P2T_LEAVE_Msg *pp = (P2T_LEAVE_Msg *)object; (void)pp;
+    P2T_DOWNLOAD_COMPLETE_Msg *pp = (P2T_DOWNLOAD_COMPLETE_Msg *)object; (void)pp;
     switch (field) {
         default: return NULL;
     }
