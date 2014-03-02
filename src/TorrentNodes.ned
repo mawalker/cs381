@@ -23,7 +23,7 @@
 // in the INET framework
 
 
-package CS381_ClientServer;
+package CS381_Torrent_HW2;
 
 // we want our application to support the TCPApp interface
 import inet.applications.ITCPApp;
