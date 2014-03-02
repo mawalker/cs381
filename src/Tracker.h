@@ -50,6 +50,8 @@ private:
 
     int numPeers_;           // indicates how many peers we are to connected to
     int numPeersInSim_;     // indicates the number of peers in the whole sim.
+    int numSeedsInTorrent;
+
     vector<string> connectAddresses_;  // address of our peers
     int connectPort_;        // ports of the peer we connect to
 

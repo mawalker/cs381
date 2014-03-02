@@ -28,59 +28,67 @@ import inet.networklayer.autorouting.ipv4.IPv4NetworkConfigurator;
 // this is a modified flat network taken from inet examples
 network P2PFlatNet
 {
+    parameters:
+        int numPeersInSim = default(2);
+
     types:
         channel fiberline extends DatarateChannel
         {
             delay = 1us;
             datarate = 512Mbps;
         }
-        
+
         channel ethernetline extends DatarateChannel
         {
             delay = 0.1us;
             datarate = 10Mbps;
         }
-        
+
     submodules:
         // this one configures the IPv4 network
         configurator: IPv4NetworkConfigurator {
             parameters:
-                config=xml("<config><interface hosts='*' address='192.168.x.x' netmask='255.255.x.x'/></config>");
+                config = xml("<config><interface hosts='*' address='192.168.x.x' netmask='255.255.x.x'/></config>");
         }
-        
+
         // a whole bunch of routers
         rte[1]: Router {
             parameters:
                 @display("is=vs");
         }
-        
-        peer[7]: StandardHost {
+
+        peer[numPeersInSim]: StandardHost {
             parameters:
-                @display("i=device/laptop_s");
+                @display("i=device/laptop_s;p=181,133");
                 numTcpApps = 1;
         }
-        
-        tracker : StandardHost {
+
+        tracker: StandardHost {
             parameters:
-                @display("i=device/server2");
+                @display("i=device/server2;p=66,42");
                 numTcpApps = 1;
         }
-        
+
     connections:
-        peer[0].pppg++ <--> ethernetline <--> rte[0].pppg++;
-        peer[1].pppg++ <--> ethernetline <--> rte[0].pppg++;
-        peer[2].pppg++ <--> ethernetline <--> rte[0].pppg++;
-        peer[3].pppg++ <--> ethernetline <--> rte[0].pppg++;
-        peer[4].pppg++ <--> ethernetline <--> rte[0].pppg++;
-        peer[5].pppg++ <--> ethernetline <--> rte[0].pppg++;
-        peer[6].pppg++ <--> ethernetline <--> rte[0].pppg++;
-        tracker.pppg++ <--> ethernetline <--> rte[0].pppg++;
         
+        for i=0..6 do {
+        	peer[i].pppg++ <--> ethernetline <--> rte[0].pppg++;
+        }
+        
+//        peer[0].pppg++ <--> ethernetline <--> rte[0].pppg++;
+//        peer[1].pppg++ <--> ethernetline <--> rte[0].pppg++;
+//        peer[2].pppg++ <--> ethernetline <--> rte[0].pppg++;
+//        peer[3].pppg++ <--> ethernetline <--> rte[0].pppg++;
+//        peer[4].pppg++ <--> ethernetline <--> rte[0].pppg++;
+//        peer[5].pppg++ <--> ethernetline <--> rte[0].pppg++;
+//        peer[6].pppg++ <--> ethernetline <--> rte[0].pppg++;
+        tracker.pppg++ <--> ethernetline <--> rte[0].pppg++;
+
   //      rte[0].pppg++ <--> fiberline <--> rte[1].pppg++;
   //      rte[1].pppg++ <--> fiberline <--> rte[2].pppg++;
   //      rte[2].pppg++ <--> fiberline <--> rte[3].pppg++;
   //      rte[2].pppg++ <--> fiberline <--> rte[5].pppg++;
   //      rte[3].pppg++ <--> fiberline <--> rte[4].pppg++;
   //      rte[5].pppg++ <--> fiberline <--> rte[6].pppg++;
-        
+
 }

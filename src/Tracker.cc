@@ -36,9 +36,14 @@ void Tracker::initialize(int stage) {
     }
 
     // obtain the values of parameters
+
+    this->numSeedsInTorrent = 0;
+
     this->localAddress_ = this->par("localAddress").stringValue();
     this->localPort_ = this->par("localPort");
     this->connectPort_ = this->par("connectPort");
+    this->numPeersInSim_ = this->par("numPeersInSim");
+
 
     map<string, vector<int> > mymap; // construct empty map
     this->peers_to_chunk_map_ = mymap; // assign it to peers_to_chunk_map_
@@ -101,28 +106,36 @@ void Tracker::handleMessage(cMessage *msg) {
 
         TCPSocket *socket = this->socketMap_.findSocketFor(msg);
         if (!socket) {
+            TCPCommand *cmd = dynamic_cast<TCPCommand *>(msg->getControlInfo());
+            if (!cmd) {
+                throw cRuntimeError(
+                        "TrackerApp::handleMessage: no TCPCommand control info in message (not from TCP?)");
+            } else {
+                TCPSocket *new_socket = new TCPSocket(msg);
 
-            int connId = cmd->getConnId();
-            TCPSocket *new_socket = new TCPSocket(msg);
+                // register ourselves as the callback object
+                bool *passive = new bool(true);
+                new_socket->setCallbackObject(this, passive);
 
-            // register ourselves as the callback object
-            bool *passive = new bool(true);
-            new_socket->setCallbackObject(this, passive);
+                // do not forget to set the outgoing gate
+                new_socket->setOutputGate(gate("tcpOut"));
 
-            // do not forget to set the outgoing gate
-            new_socket->setOutputGate(gate("tcpOut"));
+                // for the sake of correctness, we make sure the socket exists
+                if (!this->socket_) {  // no socket. How did we come here?
+                    throw cRuntimeError("ClientApp::handleMessage: no connection yet to server");
+                }
 
-            // another thing I learned the hard way is that we must set up the data trasnfer
-            // mode for this new socket
-            new_socket->setDataTransferMode(
-                    this->socket_->getDataTransferMode());
+                // another thing I learned the hard way is that we must set up the data trasnfer
+                // mode for this new socket
+                new_socket->setDataTransferMode(
+                        this->socket_->getDataTransferMode());
 
-            // now save this socket in our map
-            this->socketMap_.addSocket(new_socket);
+                // now save this socket in our map
+                this->socketMap_.addSocket(new_socket);
 
-            // process the message
-            new_socket->processMessage(msg);
-
+                // process the message
+                new_socket->processMessage(msg);
+            }
         } else {
             // let that socket process the message
             socket->processMessage(msg);
@@ -166,12 +179,12 @@ void Tracker::socketDataArrived(int connID, void *, cPacket *msg, bool) {
 
                 // remove the element if existing
                 map<string, vector<int> >::iterator it;
-                it = this->peers_to_chunk_.find(requestorId);
-                if (it != this->peers_to_chunk_.end())
-                this->peers_to_chunk_.erase(it);
+                it = this->peers_to_chunk_map_.find(requestorId);
+                if (it != this->peers_to_chunk_map_.end())
+                this->peers_to_chunk_map_.erase(it);
 
                 // add this key-value pair to the map
-                this->peers_to_chunk_.insert(
+                this->peers_to_chunk_map_.insert(
                         pair<string, vector<int> >(requestorId, chunkList));
 
                 // add peer to peer list
@@ -180,35 +193,26 @@ void Tracker::socketDataArrived(int connID, void *, cPacket *msg, bool) {
                 // now send a response
                 this->sendResponse(connID);
             }
+
         }
-        break;
-        case P2T_LEAVE_MESSAGE: {
-            P2T_LEAVE_Msg *req = dynamic_cast<P2T_LEAVE_Msg *>(msg);
+        /*
+         * Catch when the download is complete, to end the simulation when they all have
+         */
+        case P2T_DOWNLOAD_COMPLETE: {
+
+            P2T_DOWNLOAD_COMPLETE_Msg *req = dynamic_cast<P2T_DOWNLOAD_COMPLETE_Msg *>(msg);
             if (!req) {
-                EV << "Arriving packet is not of type P2T_LEAVE_Msg" << endl;
+                EV << "Arriving packet is not of type P2T_DOWNLOAD_COMPLETE_Msg" << endl;
             } else {
-                setStatusString("Leave Message");
-                string requestorId = req->getId();
-                EV << "Arriving packet: Responder ID = " << requestorId << endl;
 
-                // remove peer from and close connection
+                this->numSeedsInTorrent++;
 
-                // remove the element if existing
-                map<string, vector<int> >::iterator it;
-                it = this->peers_to_chunk_.find(requestorId);
-                if (it != this->peers_to_chunk_.end())
-                this->peers_to_chunk_.erase(it);
-
-                // remove peer from peer list
-                this->peers_.erase(req->getId());
-                // close the socket
-                TCPSocket *socket = this->socketMap_.findSocketFor(msg);
-                socket->close();
-                this->socketMap_.removeSocket(socket);
+                if (this->numSeedsInTorrent >= this->numPeersInSim_) {
+                    endSimulation();
+                }
 
             }
         }
-        break;
         default:
         EV << ">>> unknown incoming request type <<< " << endl;
         break;
