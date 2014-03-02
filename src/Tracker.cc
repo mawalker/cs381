@@ -20,8 +20,7 @@
 Define_Module(Tracker)
 ;
 
-Tracker::Tracker(void)
-{
+Tracker::Tracker(void) {
 }
 
 Tracker::~Tracker() {
@@ -32,11 +31,20 @@ void Tracker::initialize(int stage) {
 
 }
 
- void Tracker::finish(){}
- void Tracker::connect(int i){}
- void Tracker::close(void){}
- void Tracker::socketClosed(int connId, void *yourPtr){}
- void Tracker::socketFailure(int connId, void *yourPtr, int code){}
+void Tracker::finish() {
+}
+
+void Tracker::connect(int i) {
+}
+
+void Tracker::close(void) {
+}
+
+void Tracker::socketClosed(int connId, void *yourPtr) {
+}
+
+void Tracker::socketFailure(int connId, void *yourPtr, int code) {
+}
 
 /** This is the all-encompassing event handling function. It is our responsibility to
  *  figure out what to do with every event, which is appln-specific */
@@ -64,7 +72,7 @@ void Tracker::sendRequest(int connId) {
 //}
 
 // send a response
-void Tracker::sendResponse(int connId){ // const char *id, unsigned long size) {
+void Tracker::sendResponse(int connId) { // const char *id, unsigned long size) {
 
 }
 

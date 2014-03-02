@@ -185,7 +185,8 @@ void Peer::sendP2TRequest(int connId, enum P2T_MSG_TYPE prt_msg_type) {
 
 }
 
-void Peer::sendResponse(int connId, int chunk){}
+void Peer::sendResponse(int connId, int chunk) {
+}
 
 void Peer::connectAndDownloadChunks() {
 }
