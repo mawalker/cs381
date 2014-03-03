@@ -32,13 +32,13 @@ void Peer::initialize(int stage) {
     this->localPort_ = this->par("localPort");
     this->numPeers_ = this->par("numPeers");
     this->connectPort_ = this->par("connectPort");
-    this->numChunksInFile_ = this->par("numberOfChunksInFile");
+    this->numChunksInFile_ = this->par("numChunksInFile");
     this->trackerAddress_ = this->par("trackerAddress").stringValue();
     this->numPeersConnected_ = 0;
 
-    this->numChunksToGet_.setName("Remaining Chunks");
+    this->numChunksToGet_.setName("Chunks to Get");
 
-    this->newChunkRecieved.setName("New Chunk Received" + this->localPort_);
+    this->newChunkRecieved.setName("Chunk Received" + this->localPort_);
 
     // initialization
     vector<int> v;
@@ -53,7 +53,7 @@ void Peer::initialize(int stage) {
     if (this->startAsSeed_ == true) { // seed
         EV<< "+++ Peer: " << this->localAddress_ << "Started as Seed +++" << endl;
         for (int i = 0; i < (int)this->numChunksInFile_; i++) {
-            insertChunkInOrder(i);
+            insertChunk(i);
         }
 
     } else { // leech
@@ -139,8 +139,8 @@ void Peer::initialize(int stage) {
     TCPSocket *tracker_socket = new TCPSocket();
 
     // register ourselves as the callback object - we are active here
-    bool *passive2 = new bool(false);
-    tracker_socket->setCallbackObject(this, passive2);
+    bool *passive1 = new bool(false);
+    tracker_socket->setCallbackObject(this, passive1);
 
     // do not forget to set the outgoing gate
     tracker_socket->setOutputGate(gate("tcpOut"));
@@ -259,13 +259,12 @@ void Peer::handleTimer(cMessage *msg) {
     << "Send refresh request to Tracker" << endl;
 
     // perform cleanup
-    delete (msg);
+    delete msg;
 
-    // We need to send the status to Tracker and find the latest list of peers
-    this->sendP2TRequest(this->trackerSocket_->getConnectionId(),
-            P2T_REFRESH_REQUEST);
+    // find latest info about peers
+    this->sendP2TRequest(this->trackerSocket_->getConnectionId(), P2T_REFRESH_REQUEST);
 
-    // schedule the next timer
+    // schedule next timer
     cMessage *timer_msg = new cMessage("timer");
     this ->scheduleAt(simTime() + exponential(0.01), timer_msg);
 
@@ -401,8 +400,8 @@ void Peer::socketDataArrived(int connID, void *, cPacket *msg, bool) {
                     // add the chunk in the list of download chunks
                     int chunk = resp->getChunkNo();
 
-                    insertChunkInOrder(chunk);
-                    deleteChunkFromToDownloadList(chunk);
+                    insertChunk(chunk);
+                    deleteChunk(chunk);
 
                     // record the number of chunks remaining
                     int remainingChunkCount = this->ownedChunks_.size() - this->numChunksInFile_;
@@ -777,7 +776,7 @@ void Peer::sendResponse(int connId, int chunkNo) {
     delete temp_msg;
 }
 
-void Peer::insertChunkInOrder(int chunkValue) {
+void Peer::insertChunk(int chunkValue) {
 
     EV<< "===== INsert chunk called with "<< chunkValue << endl;
 
@@ -812,7 +811,7 @@ void Peer::insertChunkInOrder(int chunkValue) {
 //        EV << this->ownedChunks_[i] << " ";
 }
 
-void Peer::deleteChunkFromToDownloadList(int chunkValue) {
+void Peer::deleteChunk(int chunkValue) {
     for (size_t i = 0; i < this->chunksToGet_.size(); i++) {
         if (this->chunksToGet_[i] == chunkValue) {
             this->chunksToGet_.erase(

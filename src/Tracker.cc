@@ -225,21 +225,21 @@ void Tracker::socketDataArrived(int connID, void *, cPacket *msg, bool) {
     }
 
     switch ((P2T_MSG_TYPE) packet->getType()) {
-        case P2T_REFRESH_MESSAGE:
-        case P2T_REGISTRATION_REQUEST: {
-            Ownership_Message *req = dynamic_cast<Ownership_Message *>(msg);
+        case P2T_REFRESH_REQUEST:
+        case P2T_REG_REQUEST: {
+            CHUNKS_OWNED_Msg *req = dynamic_cast<CHUNKS_OWNED_Msg *>(msg);
             if (!req) {
                 EV << "Arriving packet is not of type Ownership_Message" << endl;
             } else {
                 setStatusString("Registration or Refresh Request");
                 string requestorId = req->getId();
 
-                int chunkSize = req->getOwned_chunksArraySize();
+                int chunkSize = req->getDownloadedChunksArraySize();
                 // create vector from chunklist array
                 vector<int> chunkList;
 
                 for (int i = 0; i < chunkSize; i++) {
-                    chunkList.push_back(req->getOwned_chunks(i));
+                    chunkList.push_back(req->getDownloadedChunks(i));
                 }
                 EV << "Arriving packet: Requestor ID = " << requestorId
                 << ", Owned Chunks size= " << chunkSize << endl;
@@ -381,10 +381,10 @@ void Tracker::sendResponse(int connId) {
     if (!socket) {
         EV << ">>> Cannot find socket to send request <<< " << endl;
     } else {
-        T2P_MEMBERSHIP_Res *resp = new T2P_MEMBERSHIP_Res();
+        T2P_MEMBER_Res *resp = new T2P_MEMBER_Res();
 
         // response type enum
-        resp->setType((int) T2P_MEMBERSHIP_RESPONSE);
+        resp->setType((int) T2P_MEMBER_RESPONSE);
 
         // set peer list
         resp->setIdsArraySize(this->peers_.size());
@@ -404,14 +404,14 @@ void Tracker::sendResponse(int connId) {
         int k = 0;
         for (it = this->peers_to_chunk_.begin();
                 it != this->peers_to_chunk_.end(); ++it) {
-            Ownership_Message *respOwnership = new Ownership_Message();
+            CHUNKS_OWNED_Msg *respOwnership = new CHUNKS_OWNED_Msg();
             // set id for ownership message
             respOwnership->setId((*it).first.c_str());
             int chunkVectorSize = (*it).second.size();
-            respOwnership->setOwned_chunksArraySize(chunkVectorSize);
+            respOwnership->setDownloadedChunksArraySize(chunkVectorSize);
 
             for (int i = 0; i < chunkVectorSize; i++) {
-                respOwnership->setOwned_chunks(i, (*it).second[i]);
+                respOwnership->setDownloadedChunks(i, (*it).second[i]);
             }
 
             resp->setPeer_to_chunk_ownership(k++, *respOwnership);

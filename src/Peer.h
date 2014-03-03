@@ -52,18 +52,15 @@ private:
     TCPDataTransferMode dataTransferMode_; // indicates the approach used to transfer data
     TCPSocket *socket_;      // our socket that talks to the server
 
-    bool startAsSeed_;
-
     vector<string> connectAddresses_;    // addresses of peers
     int numChunksInFile_;                // number of chunks in file
     int initNumOwnedChunks_;             // how many chunks did I start with.
     cOutVector numChunksToGet_;          // chunks left to download.
     vector<int> ownedChunks_;            // chunks owned by a peer
-    vector<int> chunksToGet_;       // chunks left to get
+    vector<int> chunksToGet_;            // chunks left to get
     cOutVector newChunkRecieved;
 
-    string trackerAddress_;              // tracker address
-
+    bool startAsSeed_;
     int numPeers_;                       // number of all peers
     int numPeersConnected_;              // number of connected peers
     vector<string> peers_;               // all peers
@@ -73,9 +70,10 @@ private:
     map<string, vector<int> > peersToChunkMap_; // peer to chunk map
 
     TCPSocket *trackerSocket_;        // socket to tracker
+    string trackerAddress_;              // tracker address
 
-    void insertChunkInOrder(int);
-    void deleteChunkFromToDownloadList(int);
+    void insertChunk(int);
+    void deleteChunk(int); // from chunks to download
 
 protected:
     /**
