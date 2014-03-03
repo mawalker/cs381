@@ -732,39 +732,35 @@ void Peer::sendResponse(int connId, int chunkNo) {
     delete temp_msg;
 }
 
-void Peer::insertChunk(int chunkValue) {
-
-    EV<< "===== INsert chunk called with "<< chunkValue << endl;
+void Peer::insertChunk(int chunkNo) {
 
     if (this->ownedChunks_.empty()) {
-        this->ownedChunks_.push_back(chunkValue);
-        this->newChunkRecieved.record(chunkValue);
+        this->ownedChunks_.push_back(chunkNo);
+        this->newChunkRecieved.record(chunkNo);
         return;
     }
 
-    int chunkInsertionNumber = 0;
+    int index = 0;
     bool found = false;
     for (size_t i = 0; i < this->ownedChunks_.size(); i++) {
-        if (this->ownedChunks_[i] > chunkValue) {
-            chunkInsertionNumber = i;
+        if (this->ownedChunks_[i] > chunkNo) {
+            index = i;
             found = true;
             break;
-        } else if (this->ownedChunks_[i] == chunkValue)
-        // already have this chunk, ignore
-        return;
+        } else if (this->ownedChunks_[i] == chunkNo){
+            return;
+        }
 
     }
 
-    if (!found)
-    chunkInsertionNumber = this->ownedChunks_.size();
+    if (!found){
+        index = this->ownedChunks_.size();
+    }
 
-    this->ownedChunks_.insert(this->ownedChunks_.begin() + chunkInsertionNumber,
-            chunkValue);
+    this->ownedChunks_.insert(this->ownedChunks_.begin() + index,
+            chunkNo);
 
-    this->newChunkRecieved.record(chunkValue);
-
-//    for (int i = 0; i < this->ownedChunks_.size(); i++)
-//        EV << this->ownedChunks_[i] << " ";
+    this->newChunkRecieved.record(chunkNo);
 }
 
 void Peer::deleteChunk(int chunkValue) {
