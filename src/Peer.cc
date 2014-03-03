@@ -38,6 +38,8 @@ void Peer::initialize(int stage) {
 
     this->numberOfchunksToDownload.setName("Remaining Chunks");
 
+    this->newChunkRecieved.setName("New Chunk Received" + this->localPort_);
+
     vector<int> myvector;
     this->ownedChunks_ = myvector;
 
@@ -46,24 +48,26 @@ void Peer::initialize(int stage) {
 
     this->startAsSeed_ = this->par("startAsSeed");
 
-
     // setup initial file state, either seed or leech
-     if (this->startAsSeed_ == true) { // seed
-         for (int i = 0; i < this->numberOfChunksInFile_; i++) {
-             insertChunkInOrder(i);
-         }
-     } else { // leech
-         for (int i = 0; i < this->numberOfChunksInFile_; i++) {
-             this->chunksToDownloadVector_.push_back(i);
-         }
-     }
+    if (this->startAsSeed_ == true) { // seed
+        EV<< "+++ Peer: " << this->localAddress_ << "Started as Seed +++" << endl;
+        for (unsigned int i = 0; i < this->numberOfChunksInFile_; i++) {
+            insertChunkInOrder(i);
+        }
+
+    } else { // leech
+        EV<< "+++ Peer: " << this->localAddress_ << "Started as Leech +++" << endl;
+        for (unsigned int i = 0; i < this->numberOfChunksInFile_; i++) {
+            this->chunksToDownloadVector_.push_back(i);
+        }
+    }
 
     this->initialCountOfOwnedChunks_ = this->ownedChunks_.size();
 
     vector<int> myvector2;
     this->chunksToDownloadVector_ = myvector;
 
-    for (int i = 0; i < this->numberOfChunksInFile_; i++) {
+    for (unsigned int i = 0; i < this->numberOfChunksInFile_; i++) {
         // check if we already have this chunk
         bool found = false;
         for (size_t j = 0; j < this->ownedChunks_.size(); j++) {
@@ -159,14 +163,22 @@ void Peer::initialize(int stage) {
 
     // now we start a timer so that when it kicks in, we send refresh request to Tracker
 
+    if (this->startAsSeed_ == true) {
+        this->sendP2TRequest(this->trackerSocket_->getConnectionId(),
+                P2T_DOWNLOAD_COMPLETE);
+    }
+
     cMessage *timer_msg = new cMessage("timer");
     this->scheduleAt(simTime() + exponential(0.01), timer_msg);
 
     setStatusString("waiting");
 
+    EV<< "+++ Peer: " << this->localAddress_
+    << " has these chunks:" << initialCountOfOwnedChunks_<<endl;
+
 }
 
-/** the all serving handle message method */
+    /** the all serving handle message method */
 void Peer::handleMessage(cMessage *msg) {
     EV<< "=== Peer: " << this->localAddress_
     << " received handleMessage message" << endl;
@@ -393,9 +405,9 @@ void Peer::socketDataArrived(int connID, void *, cPacket *msg, bool) {
                     deleteChunkFromToDownloadList(chunk);
 
                     // record the number of chunks remaining
-                    int remainingChunkCount = this->ownedChunks_.size() - this->initialCountOfOwnedChunks_;
+                    int remainingChunkCount = this->ownedChunks_.size() - this->numberOfChunksInFile_;
 
-                    if (remainingChunkCount >= 31) {
+                    if (this->ownedChunks_.size() >= this->numberOfChunksInFile_) {
                         this->sendP2TRequest(this->trackerSocket_->getConnectionId(),
                                 P2T_DOWNLOAD_COMPLETE);
                     }
@@ -767,8 +779,11 @@ void Peer::sendResponse(int connId, int chunk) {
 
 void Peer::insertChunkInOrder(int chunkValue) {
 
+    EV<< "===== INsert chunk called with "<< chunkValue << endl;
+
     if (this->ownedChunks_.empty()) {
         this->ownedChunks_.push_back(chunkValue);
+        this->newChunkRecieved.record(chunkValue);
         return;
     }
 
@@ -780,20 +795,21 @@ void Peer::insertChunkInOrder(int chunkValue) {
             found = true;
             break;
         } else if (this->ownedChunks_[i] == chunkValue)
-            // already have this chunk, ignore
-            return;
+        // already have this chunk, ignore
+        return;
 
     }
 
     if (!found)
-        chunkInsertionNumber = this->ownedChunks_.size();
+    chunkInsertionNumber = this->ownedChunks_.size();
 
     this->ownedChunks_.insert(this->ownedChunks_.begin() + chunkInsertionNumber,
             chunkValue);
 
-    /*
-     for (int i = 0; i < this->ownedChunks_.size(); i++)
-     cout << this->ownedChunks_[i] << " ";*/
+    this->newChunkRecieved.record(chunkValue);
+
+//    for (int i = 0; i < this->ownedChunks_.size(); i++)
+//        EV << this->ownedChunks_[i] << " ";
 }
 
 void Peer::deleteChunkFromToDownloadList(int chunkValue) {

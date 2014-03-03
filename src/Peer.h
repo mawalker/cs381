@@ -42,7 +42,7 @@ private:
     int numPeers_;           // indicates how many peers we are to connect to
     vector<string> connectAddresses_;  // address of our peers
     int connectPort_;        // ports of the peer we connect to
-    int numberOfChunksInFile_;
+    unsigned int numberOfChunksInFile_;
     string trackerAddress_;
 
     int numberOfConnectedPeers_;
@@ -50,6 +50,8 @@ private:
     int initialCountOfOwnedChunks_;
 
     cOutVector numberOfchunksToDownload;
+
+    cOutVector newChunkRecieved;
 
     vector<int> ownedChunks_;
     vector<int> chunksToDownloadVector_;

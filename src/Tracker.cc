@@ -35,6 +35,7 @@ void Tracker::initialize(int stage) {
     this->localPort_ = this->par("localPort");
     this->connectPort_ = this->par("connectPort");
     this->numPeersInSim_ = this->par("numPeersInSim");
+    numSeedsInTorrent_ = 0;
 
     map<string, vector<int> > mymap;
     this->peers_to_chunk_ = mymap;
@@ -70,11 +71,11 @@ void Tracker::initialize(int stage) {
      const char *str2 = this->par ("connectAddresses").stringValue ();
      this->connectAddresses_ = cStringTokenizer (str2).asVector();*/
 
-    // indicate what type of data transfer is going to be supported by our socket
-    // there are three choices supported in INET. For now we choose BYTECOUNT, i.e.,
-    // the underlying system will emulate the sending of that many bytes. We
-    // are not concerned with the actual content. But if we really wanted to do it
-    // that way, then we will do BYTESTREAM
+// indicate what type of data transfer is going to be supported by our socket
+// there are three choices supported in INET. For now we choose BYTECOUNT, i.e.,
+// the underlying system will emulate the sending of that many bytes. We
+// are not concerned with the actual content. But if we really wanted to do it
+// that way, then we will do BYTESTREAM
     string dataTransferMode = this->par("dataTransferMode").stringValue();
 
     // create a new socket for the listening role
@@ -267,6 +268,8 @@ void Tracker::socketDataArrived(int connID, void *, cPacket *msg, bool) {
             if (!req) {
                 EV << "Arriving packet is not of type P2T_DOWNLOAD_COMPLETE_Msg" << endl;
             } else {
+
+                EV << "---------Peer " << msg->getId() << " is now seed." <<endl;
 
                 this->numSeedsInTorrent_++;
                 this->numberOfSeeders.record(numSeedsInTorrent_);
