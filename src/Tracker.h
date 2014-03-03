@@ -21,11 +21,11 @@ using namespace std;
 
 
 /**
- * This is our application class that demonstrates a P2P capability.
+ * This is our application class that demonstrates a Tracker capability.
  *
- * Each peer must have both the client and server capabilities.  Since we may be
- * connected to a number of peers while many peers may connect to us, we are going
- * to maintain a socket map for outgoing and incoming connections
+ * Since we may be connected to a number of peers while many peers may connect
+ * to us, we are going to maintain a socket map for outgoing and incoming connections.
+ * And one open socket to listen to requests.
  */
 class Tracker : public cSimpleModule, public TCPSocket::CallbackInterface
 {
@@ -53,12 +53,12 @@ class Tracker : public cSimpleModule, public TCPSocket::CallbackInterface
     vector<string> connectAddresses_;  // address of our peers
     int connectPort_;        // ports of the peer we connect to
 
-    int numSeedsInTorrent_;
-    int numPeersInSim_;
+    int numSeedsInTorrent_; // number of seeds in the torrent group
+    int numPeersInSim_;     // number of peers in the simulation
 
     cOutVector numberOfSeeders;
 
-    set<string> peers_;
+    set<string> peers_;     // set of peer Ids
     map<string, vector<int> > peers_to_chunk_;
 
     void insertChunkInOrder(vector<int> &, int);
