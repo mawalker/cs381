@@ -325,33 +325,29 @@ void Peer::socketDataArrived(int connID, void *, cPacket *msg, bool) {
                     setStatusString("Tracker Response");
                     EV << "Received response from tracker" << endl;
 
-                    int sizeOfMessages = res->getChunksOwnedArraySize();
-                    for (int i = 0; i < sizeOfMessages; i++) {
+                    for (int i = 0; i < (int)res->getChunksOwnedArraySize(); i++) {
                         CHUNKS_OWNED_Msg chunksOwnedMsg =
                         res->getChunksOwned(i);
-                        string requestorId = chunksOwnedMsg.getId();
+                        string id = chunksOwnedMsg.getId();
 
-                        // create vector from chunklist array
-                        vector<int> chunkList;
+                        // get the chunks downloaded
+                        vector<int> chunksD;
                         for (int i = 0; i < (int)chunksOwnedMsg.getDownloadedChunksArraySize(); i++) {
-                            chunkList.push_back(
+                            chunksD.push_back(
                                     chunksOwnedMsg.getDownloadedChunks(i));
                         }
 
-                        // add this key-value pair to the map
+                        // add info about the peer owning given chunks
                         this->peersToChunkMap_.insert(
-                                pair<string, vector<int> >(requestorId, chunkList));
+                                pair<string, vector<int> >(id, chunksD));
 
                     }
 
-                    int numberOfPeers = res->getIdsArraySize();
-                    // add peer to peer list
-                    for (int i = 0; i < numberOfPeers; i++){
+                    // add peer to the list of all peers
+                    for (int i = 0; i < (int)res->getIdsArraySize(); i++){
                         this->peers_.push_back(res->getIds(i));
                     }
 
-                    // Now we have the list of peers and their ownership of chunks
-                    // we should find which ones to connect and download chunks
                     downloadChunks();
                 }
             }
@@ -362,13 +358,12 @@ void Peer::socketDataArrived(int connID, void *, cPacket *msg, bool) {
         }
 
     } else {
-        P2P_Packet *packet2 = dynamic_cast<P2P_Packet *>(msg);
-        if (!packet2) {
-            // message is not of handleable type
+        P2P_Packet *packet1 = dynamic_cast<P2P_Packet *>(msg);
+        if (!packet1) {
             return;
         }
-        switch ((P2P_MSG_TYPE) packet2->getType()) {
-            // Received a request from peer for a chunk
+        switch ((P2P_MSG_TYPE) packet1->getType()) {
+
             case P2P_REQUEST: {
                 P2P_Req *req = dynamic_cast<P2P_Req *>(msg);
                 if (!req) {
@@ -378,12 +373,11 @@ void Peer::socketDataArrived(int connID, void *, cPacket *msg, bool) {
                     EV << "Arriving packet: Requestor ID = " << req->getId()
                     << ", Requested chunk = " << req->getChunkNo() << endl;
 
-                    // now send the desired response
                     this->sendResponse(connID, req->getChunkNo());
                 }
             }
             break;
-            // Received the chunk from peer
+
             case P2P_RESPONSE: {
                 P2P_Resp *resp = dynamic_cast<P2P_Resp *>(msg);
                 if (!resp) {
@@ -394,65 +388,55 @@ void Peer::socketDataArrived(int connID, void *, cPacket *msg, bool) {
                     << ", requested chunk = " << resp->getChunkNo()
                     << endl;
 
-                    // add the chunk in the list of download chunks
                     int chunk = resp->getChunkNo();
 
-                    insertChunk(chunk);
-                    deleteChunk(chunk);
-
-                    // record the number of chunks remaining
-                    int remainingChunkCount = this->ownedChunks_.size() - this->numChunksInFile_;
+                    insertChunk(chunk); // insert chunk for download
+                    deleteChunk(chunk); // delete chunk from the list of chunks to download
 
                     if ((int)this->ownedChunks_.size() >= this->numChunksInFile_) {
                         this->sendP2TRequest(this->trackerSocket_->getConnectionId(),
                                 P2T_DOWNLOAD_COMPLETE);
                     }
 
-                    this->numChunksToGet_.record(remainingChunkCount);
+                    int numChunksRemaining = this->ownedChunks_.size() - this->numChunksInFile_;
+                    this->numChunksToGet_.record(numChunksRemaining);
 
                     this->sendP2TRequest(this->trackerSocket_->getConnectionId(),
                             P2T_REFRESH_REQUEST);
 
-                    EV << "Chunks remaining to be downloaded for peer " << this->localAddress_ << " : ";
-                    for(size_t i = 0; i < this->chunksToGet_.size(); i++)
-                    EV << this->chunksToGet_[i] << " ";
-
-                    // request for next chunk if all the chunks are not downloaded yet from the peer
-                    vector<int> peerChunklist = this->peersToChunkMap_.find(
+                    // get next chunk if such exists
+                    vector<int> chunksForPeer = this->peersToChunkMap_.find(
                             resp->getId())->second;
-                    int peerChunklistSize = peerChunklist.size();
-                    int chunkIndex = 0;
-                    for (int i = 0; i < peerChunklistSize; i++) {
-                        if (chunk == peerChunklist[i]) {
-                            // we found the just download chunk, need to see if next is available
-                            chunkIndex = i;
+
+                    int index = 0;
+                    for (int i = 0; i < (int)chunksForPeer.size(); i++) {
+                        if (chunk == chunksForPeer[i]) {
+                            // this is the downloaded chunk
+                            index = i;
                             break;
                         }
                     }
 
-                    // we have the index of downloaded chunk, from the next elements check if they are still to be downloaded
-                    int chunkTobeDownloaded = -1;
-                    for (int i = chunkIndex + 1; i < peerChunklistSize; i++) {
-                        int peerChunk = peerChunklist[i];
-                        // need to find if we have to download this chunk
+                    // see if we have next chunk to get
+                    int nextChunk = -1;
+                    for (int i = index + 1; i < (int)chunksForPeer.size(); i++) {
+                        int ch = chunksForPeer[i];
                         bool found = false;
-                        for (size_t j = 0; j < this->chunksToGet_.size();
-                                j++) {
-                            if (peerChunk == this->chunksToGet_[j]) {
+                        for (size_t j = 0; j < this->chunksToGet_.size(); j++) {
+                            if (ch == this->chunksToGet_[j]) {
                                 found = true;
                                 break;
                             }
                         }
-                        // have to download
+
                         if (found) {
-                            // save the index
-                            chunkTobeDownloaded = peerChunk;
+                            nextChunk = ch;
                             break;
                         }
                     }
 
-                    // no chunk to download, close the connection
-                    if (chunkTobeDownloaded == -1) {
+                    // if next chunk is not found, diconnect
+                    if (nextChunk == -1) {
                         cMessage *temp_msg = new cMessage("temp");
                         TCPCommand *temp_cmd = new TCPCommand();
                         temp_cmd->setConnId(connID);
@@ -467,7 +451,7 @@ void Peer::socketDataArrived(int connID, void *, cPacket *msg, bool) {
 
                         socket->close();
                     } else {
-                        this->sendRequest(connID, chunkTobeDownloaded);
+                        this->sendRequest(connID, nextChunk);
                     }
 
                 }
