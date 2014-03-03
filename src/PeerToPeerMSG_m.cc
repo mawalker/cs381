@@ -281,7 +281,7 @@ Register_Class(P2P_Req);
 P2P_Req::P2P_Req(const char *name, int kind) : P2P_Packet(name,kind)
 {
     this->id_var = 0;
-    this->chunk_var = 0;
+    this->chunkNo_var = 0;
 }
 
 P2P_Req::P2P_Req(const P2P_Req& other) : P2P_Packet(other)
@@ -304,21 +304,21 @@ P2P_Req& P2P_Req::operator=(const P2P_Req& other)
 void P2P_Req::copy(const P2P_Req& other)
 {
     this->id_var = other.id_var;
-    this->chunk_var = other.chunk_var;
+    this->chunkNo_var = other.chunkNo_var;
 }
 
 void P2P_Req::parsimPack(cCommBuffer *b)
 {
     P2P_Packet::parsimPack(b);
     doPacking(b,this->id_var);
-    doPacking(b,this->chunk_var);
+    doPacking(b,this->chunkNo_var);
 }
 
 void P2P_Req::parsimUnpack(cCommBuffer *b)
 {
     P2P_Packet::parsimUnpack(b);
     doUnpacking(b,this->id_var);
-    doUnpacking(b,this->chunk_var);
+    doUnpacking(b,this->chunkNo_var);
 }
 
 const char * P2P_Req::getId() const
@@ -331,14 +331,14 @@ void P2P_Req::setId(const char * id)
     this->id_var = id;
 }
 
-int P2P_Req::getChunk() const
+int P2P_Req::getChunkNo() const
 {
-    return chunk_var;
+    return chunkNo_var;
 }
 
-void P2P_Req::setChunk(int chunk)
+void P2P_Req::setChunkNo(int chunkNo)
 {
-    this->chunk_var = chunk;
+    this->chunkNo_var = chunkNo;
 }
 
 class P2P_ReqDescriptor : public cClassDescriptor
@@ -416,7 +416,7 @@ const char *P2P_ReqDescriptor::getFieldName(void *object, int field) const
     }
     static const char *fieldNames[] = {
         "id",
-        "chunk",
+        "chunkNo",
     };
     return (field>=0 && field<2) ? fieldNames[field] : NULL;
 }
@@ -426,7 +426,7 @@ int P2P_ReqDescriptor::findField(void *object, const char *fieldName) const
     cClassDescriptor *basedesc = getBaseClassDescriptor();
     int base = basedesc ? basedesc->getFieldCount(object) : 0;
     if (fieldName[0]=='i' && strcmp(fieldName, "id")==0) return base+0;
-    if (fieldName[0]=='c' && strcmp(fieldName, "chunk")==0) return base+1;
+    if (fieldName[0]=='c' && strcmp(fieldName, "chunkNo")==0) return base+1;
     return basedesc ? basedesc->findField(object, fieldName) : -1;
 }
 
@@ -483,7 +483,7 @@ std::string P2P_ReqDescriptor::getFieldAsString(void *object, int field, int i) 
     P2P_Req *pp = (P2P_Req *)object; (void)pp;
     switch (field) {
         case 0: return oppstring2string(pp->getId());
-        case 1: return long2string(pp->getChunk());
+        case 1: return long2string(pp->getChunkNo());
         default: return "";
     }
 }
@@ -499,7 +499,7 @@ bool P2P_ReqDescriptor::setFieldAsString(void *object, int field, int i, const c
     P2P_Req *pp = (P2P_Req *)object; (void)pp;
     switch (field) {
         case 0: pp->setId((value)); return true;
-        case 1: pp->setChunk(string2long(value)); return true;
+        case 1: pp->setChunkNo(string2long(value)); return true;
         default: return false;
     }
 }
@@ -538,21 +538,21 @@ Register_Class(P2P_Resp);
 P2P_Resp::P2P_Resp(const char *name, int kind) : P2P_Packet(name,kind)
 {
     this->id_var = 0;
-    this->requestedChunk_var = 0;
-    data_arraysize = 0;
-    this->data_var = 0;
+    this->chunkNo_var = 0;
+    contents_arraysize = 0;
+    this->contents_var = 0;
 }
 
 P2P_Resp::P2P_Resp(const P2P_Resp& other) : P2P_Packet(other)
 {
-    data_arraysize = 0;
-    this->data_var = 0;
+    contents_arraysize = 0;
+    this->contents_var = 0;
     copy(other);
 }
 
 P2P_Resp::~P2P_Resp()
 {
-    delete [] data_var;
+    delete [] contents_var;
 }
 
 P2P_Resp& P2P_Resp::operator=(const P2P_Resp& other)
@@ -566,35 +566,35 @@ P2P_Resp& P2P_Resp::operator=(const P2P_Resp& other)
 void P2P_Resp::copy(const P2P_Resp& other)
 {
     this->id_var = other.id_var;
-    this->requestedChunk_var = other.requestedChunk_var;
-    delete [] this->data_var;
-    this->data_var = (other.data_arraysize==0) ? NULL : new char[other.data_arraysize];
-    data_arraysize = other.data_arraysize;
-    for (unsigned int i=0; i<data_arraysize; i++)
-        this->data_var[i] = other.data_var[i];
+    this->chunkNo_var = other.chunkNo_var;
+    delete [] this->contents_var;
+    this->contents_var = (other.contents_arraysize==0) ? NULL : new char[other.contents_arraysize];
+    contents_arraysize = other.contents_arraysize;
+    for (unsigned int i=0; i<contents_arraysize; i++)
+        this->contents_var[i] = other.contents_var[i];
 }
 
 void P2P_Resp::parsimPack(cCommBuffer *b)
 {
     P2P_Packet::parsimPack(b);
     doPacking(b,this->id_var);
-    doPacking(b,this->requestedChunk_var);
-    b->pack(data_arraysize);
-    doPacking(b,this->data_var,data_arraysize);
+    doPacking(b,this->chunkNo_var);
+    b->pack(contents_arraysize);
+    doPacking(b,this->contents_var,contents_arraysize);
 }
 
 void P2P_Resp::parsimUnpack(cCommBuffer *b)
 {
     P2P_Packet::parsimUnpack(b);
     doUnpacking(b,this->id_var);
-    doUnpacking(b,this->requestedChunk_var);
-    delete [] this->data_var;
-    b->unpack(data_arraysize);
-    if (data_arraysize==0) {
-        this->data_var = 0;
+    doUnpacking(b,this->chunkNo_var);
+    delete [] this->contents_var;
+    b->unpack(contents_arraysize);
+    if (contents_arraysize==0) {
+        this->contents_var = 0;
     } else {
-        this->data_var = new char[data_arraysize];
-        doUnpacking(b,this->data_var,data_arraysize);
+        this->contents_var = new char[contents_arraysize];
+        doUnpacking(b,this->contents_var,contents_arraysize);
     }
 }
 
@@ -608,44 +608,44 @@ void P2P_Resp::setId(const char * id)
     this->id_var = id;
 }
 
-int P2P_Resp::getRequestedChunk() const
+int P2P_Resp::getChunkNo() const
 {
-    return requestedChunk_var;
+    return chunkNo_var;
 }
 
-void P2P_Resp::setRequestedChunk(int requestedChunk)
+void P2P_Resp::setChunkNo(int chunkNo)
 {
-    this->requestedChunk_var = requestedChunk;
+    this->chunkNo_var = chunkNo;
 }
 
-void P2P_Resp::setDataArraySize(unsigned int size)
+void P2P_Resp::setContentsArraySize(unsigned int size)
 {
-    char *data_var2 = (size==0) ? NULL : new char[size];
-    unsigned int sz = data_arraysize < size ? data_arraysize : size;
+    char *contents_var2 = (size==0) ? NULL : new char[size];
+    unsigned int sz = contents_arraysize < size ? contents_arraysize : size;
     for (unsigned int i=0; i<sz; i++)
-        data_var2[i] = this->data_var[i];
+        contents_var2[i] = this->contents_var[i];
     for (unsigned int i=sz; i<size; i++)
-        data_var2[i] = 0;
-    data_arraysize = size;
-    delete [] this->data_var;
-    this->data_var = data_var2;
+        contents_var2[i] = 0;
+    contents_arraysize = size;
+    delete [] this->contents_var;
+    this->contents_var = contents_var2;
 }
 
-unsigned int P2P_Resp::getDataArraySize() const
+unsigned int P2P_Resp::getContentsArraySize() const
 {
-    return data_arraysize;
+    return contents_arraysize;
 }
 
-char P2P_Resp::getData(unsigned int k) const
+char P2P_Resp::getContents(unsigned int k) const
 {
-    if (k>=data_arraysize) throw cRuntimeError("Array of size %d indexed by %d", data_arraysize, k);
-    return data_var[k];
+    if (k>=contents_arraysize) throw cRuntimeError("Array of size %d indexed by %d", contents_arraysize, k);
+    return contents_var[k];
 }
 
-void P2P_Resp::setData(unsigned int k, char data)
+void P2P_Resp::setContents(unsigned int k, char contents)
 {
-    if (k>=data_arraysize) throw cRuntimeError("Array of size %d indexed by %d", data_arraysize, k);
-    this->data_var[k] = data;
+    if (k>=contents_arraysize) throw cRuntimeError("Array of size %d indexed by %d", contents_arraysize, k);
+    this->contents_var[k] = contents;
 }
 
 class P2P_RespDescriptor : public cClassDescriptor
@@ -724,8 +724,8 @@ const char *P2P_RespDescriptor::getFieldName(void *object, int field) const
     }
     static const char *fieldNames[] = {
         "id",
-        "requestedChunk",
-        "data",
+        "chunkNo",
+        "contents",
     };
     return (field>=0 && field<3) ? fieldNames[field] : NULL;
 }
@@ -735,8 +735,8 @@ int P2P_RespDescriptor::findField(void *object, const char *fieldName) const
     cClassDescriptor *basedesc = getBaseClassDescriptor();
     int base = basedesc ? basedesc->getFieldCount(object) : 0;
     if (fieldName[0]=='i' && strcmp(fieldName, "id")==0) return base+0;
-    if (fieldName[0]=='r' && strcmp(fieldName, "requestedChunk")==0) return base+1;
-    if (fieldName[0]=='d' && strcmp(fieldName, "data")==0) return base+2;
+    if (fieldName[0]=='c' && strcmp(fieldName, "chunkNo")==0) return base+1;
+    if (fieldName[0]=='c' && strcmp(fieldName, "contents")==0) return base+2;
     return basedesc ? basedesc->findField(object, fieldName) : -1;
 }
 
@@ -779,7 +779,7 @@ int P2P_RespDescriptor::getArraySize(void *object, int field) const
     }
     P2P_Resp *pp = (P2P_Resp *)object; (void)pp;
     switch (field) {
-        case 2: return pp->getDataArraySize();
+        case 2: return pp->getContentsArraySize();
         default: return 0;
     }
 }
@@ -795,8 +795,8 @@ std::string P2P_RespDescriptor::getFieldAsString(void *object, int field, int i)
     P2P_Resp *pp = (P2P_Resp *)object; (void)pp;
     switch (field) {
         case 0: return oppstring2string(pp->getId());
-        case 1: return long2string(pp->getRequestedChunk());
-        case 2: return long2string(pp->getData(i));
+        case 1: return long2string(pp->getChunkNo());
+        case 2: return long2string(pp->getContents(i));
         default: return "";
     }
 }
@@ -812,8 +812,8 @@ bool P2P_RespDescriptor::setFieldAsString(void *object, int field, int i, const 
     P2P_Resp *pp = (P2P_Resp *)object; (void)pp;
     switch (field) {
         case 0: pp->setId((value)); return true;
-        case 1: pp->setRequestedChunk(string2long(value)); return true;
-        case 2: pp->setData(i,string2long(value)); return true;
+        case 1: pp->setChunkNo(string2long(value)); return true;
+        case 2: pp->setContents(i,string2long(value)); return true;
         default: return false;
     }
 }

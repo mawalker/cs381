@@ -21,20 +21,17 @@ enum P2P_MSG_TYPE {
     P2P_RESPONSE = 1;
 };
 
-packet P2P_Packet
-{
+packet P2P_Packet{
    int     type @enum(P2P_MSG_TYPE);  // our message type
 };
 
-packet P2P_Req extends P2P_Packet
-{
-    string	id;		        // announce the requestor's ID
-    int chunk;	        // chunk number
+packet P2P_Req extends P2P_Packet{
+    string	id;		        // Id of requestor
+    int chunkNo;	        // chunk number
 };
 
-packet P2P_Resp extends P2P_Packet
-{
-    string  id;			// ID of the responder
-    int requestedChunk;	
-    char data [];	    // contents of the file
+packet P2P_Resp extends P2P_Packet{
+    string  id;				// Id of responder
+    int chunkNo;			// chunk number
+    char contents[];	    // file contents
 };

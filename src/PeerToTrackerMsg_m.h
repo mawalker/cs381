@@ -19,17 +19,17 @@
  * Enum generated from <tt>PeerToTrackerMsg.msg</tt> by opp_msgc.
  * <pre>
  * enum P2T_MSG_TYPE {
- *     P2T_REGISTRATION_REQUEST = 0;
- *     P2T_REFRESH_MESSAGE = 1;    
- *     T2P_MEMBERSHIP_RESPONSE = 2;
- *     P2T_DOWNLOAD_COMPLETE = 3;
+ *     P2T_REG_REQUEST = 0; 
+ *     P2T_REFRESH_REQUEST = 1; 
+ *     T2P_MEMBER_RESPONSE = 2; 
+ *     P2T_DOWNLOAD_COMPLETE = 3; 
  * };
  * </pre>
  */
 enum P2T_MSG_TYPE {
-    P2T_REGISTRATION_REQUEST = 0,
-    P2T_REFRESH_MESSAGE = 1,
-    T2P_MEMBERSHIP_RESPONSE = 2,
+    P2T_REG_REQUEST = 0,
+    P2T_REFRESH_REQUEST = 1,
+    T2P_MEMBER_RESPONSE = 2,
     P2T_DOWNLOAD_COMPLETE = 3
 };
 
@@ -74,78 +74,78 @@ inline void doUnpacking(cCommBuffer *b, P2T_Packet& obj) {obj.parsimUnpack(b);}
 /**
  * Class generated from <tt>PeerToTrackerMsg.msg</tt> by opp_msgc.
  * <pre>
- * packet Ownership_Message extends P2T_Packet
+ * packet CHUNKS_OWNED_Msg extends P2T_Packet
  * {
- *     string	id;		        
- *     int owned_chunks[];		
+ *     string	id;		        	
+ *     int downloadedChunks[];		
  * };
  * </pre>
  */
-class Ownership_Message : public ::P2T_Packet
+class CHUNKS_OWNED_Msg : public ::P2T_Packet
 {
   protected:
     opp_string id_var;
-    int *owned_chunks_var; // array ptr
-    unsigned int owned_chunks_arraysize;
+    int *downloadedChunks_var; // array ptr
+    unsigned int downloadedChunks_arraysize;
 
   private:
-    void copy(const Ownership_Message& other);
+    void copy(const CHUNKS_OWNED_Msg& other);
 
   protected:
     // protected and unimplemented operator==(), to prevent accidental usage
-    bool operator==(const Ownership_Message&);
+    bool operator==(const CHUNKS_OWNED_Msg&);
 
   public:
-    Ownership_Message(const char *name=NULL, int kind=0);
-    Ownership_Message(const Ownership_Message& other);
-    virtual ~Ownership_Message();
-    Ownership_Message& operator=(const Ownership_Message& other);
-    virtual Ownership_Message *dup() const {return new Ownership_Message(*this);}
+    CHUNKS_OWNED_Msg(const char *name=NULL, int kind=0);
+    CHUNKS_OWNED_Msg(const CHUNKS_OWNED_Msg& other);
+    virtual ~CHUNKS_OWNED_Msg();
+    CHUNKS_OWNED_Msg& operator=(const CHUNKS_OWNED_Msg& other);
+    virtual CHUNKS_OWNED_Msg *dup() const {return new CHUNKS_OWNED_Msg(*this);}
     virtual void parsimPack(cCommBuffer *b);
     virtual void parsimUnpack(cCommBuffer *b);
 
     // field getter/setter methods
     virtual const char * getId() const;
     virtual void setId(const char * id);
-    virtual void setOwned_chunksArraySize(unsigned int size);
-    virtual unsigned int getOwned_chunksArraySize() const;
-    virtual int getOwned_chunks(unsigned int k) const;
-    virtual void setOwned_chunks(unsigned int k, int owned_chunks);
+    virtual void setDownloadedChunksArraySize(unsigned int size);
+    virtual unsigned int getDownloadedChunksArraySize() const;
+    virtual int getDownloadedChunks(unsigned int k) const;
+    virtual void setDownloadedChunks(unsigned int k, int downloadedChunks);
 };
 
-inline void doPacking(cCommBuffer *b, Ownership_Message& obj) {obj.parsimPack(b);}
-inline void doUnpacking(cCommBuffer *b, Ownership_Message& obj) {obj.parsimUnpack(b);}
+inline void doPacking(cCommBuffer *b, CHUNKS_OWNED_Msg& obj) {obj.parsimPack(b);}
+inline void doUnpacking(cCommBuffer *b, CHUNKS_OWNED_Msg& obj) {obj.parsimUnpack(b);}
 
 /**
  * Class generated from <tt>PeerToTrackerMsg.msg</tt> by opp_msgc.
  * <pre>
- * packet T2P_MEMBERSHIP_Res extends P2T_Packet{
+ * packet T2P_MEMBER_Res extends P2T_Packet{
  *     string ids[];   
- *     Ownership_Message peer_to_chunk_ownership[];
+ *     CHUNKS_OWNED_Msg peer_to_chunk_ownership[];
  * };
  * </pre>
  */
-class T2P_MEMBERSHIP_Res : public ::P2T_Packet
+class T2P_MEMBER_Res : public ::P2T_Packet
 {
   protected:
     opp_string *ids_var; // array ptr
     unsigned int ids_arraysize;
-    Ownership_Message *peer_to_chunk_ownership_var; // array ptr
+    CHUNKS_OWNED_Msg *peer_to_chunk_ownership_var; // array ptr
     unsigned int peer_to_chunk_ownership_arraysize;
 
   private:
-    void copy(const T2P_MEMBERSHIP_Res& other);
+    void copy(const T2P_MEMBER_Res& other);
 
   protected:
     // protected and unimplemented operator==(), to prevent accidental usage
-    bool operator==(const T2P_MEMBERSHIP_Res&);
+    bool operator==(const T2P_MEMBER_Res&);
 
   public:
-    T2P_MEMBERSHIP_Res(const char *name=NULL, int kind=0);
-    T2P_MEMBERSHIP_Res(const T2P_MEMBERSHIP_Res& other);
-    virtual ~T2P_MEMBERSHIP_Res();
-    T2P_MEMBERSHIP_Res& operator=(const T2P_MEMBERSHIP_Res& other);
-    virtual T2P_MEMBERSHIP_Res *dup() const {return new T2P_MEMBERSHIP_Res(*this);}
+    T2P_MEMBER_Res(const char *name=NULL, int kind=0);
+    T2P_MEMBER_Res(const T2P_MEMBER_Res& other);
+    virtual ~T2P_MEMBER_Res();
+    T2P_MEMBER_Res& operator=(const T2P_MEMBER_Res& other);
+    virtual T2P_MEMBER_Res *dup() const {return new T2P_MEMBER_Res(*this);}
     virtual void parsimPack(cCommBuffer *b);
     virtual void parsimUnpack(cCommBuffer *b);
 
@@ -156,13 +156,13 @@ class T2P_MEMBERSHIP_Res : public ::P2T_Packet
     virtual void setIds(unsigned int k, const char * ids);
     virtual void setPeer_to_chunk_ownershipArraySize(unsigned int size);
     virtual unsigned int getPeer_to_chunk_ownershipArraySize() const;
-    virtual Ownership_Message& getPeer_to_chunk_ownership(unsigned int k);
-    virtual const Ownership_Message& getPeer_to_chunk_ownership(unsigned int k) const {return const_cast<T2P_MEMBERSHIP_Res*>(this)->getPeer_to_chunk_ownership(k);}
-    virtual void setPeer_to_chunk_ownership(unsigned int k, const Ownership_Message& peer_to_chunk_ownership);
+    virtual CHUNKS_OWNED_Msg& getPeer_to_chunk_ownership(unsigned int k);
+    virtual const CHUNKS_OWNED_Msg& getPeer_to_chunk_ownership(unsigned int k) const {return const_cast<T2P_MEMBER_Res*>(this)->getPeer_to_chunk_ownership(k);}
+    virtual void setPeer_to_chunk_ownership(unsigned int k, const CHUNKS_OWNED_Msg& peer_to_chunk_ownership);
 };
 
-inline void doPacking(cCommBuffer *b, T2P_MEMBERSHIP_Res& obj) {obj.parsimPack(b);}
-inline void doUnpacking(cCommBuffer *b, T2P_MEMBERSHIP_Res& obj) {obj.parsimUnpack(b);}
+inline void doPacking(cCommBuffer *b, T2P_MEMBER_Res& obj) {obj.parsimPack(b);}
+inline void doUnpacking(cCommBuffer *b, T2P_MEMBER_Res& obj) {obj.parsimUnpack(b);}
 
 /**
  * Class generated from <tt>PeerToTrackerMsg.msg</tt> by opp_msgc.

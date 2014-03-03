@@ -32,8 +32,7 @@ enum P2P_MSG_TYPE {
 /**
  * Class generated from <tt>PeerToPeerMSG.msg</tt> by opp_msgc.
  * <pre>
- * packet P2P_Packet
- * {
+ * packet P2P_Packet{
  *    int     type @enum(P2P_MSG_TYPE);  
  * };
  * </pre>
@@ -70,10 +69,9 @@ inline void doUnpacking(cCommBuffer *b, P2P_Packet& obj) {obj.parsimUnpack(b);}
 /**
  * Class generated from <tt>PeerToPeerMSG.msg</tt> by opp_msgc.
  * <pre>
- * packet P2P_Req extends P2P_Packet
- * {
+ * packet P2P_Req extends P2P_Packet{
  *     string	id;		        
- *     int chunk;	        
+ *     int chunkNo;	        
  * };
  * </pre>
  */
@@ -81,7 +79,7 @@ class P2P_Req : public ::P2P_Packet
 {
   protected:
     opp_string id_var;
-    int chunk_var;
+    int chunkNo_var;
 
   private:
     void copy(const P2P_Req& other);
@@ -102,8 +100,8 @@ class P2P_Req : public ::P2P_Packet
     // field getter/setter methods
     virtual const char * getId() const;
     virtual void setId(const char * id);
-    virtual int getChunk() const;
-    virtual void setChunk(int chunk);
+    virtual int getChunkNo() const;
+    virtual void setChunkNo(int chunkNo);
 };
 
 inline void doPacking(cCommBuffer *b, P2P_Req& obj) {obj.parsimPack(b);}
@@ -112,11 +110,10 @@ inline void doUnpacking(cCommBuffer *b, P2P_Req& obj) {obj.parsimUnpack(b);}
 /**
  * Class generated from <tt>PeerToPeerMSG.msg</tt> by opp_msgc.
  * <pre>
- * packet P2P_Resp extends P2P_Packet
- * {
- *     string  id;			
- *     int requestedChunk;	
- *     char data [];	    
+ * packet P2P_Resp extends P2P_Packet{
+ *     string  id;				
+ *     int chunkNo;			
+ *     char contents[];	    
  * };
  * </pre>
  */
@@ -124,9 +121,9 @@ class P2P_Resp : public ::P2P_Packet
 {
   protected:
     opp_string id_var;
-    int requestedChunk_var;
-    char *data_var; // array ptr
-    unsigned int data_arraysize;
+    int chunkNo_var;
+    char *contents_var; // array ptr
+    unsigned int contents_arraysize;
 
   private:
     void copy(const P2P_Resp& other);
@@ -147,12 +144,12 @@ class P2P_Resp : public ::P2P_Packet
     // field getter/setter methods
     virtual const char * getId() const;
     virtual void setId(const char * id);
-    virtual int getRequestedChunk() const;
-    virtual void setRequestedChunk(int requestedChunk);
-    virtual void setDataArraySize(unsigned int size);
-    virtual unsigned int getDataArraySize() const;
-    virtual char getData(unsigned int k) const;
-    virtual void setData(unsigned int k, char data);
+    virtual int getChunkNo() const;
+    virtual void setChunkNo(int chunkNo);
+    virtual void setContentsArraySize(unsigned int size);
+    virtual unsigned int getContentsArraySize() const;
+    virtual char getContents(unsigned int k) const;
+    virtual void setContents(unsigned int k, char contents);
 };
 
 inline void doPacking(cCommBuffer *b, P2P_Resp& obj) {obj.parsimPack(b);}

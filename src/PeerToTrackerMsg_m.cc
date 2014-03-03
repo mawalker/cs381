@@ -33,9 +33,9 @@ void doUnpacking(cCommBuffer *, T& t) {
 EXECUTE_ON_STARTUP(
     cEnum *e = cEnum::find("P2T_MSG_TYPE");
     if (!e) enums.getInstance()->add(e = new cEnum("P2T_MSG_TYPE"));
-    e->insert(P2T_REGISTRATION_REQUEST, "P2T_REGISTRATION_REQUEST");
-    e->insert(P2T_REFRESH_MESSAGE, "P2T_REFRESH_MESSAGE");
-    e->insert(T2P_MEMBERSHIP_RESPONSE, "T2P_MEMBERSHIP_RESPONSE");
+    e->insert(P2T_REG_REQUEST, "P2T_REG_REQUEST");
+    e->insert(P2T_REFRESH_REQUEST, "P2T_REFRESH_REQUEST");
+    e->insert(T2P_MEMBER_RESPONSE, "T2P_MEMBER_RESPONSE");
     e->insert(P2T_DOWNLOAD_COMPLETE, "P2T_DOWNLOAD_COMPLETE");
 );
 
@@ -278,28 +278,28 @@ void *P2T_PacketDescriptor::getFieldStructPointer(void *object, int field, int i
     }
 }
 
-Register_Class(Ownership_Message);
+Register_Class(CHUNKS_OWNED_Msg);
 
-Ownership_Message::Ownership_Message(const char *name, int kind) : P2T_Packet(name,kind)
+CHUNKS_OWNED_Msg::CHUNKS_OWNED_Msg(const char *name, int kind) : P2T_Packet(name,kind)
 {
     this->id_var = 0;
-    owned_chunks_arraysize = 0;
-    this->owned_chunks_var = 0;
+    downloadedChunks_arraysize = 0;
+    this->downloadedChunks_var = 0;
 }
 
-Ownership_Message::Ownership_Message(const Ownership_Message& other) : P2T_Packet(other)
+CHUNKS_OWNED_Msg::CHUNKS_OWNED_Msg(const CHUNKS_OWNED_Msg& other) : P2T_Packet(other)
 {
-    owned_chunks_arraysize = 0;
-    this->owned_chunks_var = 0;
+    downloadedChunks_arraysize = 0;
+    this->downloadedChunks_var = 0;
     copy(other);
 }
 
-Ownership_Message::~Ownership_Message()
+CHUNKS_OWNED_Msg::~CHUNKS_OWNED_Msg()
 {
-    delete [] owned_chunks_var;
+    delete [] downloadedChunks_var;
 }
 
-Ownership_Message& Ownership_Message::operator=(const Ownership_Message& other)
+CHUNKS_OWNED_Msg& CHUNKS_OWNED_Msg::operator=(const CHUNKS_OWNED_Msg& other)
 {
     if (this==&other) return *this;
     P2T_Packet::operator=(other);
@@ -307,83 +307,83 @@ Ownership_Message& Ownership_Message::operator=(const Ownership_Message& other)
     return *this;
 }
 
-void Ownership_Message::copy(const Ownership_Message& other)
+void CHUNKS_OWNED_Msg::copy(const CHUNKS_OWNED_Msg& other)
 {
     this->id_var = other.id_var;
-    delete [] this->owned_chunks_var;
-    this->owned_chunks_var = (other.owned_chunks_arraysize==0) ? NULL : new int[other.owned_chunks_arraysize];
-    owned_chunks_arraysize = other.owned_chunks_arraysize;
-    for (unsigned int i=0; i<owned_chunks_arraysize; i++)
-        this->owned_chunks_var[i] = other.owned_chunks_var[i];
+    delete [] this->downloadedChunks_var;
+    this->downloadedChunks_var = (other.downloadedChunks_arraysize==0) ? NULL : new int[other.downloadedChunks_arraysize];
+    downloadedChunks_arraysize = other.downloadedChunks_arraysize;
+    for (unsigned int i=0; i<downloadedChunks_arraysize; i++)
+        this->downloadedChunks_var[i] = other.downloadedChunks_var[i];
 }
 
-void Ownership_Message::parsimPack(cCommBuffer *b)
+void CHUNKS_OWNED_Msg::parsimPack(cCommBuffer *b)
 {
     P2T_Packet::parsimPack(b);
     doPacking(b,this->id_var);
-    b->pack(owned_chunks_arraysize);
-    doPacking(b,this->owned_chunks_var,owned_chunks_arraysize);
+    b->pack(downloadedChunks_arraysize);
+    doPacking(b,this->downloadedChunks_var,downloadedChunks_arraysize);
 }
 
-void Ownership_Message::parsimUnpack(cCommBuffer *b)
+void CHUNKS_OWNED_Msg::parsimUnpack(cCommBuffer *b)
 {
     P2T_Packet::parsimUnpack(b);
     doUnpacking(b,this->id_var);
-    delete [] this->owned_chunks_var;
-    b->unpack(owned_chunks_arraysize);
-    if (owned_chunks_arraysize==0) {
-        this->owned_chunks_var = 0;
+    delete [] this->downloadedChunks_var;
+    b->unpack(downloadedChunks_arraysize);
+    if (downloadedChunks_arraysize==0) {
+        this->downloadedChunks_var = 0;
     } else {
-        this->owned_chunks_var = new int[owned_chunks_arraysize];
-        doUnpacking(b,this->owned_chunks_var,owned_chunks_arraysize);
+        this->downloadedChunks_var = new int[downloadedChunks_arraysize];
+        doUnpacking(b,this->downloadedChunks_var,downloadedChunks_arraysize);
     }
 }
 
-const char * Ownership_Message::getId() const
+const char * CHUNKS_OWNED_Msg::getId() const
 {
     return id_var.c_str();
 }
 
-void Ownership_Message::setId(const char * id)
+void CHUNKS_OWNED_Msg::setId(const char * id)
 {
     this->id_var = id;
 }
 
-void Ownership_Message::setOwned_chunksArraySize(unsigned int size)
+void CHUNKS_OWNED_Msg::setDownloadedChunksArraySize(unsigned int size)
 {
-    int *owned_chunks_var2 = (size==0) ? NULL : new int[size];
-    unsigned int sz = owned_chunks_arraysize < size ? owned_chunks_arraysize : size;
+    int *downloadedChunks_var2 = (size==0) ? NULL : new int[size];
+    unsigned int sz = downloadedChunks_arraysize < size ? downloadedChunks_arraysize : size;
     for (unsigned int i=0; i<sz; i++)
-        owned_chunks_var2[i] = this->owned_chunks_var[i];
+        downloadedChunks_var2[i] = this->downloadedChunks_var[i];
     for (unsigned int i=sz; i<size; i++)
-        owned_chunks_var2[i] = 0;
-    owned_chunks_arraysize = size;
-    delete [] this->owned_chunks_var;
-    this->owned_chunks_var = owned_chunks_var2;
+        downloadedChunks_var2[i] = 0;
+    downloadedChunks_arraysize = size;
+    delete [] this->downloadedChunks_var;
+    this->downloadedChunks_var = downloadedChunks_var2;
 }
 
-unsigned int Ownership_Message::getOwned_chunksArraySize() const
+unsigned int CHUNKS_OWNED_Msg::getDownloadedChunksArraySize() const
 {
-    return owned_chunks_arraysize;
+    return downloadedChunks_arraysize;
 }
 
-int Ownership_Message::getOwned_chunks(unsigned int k) const
+int CHUNKS_OWNED_Msg::getDownloadedChunks(unsigned int k) const
 {
-    if (k>=owned_chunks_arraysize) throw cRuntimeError("Array of size %d indexed by %d", owned_chunks_arraysize, k);
-    return owned_chunks_var[k];
+    if (k>=downloadedChunks_arraysize) throw cRuntimeError("Array of size %d indexed by %d", downloadedChunks_arraysize, k);
+    return downloadedChunks_var[k];
 }
 
-void Ownership_Message::setOwned_chunks(unsigned int k, int owned_chunks)
+void CHUNKS_OWNED_Msg::setDownloadedChunks(unsigned int k, int downloadedChunks)
 {
-    if (k>=owned_chunks_arraysize) throw cRuntimeError("Array of size %d indexed by %d", owned_chunks_arraysize, k);
-    this->owned_chunks_var[k] = owned_chunks;
+    if (k>=downloadedChunks_arraysize) throw cRuntimeError("Array of size %d indexed by %d", downloadedChunks_arraysize, k);
+    this->downloadedChunks_var[k] = downloadedChunks;
 }
 
-class Ownership_MessageDescriptor : public cClassDescriptor
+class CHUNKS_OWNED_MsgDescriptor : public cClassDescriptor
 {
   public:
-    Ownership_MessageDescriptor();
-    virtual ~Ownership_MessageDescriptor();
+    CHUNKS_OWNED_MsgDescriptor();
+    virtual ~CHUNKS_OWNED_MsgDescriptor();
 
     virtual bool doesSupport(cObject *obj) const;
     virtual const char *getProperty(const char *propertyname) const;
@@ -402,34 +402,34 @@ class Ownership_MessageDescriptor : public cClassDescriptor
     virtual void *getFieldStructPointer(void *object, int field, int i) const;
 };
 
-Register_ClassDescriptor(Ownership_MessageDescriptor);
+Register_ClassDescriptor(CHUNKS_OWNED_MsgDescriptor);
 
-Ownership_MessageDescriptor::Ownership_MessageDescriptor() : cClassDescriptor("Ownership_Message", "P2T_Packet")
+CHUNKS_OWNED_MsgDescriptor::CHUNKS_OWNED_MsgDescriptor() : cClassDescriptor("CHUNKS_OWNED_Msg", "P2T_Packet")
 {
 }
 
-Ownership_MessageDescriptor::~Ownership_MessageDescriptor()
+CHUNKS_OWNED_MsgDescriptor::~CHUNKS_OWNED_MsgDescriptor()
 {
 }
 
-bool Ownership_MessageDescriptor::doesSupport(cObject *obj) const
+bool CHUNKS_OWNED_MsgDescriptor::doesSupport(cObject *obj) const
 {
-    return dynamic_cast<Ownership_Message *>(obj)!=NULL;
+    return dynamic_cast<CHUNKS_OWNED_Msg *>(obj)!=NULL;
 }
 
-const char *Ownership_MessageDescriptor::getProperty(const char *propertyname) const
+const char *CHUNKS_OWNED_MsgDescriptor::getProperty(const char *propertyname) const
 {
     cClassDescriptor *basedesc = getBaseClassDescriptor();
     return basedesc ? basedesc->getProperty(propertyname) : NULL;
 }
 
-int Ownership_MessageDescriptor::getFieldCount(void *object) const
+int CHUNKS_OWNED_MsgDescriptor::getFieldCount(void *object) const
 {
     cClassDescriptor *basedesc = getBaseClassDescriptor();
     return basedesc ? 2+basedesc->getFieldCount(object) : 2;
 }
 
-unsigned int Ownership_MessageDescriptor::getFieldTypeFlags(void *object, int field) const
+unsigned int CHUNKS_OWNED_MsgDescriptor::getFieldTypeFlags(void *object, int field) const
 {
     cClassDescriptor *basedesc = getBaseClassDescriptor();
     if (basedesc) {
@@ -444,7 +444,7 @@ unsigned int Ownership_MessageDescriptor::getFieldTypeFlags(void *object, int fi
     return (field>=0 && field<2) ? fieldTypeFlags[field] : 0;
 }
 
-const char *Ownership_MessageDescriptor::getFieldName(void *object, int field) const
+const char *CHUNKS_OWNED_MsgDescriptor::getFieldName(void *object, int field) const
 {
     cClassDescriptor *basedesc = getBaseClassDescriptor();
     if (basedesc) {
@@ -454,21 +454,21 @@ const char *Ownership_MessageDescriptor::getFieldName(void *object, int field) c
     }
     static const char *fieldNames[] = {
         "id",
-        "owned_chunks",
+        "downloadedChunks",
     };
     return (field>=0 && field<2) ? fieldNames[field] : NULL;
 }
 
-int Ownership_MessageDescriptor::findField(void *object, const char *fieldName) const
+int CHUNKS_OWNED_MsgDescriptor::findField(void *object, const char *fieldName) const
 {
     cClassDescriptor *basedesc = getBaseClassDescriptor();
     int base = basedesc ? basedesc->getFieldCount(object) : 0;
     if (fieldName[0]=='i' && strcmp(fieldName, "id")==0) return base+0;
-    if (fieldName[0]=='o' && strcmp(fieldName, "owned_chunks")==0) return base+1;
+    if (fieldName[0]=='d' && strcmp(fieldName, "downloadedChunks")==0) return base+1;
     return basedesc ? basedesc->findField(object, fieldName) : -1;
 }
 
-const char *Ownership_MessageDescriptor::getFieldTypeString(void *object, int field) const
+const char *CHUNKS_OWNED_MsgDescriptor::getFieldTypeString(void *object, int field) const
 {
     cClassDescriptor *basedesc = getBaseClassDescriptor();
     if (basedesc) {
@@ -483,7 +483,7 @@ const char *Ownership_MessageDescriptor::getFieldTypeString(void *object, int fi
     return (field>=0 && field<2) ? fieldTypeStrings[field] : NULL;
 }
 
-const char *Ownership_MessageDescriptor::getFieldProperty(void *object, int field, const char *propertyname) const
+const char *CHUNKS_OWNED_MsgDescriptor::getFieldProperty(void *object, int field, const char *propertyname) const
 {
     cClassDescriptor *basedesc = getBaseClassDescriptor();
     if (basedesc) {
@@ -496,7 +496,7 @@ const char *Ownership_MessageDescriptor::getFieldProperty(void *object, int fiel
     }
 }
 
-int Ownership_MessageDescriptor::getArraySize(void *object, int field) const
+int CHUNKS_OWNED_MsgDescriptor::getArraySize(void *object, int field) const
 {
     cClassDescriptor *basedesc = getBaseClassDescriptor();
     if (basedesc) {
@@ -504,14 +504,14 @@ int Ownership_MessageDescriptor::getArraySize(void *object, int field) const
             return basedesc->getArraySize(object, field);
         field -= basedesc->getFieldCount(object);
     }
-    Ownership_Message *pp = (Ownership_Message *)object; (void)pp;
+    CHUNKS_OWNED_Msg *pp = (CHUNKS_OWNED_Msg *)object; (void)pp;
     switch (field) {
-        case 1: return pp->getOwned_chunksArraySize();
+        case 1: return pp->getDownloadedChunksArraySize();
         default: return 0;
     }
 }
 
-std::string Ownership_MessageDescriptor::getFieldAsString(void *object, int field, int i) const
+std::string CHUNKS_OWNED_MsgDescriptor::getFieldAsString(void *object, int field, int i) const
 {
     cClassDescriptor *basedesc = getBaseClassDescriptor();
     if (basedesc) {
@@ -519,15 +519,15 @@ std::string Ownership_MessageDescriptor::getFieldAsString(void *object, int fiel
             return basedesc->getFieldAsString(object,field,i);
         field -= basedesc->getFieldCount(object);
     }
-    Ownership_Message *pp = (Ownership_Message *)object; (void)pp;
+    CHUNKS_OWNED_Msg *pp = (CHUNKS_OWNED_Msg *)object; (void)pp;
     switch (field) {
         case 0: return oppstring2string(pp->getId());
-        case 1: return long2string(pp->getOwned_chunks(i));
+        case 1: return long2string(pp->getDownloadedChunks(i));
         default: return "";
     }
 }
 
-bool Ownership_MessageDescriptor::setFieldAsString(void *object, int field, int i, const char *value) const
+bool CHUNKS_OWNED_MsgDescriptor::setFieldAsString(void *object, int field, int i, const char *value) const
 {
     cClassDescriptor *basedesc = getBaseClassDescriptor();
     if (basedesc) {
@@ -535,15 +535,15 @@ bool Ownership_MessageDescriptor::setFieldAsString(void *object, int field, int 
             return basedesc->setFieldAsString(object,field,i,value);
         field -= basedesc->getFieldCount(object);
     }
-    Ownership_Message *pp = (Ownership_Message *)object; (void)pp;
+    CHUNKS_OWNED_Msg *pp = (CHUNKS_OWNED_Msg *)object; (void)pp;
     switch (field) {
         case 0: pp->setId((value)); return true;
-        case 1: pp->setOwned_chunks(i,string2long(value)); return true;
+        case 1: pp->setDownloadedChunks(i,string2long(value)); return true;
         default: return false;
     }
 }
 
-const char *Ownership_MessageDescriptor::getFieldStructName(void *object, int field) const
+const char *CHUNKS_OWNED_MsgDescriptor::getFieldStructName(void *object, int field) const
 {
     cClassDescriptor *basedesc = getBaseClassDescriptor();
     if (basedesc) {
@@ -558,7 +558,7 @@ const char *Ownership_MessageDescriptor::getFieldStructName(void *object, int fi
     return (field>=0 && field<2) ? fieldStructNames[field] : NULL;
 }
 
-void *Ownership_MessageDescriptor::getFieldStructPointer(void *object, int field, int i) const
+void *CHUNKS_OWNED_MsgDescriptor::getFieldStructPointer(void *object, int field, int i) const
 {
     cClassDescriptor *basedesc = getBaseClassDescriptor();
     if (basedesc) {
@@ -566,15 +566,15 @@ void *Ownership_MessageDescriptor::getFieldStructPointer(void *object, int field
             return basedesc->getFieldStructPointer(object, field, i);
         field -= basedesc->getFieldCount(object);
     }
-    Ownership_Message *pp = (Ownership_Message *)object; (void)pp;
+    CHUNKS_OWNED_Msg *pp = (CHUNKS_OWNED_Msg *)object; (void)pp;
     switch (field) {
         default: return NULL;
     }
 }
 
-Register_Class(T2P_MEMBERSHIP_Res);
+Register_Class(T2P_MEMBER_Res);
 
-T2P_MEMBERSHIP_Res::T2P_MEMBERSHIP_Res(const char *name, int kind) : P2T_Packet(name,kind)
+T2P_MEMBER_Res::T2P_MEMBER_Res(const char *name, int kind) : P2T_Packet(name,kind)
 {
     ids_arraysize = 0;
     this->ids_var = 0;
@@ -582,7 +582,7 @@ T2P_MEMBERSHIP_Res::T2P_MEMBERSHIP_Res(const char *name, int kind) : P2T_Packet(
     this->peer_to_chunk_ownership_var = 0;
 }
 
-T2P_MEMBERSHIP_Res::T2P_MEMBERSHIP_Res(const T2P_MEMBERSHIP_Res& other) : P2T_Packet(other)
+T2P_MEMBER_Res::T2P_MEMBER_Res(const T2P_MEMBER_Res& other) : P2T_Packet(other)
 {
     ids_arraysize = 0;
     this->ids_var = 0;
@@ -591,7 +591,7 @@ T2P_MEMBERSHIP_Res::T2P_MEMBERSHIP_Res(const T2P_MEMBERSHIP_Res& other) : P2T_Pa
     copy(other);
 }
 
-T2P_MEMBERSHIP_Res::~T2P_MEMBERSHIP_Res()
+T2P_MEMBER_Res::~T2P_MEMBER_Res()
 {
     delete [] ids_var;
     for (unsigned int i=0; i<peer_to_chunk_ownership_arraysize; i++)
@@ -599,7 +599,7 @@ T2P_MEMBERSHIP_Res::~T2P_MEMBERSHIP_Res()
     delete [] peer_to_chunk_ownership_var;
 }
 
-T2P_MEMBERSHIP_Res& T2P_MEMBERSHIP_Res::operator=(const T2P_MEMBERSHIP_Res& other)
+T2P_MEMBER_Res& T2P_MEMBER_Res::operator=(const T2P_MEMBER_Res& other)
 {
     if (this==&other) return *this;
     P2T_Packet::operator=(other);
@@ -607,7 +607,7 @@ T2P_MEMBERSHIP_Res& T2P_MEMBERSHIP_Res::operator=(const T2P_MEMBERSHIP_Res& othe
     return *this;
 }
 
-void T2P_MEMBERSHIP_Res::copy(const T2P_MEMBERSHIP_Res& other)
+void T2P_MEMBER_Res::copy(const T2P_MEMBER_Res& other)
 {
     delete [] this->ids_var;
     this->ids_var = (other.ids_arraysize==0) ? NULL : new opp_string[other.ids_arraysize];
@@ -615,7 +615,7 @@ void T2P_MEMBERSHIP_Res::copy(const T2P_MEMBERSHIP_Res& other)
     for (unsigned int i=0; i<ids_arraysize; i++)
         this->ids_var[i] = other.ids_var[i];
     delete [] this->peer_to_chunk_ownership_var;
-    this->peer_to_chunk_ownership_var = (other.peer_to_chunk_ownership_arraysize==0) ? NULL : new Ownership_Message[other.peer_to_chunk_ownership_arraysize];
+    this->peer_to_chunk_ownership_var = (other.peer_to_chunk_ownership_arraysize==0) ? NULL : new CHUNKS_OWNED_Msg[other.peer_to_chunk_ownership_arraysize];
     peer_to_chunk_ownership_arraysize = other.peer_to_chunk_ownership_arraysize;
     for (unsigned int i=0; i<peer_to_chunk_ownership_arraysize; i++)
     {
@@ -625,7 +625,7 @@ void T2P_MEMBERSHIP_Res::copy(const T2P_MEMBERSHIP_Res& other)
     }
 }
 
-void T2P_MEMBERSHIP_Res::parsimPack(cCommBuffer *b)
+void T2P_MEMBER_Res::parsimPack(cCommBuffer *b)
 {
     P2T_Packet::parsimPack(b);
     b->pack(ids_arraysize);
@@ -634,7 +634,7 @@ void T2P_MEMBERSHIP_Res::parsimPack(cCommBuffer *b)
     doPacking(b,this->peer_to_chunk_ownership_var,peer_to_chunk_ownership_arraysize);
 }
 
-void T2P_MEMBERSHIP_Res::parsimUnpack(cCommBuffer *b)
+void T2P_MEMBER_Res::parsimUnpack(cCommBuffer *b)
 {
     P2T_Packet::parsimUnpack(b);
     delete [] this->ids_var;
@@ -650,12 +650,12 @@ void T2P_MEMBERSHIP_Res::parsimUnpack(cCommBuffer *b)
     if (peer_to_chunk_ownership_arraysize==0) {
         this->peer_to_chunk_ownership_var = 0;
     } else {
-        this->peer_to_chunk_ownership_var = new Ownership_Message[peer_to_chunk_ownership_arraysize];
+        this->peer_to_chunk_ownership_var = new CHUNKS_OWNED_Msg[peer_to_chunk_ownership_arraysize];
         doUnpacking(b,this->peer_to_chunk_ownership_var,peer_to_chunk_ownership_arraysize);
     }
 }
 
-void T2P_MEMBERSHIP_Res::setIdsArraySize(unsigned int size)
+void T2P_MEMBER_Res::setIdsArraySize(unsigned int size)
 {
     opp_string *ids_var2 = (size==0) ? NULL : new opp_string[size];
     unsigned int sz = ids_arraysize < size ? ids_arraysize : size;
@@ -668,26 +668,26 @@ void T2P_MEMBERSHIP_Res::setIdsArraySize(unsigned int size)
     this->ids_var = ids_var2;
 }
 
-unsigned int T2P_MEMBERSHIP_Res::getIdsArraySize() const
+unsigned int T2P_MEMBER_Res::getIdsArraySize() const
 {
     return ids_arraysize;
 }
 
-const char * T2P_MEMBERSHIP_Res::getIds(unsigned int k) const
+const char * T2P_MEMBER_Res::getIds(unsigned int k) const
 {
     if (k>=ids_arraysize) throw cRuntimeError("Array of size %d indexed by %d", ids_arraysize, k);
     return ids_var[k].c_str();
 }
 
-void T2P_MEMBERSHIP_Res::setIds(unsigned int k, const char * ids)
+void T2P_MEMBER_Res::setIds(unsigned int k, const char * ids)
 {
     if (k>=ids_arraysize) throw cRuntimeError("Array of size %d indexed by %d", ids_arraysize, k);
     this->ids_var[k] = ids;
 }
 
-void T2P_MEMBERSHIP_Res::setPeer_to_chunk_ownershipArraySize(unsigned int size)
+void T2P_MEMBER_Res::setPeer_to_chunk_ownershipArraySize(unsigned int size)
 {
-    Ownership_Message *peer_to_chunk_ownership_var2 = (size==0) ? NULL : new Ownership_Message[size];
+    CHUNKS_OWNED_Msg *peer_to_chunk_ownership_var2 = (size==0) ? NULL : new CHUNKS_OWNED_Msg[size];
     unsigned int sz = peer_to_chunk_ownership_arraysize < size ? peer_to_chunk_ownership_arraysize : size;
     for (unsigned int i=0; i<sz; i++)
         peer_to_chunk_ownership_var2[i] = this->peer_to_chunk_ownership_var[i];
@@ -698,28 +698,28 @@ void T2P_MEMBERSHIP_Res::setPeer_to_chunk_ownershipArraySize(unsigned int size)
     this->peer_to_chunk_ownership_var = peer_to_chunk_ownership_var2;
 }
 
-unsigned int T2P_MEMBERSHIP_Res::getPeer_to_chunk_ownershipArraySize() const
+unsigned int T2P_MEMBER_Res::getPeer_to_chunk_ownershipArraySize() const
 {
     return peer_to_chunk_ownership_arraysize;
 }
 
-Ownership_Message& T2P_MEMBERSHIP_Res::getPeer_to_chunk_ownership(unsigned int k)
+CHUNKS_OWNED_Msg& T2P_MEMBER_Res::getPeer_to_chunk_ownership(unsigned int k)
 {
     if (k>=peer_to_chunk_ownership_arraysize) throw cRuntimeError("Array of size %d indexed by %d", peer_to_chunk_ownership_arraysize, k);
     return peer_to_chunk_ownership_var[k];
 }
 
-void T2P_MEMBERSHIP_Res::setPeer_to_chunk_ownership(unsigned int k, const Ownership_Message& peer_to_chunk_ownership)
+void T2P_MEMBER_Res::setPeer_to_chunk_ownership(unsigned int k, const CHUNKS_OWNED_Msg& peer_to_chunk_ownership)
 {
     if (k>=peer_to_chunk_ownership_arraysize) throw cRuntimeError("Array of size %d indexed by %d", peer_to_chunk_ownership_arraysize, k);
     this->peer_to_chunk_ownership_var[k] = peer_to_chunk_ownership;
 }
 
-class T2P_MEMBERSHIP_ResDescriptor : public cClassDescriptor
+class T2P_MEMBER_ResDescriptor : public cClassDescriptor
 {
   public:
-    T2P_MEMBERSHIP_ResDescriptor();
-    virtual ~T2P_MEMBERSHIP_ResDescriptor();
+    T2P_MEMBER_ResDescriptor();
+    virtual ~T2P_MEMBER_ResDescriptor();
 
     virtual bool doesSupport(cObject *obj) const;
     virtual const char *getProperty(const char *propertyname) const;
@@ -738,34 +738,34 @@ class T2P_MEMBERSHIP_ResDescriptor : public cClassDescriptor
     virtual void *getFieldStructPointer(void *object, int field, int i) const;
 };
 
-Register_ClassDescriptor(T2P_MEMBERSHIP_ResDescriptor);
+Register_ClassDescriptor(T2P_MEMBER_ResDescriptor);
 
-T2P_MEMBERSHIP_ResDescriptor::T2P_MEMBERSHIP_ResDescriptor() : cClassDescriptor("T2P_MEMBERSHIP_Res", "P2T_Packet")
+T2P_MEMBER_ResDescriptor::T2P_MEMBER_ResDescriptor() : cClassDescriptor("T2P_MEMBER_Res", "P2T_Packet")
 {
 }
 
-T2P_MEMBERSHIP_ResDescriptor::~T2P_MEMBERSHIP_ResDescriptor()
+T2P_MEMBER_ResDescriptor::~T2P_MEMBER_ResDescriptor()
 {
 }
 
-bool T2P_MEMBERSHIP_ResDescriptor::doesSupport(cObject *obj) const
+bool T2P_MEMBER_ResDescriptor::doesSupport(cObject *obj) const
 {
-    return dynamic_cast<T2P_MEMBERSHIP_Res *>(obj)!=NULL;
+    return dynamic_cast<T2P_MEMBER_Res *>(obj)!=NULL;
 }
 
-const char *T2P_MEMBERSHIP_ResDescriptor::getProperty(const char *propertyname) const
+const char *T2P_MEMBER_ResDescriptor::getProperty(const char *propertyname) const
 {
     cClassDescriptor *basedesc = getBaseClassDescriptor();
     return basedesc ? basedesc->getProperty(propertyname) : NULL;
 }
 
-int T2P_MEMBERSHIP_ResDescriptor::getFieldCount(void *object) const
+int T2P_MEMBER_ResDescriptor::getFieldCount(void *object) const
 {
     cClassDescriptor *basedesc = getBaseClassDescriptor();
     return basedesc ? 2+basedesc->getFieldCount(object) : 2;
 }
 
-unsigned int T2P_MEMBERSHIP_ResDescriptor::getFieldTypeFlags(void *object, int field) const
+unsigned int T2P_MEMBER_ResDescriptor::getFieldTypeFlags(void *object, int field) const
 {
     cClassDescriptor *basedesc = getBaseClassDescriptor();
     if (basedesc) {
@@ -780,7 +780,7 @@ unsigned int T2P_MEMBERSHIP_ResDescriptor::getFieldTypeFlags(void *object, int f
     return (field>=0 && field<2) ? fieldTypeFlags[field] : 0;
 }
 
-const char *T2P_MEMBERSHIP_ResDescriptor::getFieldName(void *object, int field) const
+const char *T2P_MEMBER_ResDescriptor::getFieldName(void *object, int field) const
 {
     cClassDescriptor *basedesc = getBaseClassDescriptor();
     if (basedesc) {
@@ -795,7 +795,7 @@ const char *T2P_MEMBERSHIP_ResDescriptor::getFieldName(void *object, int field) 
     return (field>=0 && field<2) ? fieldNames[field] : NULL;
 }
 
-int T2P_MEMBERSHIP_ResDescriptor::findField(void *object, const char *fieldName) const
+int T2P_MEMBER_ResDescriptor::findField(void *object, const char *fieldName) const
 {
     cClassDescriptor *basedesc = getBaseClassDescriptor();
     int base = basedesc ? basedesc->getFieldCount(object) : 0;
@@ -804,7 +804,7 @@ int T2P_MEMBERSHIP_ResDescriptor::findField(void *object, const char *fieldName)
     return basedesc ? basedesc->findField(object, fieldName) : -1;
 }
 
-const char *T2P_MEMBERSHIP_ResDescriptor::getFieldTypeString(void *object, int field) const
+const char *T2P_MEMBER_ResDescriptor::getFieldTypeString(void *object, int field) const
 {
     cClassDescriptor *basedesc = getBaseClassDescriptor();
     if (basedesc) {
@@ -814,12 +814,12 @@ const char *T2P_MEMBERSHIP_ResDescriptor::getFieldTypeString(void *object, int f
     }
     static const char *fieldTypeStrings[] = {
         "string",
-        "Ownership_Message",
+        "CHUNKS_OWNED_Msg",
     };
     return (field>=0 && field<2) ? fieldTypeStrings[field] : NULL;
 }
 
-const char *T2P_MEMBERSHIP_ResDescriptor::getFieldProperty(void *object, int field, const char *propertyname) const
+const char *T2P_MEMBER_ResDescriptor::getFieldProperty(void *object, int field, const char *propertyname) const
 {
     cClassDescriptor *basedesc = getBaseClassDescriptor();
     if (basedesc) {
@@ -832,7 +832,7 @@ const char *T2P_MEMBERSHIP_ResDescriptor::getFieldProperty(void *object, int fie
     }
 }
 
-int T2P_MEMBERSHIP_ResDescriptor::getArraySize(void *object, int field) const
+int T2P_MEMBER_ResDescriptor::getArraySize(void *object, int field) const
 {
     cClassDescriptor *basedesc = getBaseClassDescriptor();
     if (basedesc) {
@@ -840,7 +840,7 @@ int T2P_MEMBERSHIP_ResDescriptor::getArraySize(void *object, int field) const
             return basedesc->getArraySize(object, field);
         field -= basedesc->getFieldCount(object);
     }
-    T2P_MEMBERSHIP_Res *pp = (T2P_MEMBERSHIP_Res *)object; (void)pp;
+    T2P_MEMBER_Res *pp = (T2P_MEMBER_Res *)object; (void)pp;
     switch (field) {
         case 0: return pp->getIdsArraySize();
         case 1: return pp->getPeer_to_chunk_ownershipArraySize();
@@ -848,7 +848,7 @@ int T2P_MEMBERSHIP_ResDescriptor::getArraySize(void *object, int field) const
     }
 }
 
-std::string T2P_MEMBERSHIP_ResDescriptor::getFieldAsString(void *object, int field, int i) const
+std::string T2P_MEMBER_ResDescriptor::getFieldAsString(void *object, int field, int i) const
 {
     cClassDescriptor *basedesc = getBaseClassDescriptor();
     if (basedesc) {
@@ -856,7 +856,7 @@ std::string T2P_MEMBERSHIP_ResDescriptor::getFieldAsString(void *object, int fie
             return basedesc->getFieldAsString(object,field,i);
         field -= basedesc->getFieldCount(object);
     }
-    T2P_MEMBERSHIP_Res *pp = (T2P_MEMBERSHIP_Res *)object; (void)pp;
+    T2P_MEMBER_Res *pp = (T2P_MEMBER_Res *)object; (void)pp;
     switch (field) {
         case 0: return oppstring2string(pp->getIds(i));
         case 1: {std::stringstream out; out << pp->getPeer_to_chunk_ownership(i); return out.str();}
@@ -864,7 +864,7 @@ std::string T2P_MEMBERSHIP_ResDescriptor::getFieldAsString(void *object, int fie
     }
 }
 
-bool T2P_MEMBERSHIP_ResDescriptor::setFieldAsString(void *object, int field, int i, const char *value) const
+bool T2P_MEMBER_ResDescriptor::setFieldAsString(void *object, int field, int i, const char *value) const
 {
     cClassDescriptor *basedesc = getBaseClassDescriptor();
     if (basedesc) {
@@ -872,14 +872,14 @@ bool T2P_MEMBERSHIP_ResDescriptor::setFieldAsString(void *object, int field, int
             return basedesc->setFieldAsString(object,field,i,value);
         field -= basedesc->getFieldCount(object);
     }
-    T2P_MEMBERSHIP_Res *pp = (T2P_MEMBERSHIP_Res *)object; (void)pp;
+    T2P_MEMBER_Res *pp = (T2P_MEMBER_Res *)object; (void)pp;
     switch (field) {
         case 0: pp->setIds(i,(value)); return true;
         default: return false;
     }
 }
 
-const char *T2P_MEMBERSHIP_ResDescriptor::getFieldStructName(void *object, int field) const
+const char *T2P_MEMBER_ResDescriptor::getFieldStructName(void *object, int field) const
 {
     cClassDescriptor *basedesc = getBaseClassDescriptor();
     if (basedesc) {
@@ -889,12 +889,12 @@ const char *T2P_MEMBERSHIP_ResDescriptor::getFieldStructName(void *object, int f
     }
     static const char *fieldStructNames[] = {
         NULL,
-        "Ownership_Message",
+        "CHUNKS_OWNED_Msg",
     };
     return (field>=0 && field<2) ? fieldStructNames[field] : NULL;
 }
 
-void *T2P_MEMBERSHIP_ResDescriptor::getFieldStructPointer(void *object, int field, int i) const
+void *T2P_MEMBER_ResDescriptor::getFieldStructPointer(void *object, int field, int i) const
 {
     cClassDescriptor *basedesc = getBaseClassDescriptor();
     if (basedesc) {
@@ -902,7 +902,7 @@ void *T2P_MEMBERSHIP_ResDescriptor::getFieldStructPointer(void *object, int fiel
             return basedesc->getFieldStructPointer(object, field, i);
         field -= basedesc->getFieldCount(object);
     }
-    T2P_MEMBERSHIP_Res *pp = (T2P_MEMBERSHIP_Res *)object; (void)pp;
+    T2P_MEMBER_Res *pp = (T2P_MEMBER_Res *)object; (void)pp;
     switch (field) {
         case 1: return (void *)static_cast<cObject *>(&pp->getPeer_to_chunk_ownership(i)); break;
         default: return NULL;

@@ -14,10 +14,10 @@
 //
 
 enum P2T_MSG_TYPE {
-    P2T_REGISTRATION_REQUEST = 0;
-    P2T_REFRESH_MESSAGE = 1;    
-    T2P_MEMBERSHIP_RESPONSE = 2;
-    P2T_DOWNLOAD_COMPLETE = 3;
+    P2T_REG_REQUEST = 0; // registration request
+    P2T_REFRESH_REQUEST = 1; // refresh request to get the latest info about peers
+    T2P_MEMBER_RESPONSE = 2; // respond as a member
+    P2T_DOWNLOAD_COMPLETE = 3; // tell the tracker the download is complete
 };
 
 
@@ -26,18 +26,15 @@ packet P2T_Packet
    int     type @enum(P2T_MSG_TYPE);  // our message type
 };
 
-// will be used by Peer to Tracker Registration and Refresh
-// Tracker to Peer - list of membership and chunk ownership
-packet Ownership_Message extends P2T_Packet
+packet CHUNKS_OWNED_Msg extends P2T_Packet
 {
-    string	id;		        // announce the requestor's ID
-    int owned_chunks[];		// list of downloaded chunks 
+    string	id;		        	// Id of requestor
+    int downloadedChunks[];		// chunks that are already downloaded 
 };
 
-// response containing multiple message of the format same as owned chunk
-packet T2P_MEMBERSHIP_Res extends P2T_Packet{
+packet T2P_MEMBER_Res extends P2T_Packet{
     string ids[];   
-    Ownership_Message peer_to_chunk_ownership[];
+    CHUNKS_OWNED_Msg peer_to_chunk_ownership[];
 };
 
 // called when peer downloads everything
