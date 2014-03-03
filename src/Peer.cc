@@ -65,7 +65,6 @@ void Peer::initialize(int stage) {
 
     this->initNumOwnedChunks_ = this->ownedChunks_.size();
 
-
     for (int i = 0; i < this->numChunksInFile_; i++) {
         // check if we already have this chunk
         bool found = false;
@@ -344,7 +343,7 @@ void Peer::socketDataArrived(int connID, void *, cPacket *msg, bool) {
                     }
 
                     // add peer to the list of all peers
-                    for (int i = 0; i < (int)res->getIdsArraySize(); i++){
+                    for (int i = 0; i < (int)res->getIdsArraySize(); i++) {
                         this->peers_.push_back(res->getIds(i));
                     }
 
@@ -391,7 +390,7 @@ void Peer::socketDataArrived(int connID, void *, cPacket *msg, bool) {
                     int chunk = resp->getChunkNo();
 
                     insertChunk(chunk); // insert chunk for download
-                    deleteChunk(chunk); // delete chunk from the list of chunks to download
+                    deleteChunk(chunk);// delete chunk from the list of chunks to download
 
                     if ((int)this->ownedChunks_.size() >= this->numChunksInFile_) {
                         this->sendP2TRequest(this->trackerSocket_->getConnectionId(),
@@ -444,13 +443,8 @@ void Peer::socketDataArrived(int connID, void *, cPacket *msg, bool) {
                         TCPSocket *socket = this->socketMap_.findSocketFor(
                                 temp_msg);
 
-                        EV << "Download completed with peer - " << resp->getId() << endl;
-                        EV << "PRESENTLY OWNED PACKETS BY -" << this->localAddress_ << " : ";
-                        for (size_t i = 0; i < this->ownedChunks_.size(); i++)
-                        EV << this->ownedChunks_[i] << " ";
-
                         socket->close();
-                    } else {
+                    } else { // else get next chunk
                         this->sendRequest(connID, nextChunk);
                     }
 
@@ -473,7 +467,7 @@ void Peer::socketPeerClosed(int connID, void *) {
     EV<< "=== Peer: " << this->localAddress_
     << " received socketPeerClosed message" << endl;
     EV << "peer closed for connID = " << connID << endl;
-    // close the socket corr. to peer
+
     cMessage *temp_msg = new cMessage("temp");
     TCPCommand *temp_cmd = new TCPCommand();
     temp_cmd->setConnId(connID);
@@ -489,7 +483,7 @@ void Peer::socketClosed(int connID, void *) {
     << " received socketClosed message" << endl;
     // *redefine* to start another session etc.
     EV << "connection closed\n";
-    // socket is closed, remove from the map
+
     cMessage *temp_msg = new cMessage("temp");
     TCPCommand *temp_cmd = new TCPCommand();
     temp_cmd->setConnId(connID);
@@ -563,6 +557,7 @@ void Peer::close() {
 
 // send a request to the other side
 void Peer::sendP2TRequest(int connId, enum P2T_MSG_TYPE prt_msg_type) {
+
     EV<< "=== Peer: " << this->localAddress_ << " sendRequest. " << endl;
 
     cMessage *temp_msg = new cMessage("temp");
@@ -580,9 +575,8 @@ void Peer::sendP2TRequest(int connId, enum P2T_MSG_TYPE prt_msg_type) {
                 CHUNKS_OWNED_Msg *req = new CHUNKS_OWNED_Msg();
                 req->setType((int) P2T_REG_REQUEST);
                 req->setId(this->localAddress_.c_str());
-                int size = this->ownedChunks_.size();
-                req->setDownloadedChunksArraySize(size);
-                for (int i = 0; i < size; i++) {
+                req->setDownloadedChunksArraySize((int)this->ownedChunks_.size());
+                for (int i = 0; i < (int)this->ownedChunks_.size(); i++) {
                     req->setDownloadedChunks(i, this->ownedChunks_[i]);
                 }
                 req->setByteLength(256); // I think we can set any length we want :-)
@@ -593,9 +587,8 @@ void Peer::sendP2TRequest(int connId, enum P2T_MSG_TYPE prt_msg_type) {
                 CHUNKS_OWNED_Msg *refresh_req = new CHUNKS_OWNED_Msg();
                 refresh_req->setType((int) P2T_REFRESH_REQUEST);
                 refresh_req->setId(this->localAddress_.c_str());
-                int size = this->ownedChunks_.size();
-                refresh_req->setDownloadedChunksArraySize(size);
-                for (int i = 0; i < size; i++) {
+                refresh_req->setDownloadedChunksArraySize((int)this->ownedChunks_.size());
+                for (int i = 0; i < (int)this->ownedChunks_.size(); i++) {
                     refresh_req->setDownloadedChunks(i, this->ownedChunks_[i]);
                 }
                 refresh_req->setByteLength(256); // I think we can set any length we want :-)
@@ -621,78 +614,60 @@ void Peer::sendP2TRequest(int connId, enum P2T_MSG_TYPE prt_msg_type) {
 
 void Peer::downloadChunks() {
 
-    EV<< "PACKETS YET TO BE DOWNLOADED BY  " << this->localAddress_ << " : ";
+    EV<< this->localAddress_ << " is about to download chunks: ";
 
     for (size_t i = 0; i < this->chunksToGet_.size(); i++)
     EV << this->chunksToGet_[i] << " ";
 
-    if (this->chunksToGet_.size() == 0)
-    EV << endl << "FILE DOWNLOAD COMPLETED FOR " << this->localAddress_ << endl;
-    // need to connect to peers having chunk which we dont have
+    if (this->chunksToGet_.size() == 0) {
+        EV << endl << this->localAddress_ << " completed download " << endl;
+    }
 
-    // loop through each peer and check which of them have to the chunk to download
-    // iterator for peer and chunk map
     map<string, vector<int> >::iterator it;
-
-    // should also handle the case foe refresh message
-    set<int> chunksAlreadyEnqueued;
+    set<int> chunksChosen;
 
     for (it = this->peersToChunkMap_.begin(); it != this->peersToChunkMap_.end();
             ++it) {
 
-        if (this->numPeersConnected_ >= this->numPeers_)
-        // already have sufficient connections, return
-        return;
+        if (this->numPeersConnected_ >= this->numPeers_) {
+            return;
+        }
 
         string peer = (*it).first.c_str();
 
-        // need to make sure we are ourselves not this peer
-        if (peer.compare(this->localAddress_) == 0)
-        continue;
+        if (peer.compare(this->localAddress_) != 0) { // make sure we are not talking to ourselves
 
-        // make sure we are not already connected to this peer
-        bool peerFound = false;
-        for (size_t j = 0; j < this->peersConnected_.size(); j++) {
-            if (peer.compare(this->peersConnected_[j]) == 0) {
-                peerFound = true;
+            vector<int> chunks = it->second;
+            for (int k = 0; k < it->second.size(); k++) {
+
+                // if peer already has this chunk
+                bool found = false;
+
+                for (size_t i = 0; i < this->chunksToGet_.size(); i++) {
+
+                    // need to download the chunk
+                    if (chunks[k] == chunksToGet_[i]) {
+                        set<int>::iterator iter;
+                        iter = chunksChosen.find(chunks[k]);
+
+                        // chunk has already been chosen, find next
+                        if (iter != chunksChosen.end()){
+                            break;
+                        }
+
+                        // connect to this peer
+                        chunksChosen.insert(chunks[k]);
+                        this->connToChunkMap_.insert(
+                                pair<int, int>(connect(peer), chunks[k]));
+                        this->peersConnected_.push_back(peer);
+                        this->numPeersConnected_++;
+                        found = true;
+                        break;
+                    }
+                }
+                if (found)
                 break;
             }
-        }
-
-        // already connected to this peer, lets move to next
-        if (peerFound)
-        continue;
-
-        int chunkVectorSize = it->second.size();
-        vector<int> chunks = it->second;
-        for (int k = 0; k < chunkVectorSize; k++) {
-
-            // need to find if this peer has this chunk
-            bool chunkFound = false;
-
-            for (size_t i = 0; i < this->chunksToGet_.size(); i++) {
-
-                // this means we have to download this chunk from peer
-                if (chunks[k] == chunksToGet_[i]) {
-                    set<int>::iterator setiter;
-                    setiter = chunksAlreadyEnqueued.find(chunks[k]);
-
-                    // this chunk is already enqueued for download, we should look at next chunk in the peer
-                    if (setiter != chunksAlreadyEnqueued.end())
-                    break;
-
-                    // connect to this peer
-                    chunksAlreadyEnqueued.insert(chunks[k]);
-                    this->connToChunkMap_.insert(
-                            pair<int, int>(connect(peer), chunks[k]));
-                    this->peersConnected_.push_back(peer);
-                    this->numPeersConnected_++;
-                    chunkFound = true;
-                    break;
-                }
-            }
-            if (chunkFound)
-            break;
         }
     }
 }
@@ -795,8 +770,7 @@ void Peer::insertChunk(int chunkValue) {
 void Peer::deleteChunk(int chunkValue) {
     for (size_t i = 0; i < this->chunksToGet_.size(); i++) {
         if (this->chunksToGet_[i] == chunkValue) {
-            this->chunksToGet_.erase(
-                    this->chunksToGet_.begin() + i);
+            this->chunksToGet_.erase(this->chunksToGet_.begin() + i);
             return;
         }
     }
