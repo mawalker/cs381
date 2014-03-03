@@ -34,7 +34,7 @@ packet CHUNKS_OWNED_Msg extends P2T_Packet
 
 packet T2P_MEMBER_Res extends P2T_Packet{
     string ids[];   
-    CHUNKS_OWNED_Msg peer_to_chunk_ownership[];
+    CHUNKS_OWNED_Msg chunksOwned[];
 };
 
 // called when peer downloads everything

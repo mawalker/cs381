@@ -396,7 +396,7 @@ void Tracker::sendResponse(int connId) {
         }
 
         // number of peer info whic tracker has
-        resp->setPeer_to_chunk_ownershipArraySize(this->peers_to_chunk_.size());
+        resp->setChunksOwnedArraySize(this->peers_to_chunk_.size());
 
         // iterator for peer and chunk map
         map<string, vector<int> >::iterator it;
@@ -414,7 +414,7 @@ void Tracker::sendResponse(int connId) {
                 respOwnership->setDownloadedChunks(i, (*it).second[i]);
             }
 
-            resp->setPeer_to_chunk_ownership(k++, *respOwnership);
+            resp->setChunksOwned(k++, *respOwnership);
 
         }
         // need to set the byte length else nothing gets sent as I found the hard way

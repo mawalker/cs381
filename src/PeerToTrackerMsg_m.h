@@ -121,7 +121,7 @@ inline void doUnpacking(cCommBuffer *b, CHUNKS_OWNED_Msg& obj) {obj.parsimUnpack
  * <pre>
  * packet T2P_MEMBER_Res extends P2T_Packet{
  *     string ids[];   
- *     CHUNKS_OWNED_Msg peer_to_chunk_ownership[];
+ *     CHUNKS_OWNED_Msg chunksOwned[];
  * };
  * </pre>
  */
@@ -130,8 +130,8 @@ class T2P_MEMBER_Res : public ::P2T_Packet
   protected:
     opp_string *ids_var; // array ptr
     unsigned int ids_arraysize;
-    CHUNKS_OWNED_Msg *peer_to_chunk_ownership_var; // array ptr
-    unsigned int peer_to_chunk_ownership_arraysize;
+    CHUNKS_OWNED_Msg *chunksOwned_var; // array ptr
+    unsigned int chunksOwned_arraysize;
 
   private:
     void copy(const T2P_MEMBER_Res& other);
@@ -154,11 +154,11 @@ class T2P_MEMBER_Res : public ::P2T_Packet
     virtual unsigned int getIdsArraySize() const;
     virtual const char * getIds(unsigned int k) const;
     virtual void setIds(unsigned int k, const char * ids);
-    virtual void setPeer_to_chunk_ownershipArraySize(unsigned int size);
-    virtual unsigned int getPeer_to_chunk_ownershipArraySize() const;
-    virtual CHUNKS_OWNED_Msg& getPeer_to_chunk_ownership(unsigned int k);
-    virtual const CHUNKS_OWNED_Msg& getPeer_to_chunk_ownership(unsigned int k) const {return const_cast<T2P_MEMBER_Res*>(this)->getPeer_to_chunk_ownership(k);}
-    virtual void setPeer_to_chunk_ownership(unsigned int k, const CHUNKS_OWNED_Msg& peer_to_chunk_ownership);
+    virtual void setChunksOwnedArraySize(unsigned int size);
+    virtual unsigned int getChunksOwnedArraySize() const;
+    virtual CHUNKS_OWNED_Msg& getChunksOwned(unsigned int k);
+    virtual const CHUNKS_OWNED_Msg& getChunksOwned(unsigned int k) const {return const_cast<T2P_MEMBER_Res*>(this)->getChunksOwned(k);}
+    virtual void setChunksOwned(unsigned int k, const CHUNKS_OWNED_Msg& chunksOwned);
 };
 
 inline void doPacking(cCommBuffer *b, T2P_MEMBER_Res& obj) {obj.parsimPack(b);}

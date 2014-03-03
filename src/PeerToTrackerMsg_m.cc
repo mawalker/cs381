@@ -578,25 +578,25 @@ T2P_MEMBER_Res::T2P_MEMBER_Res(const char *name, int kind) : P2T_Packet(name,kin
 {
     ids_arraysize = 0;
     this->ids_var = 0;
-    peer_to_chunk_ownership_arraysize = 0;
-    this->peer_to_chunk_ownership_var = 0;
+    chunksOwned_arraysize = 0;
+    this->chunksOwned_var = 0;
 }
 
 T2P_MEMBER_Res::T2P_MEMBER_Res(const T2P_MEMBER_Res& other) : P2T_Packet(other)
 {
     ids_arraysize = 0;
     this->ids_var = 0;
-    peer_to_chunk_ownership_arraysize = 0;
-    this->peer_to_chunk_ownership_var = 0;
+    chunksOwned_arraysize = 0;
+    this->chunksOwned_var = 0;
     copy(other);
 }
 
 T2P_MEMBER_Res::~T2P_MEMBER_Res()
 {
     delete [] ids_var;
-    for (unsigned int i=0; i<peer_to_chunk_ownership_arraysize; i++)
-        drop(&(this->peer_to_chunk_ownership_var[i]));
-    delete [] peer_to_chunk_ownership_var;
+    for (unsigned int i=0; i<chunksOwned_arraysize; i++)
+        drop(&(this->chunksOwned_var[i]));
+    delete [] chunksOwned_var;
 }
 
 T2P_MEMBER_Res& T2P_MEMBER_Res::operator=(const T2P_MEMBER_Res& other)
@@ -614,14 +614,14 @@ void T2P_MEMBER_Res::copy(const T2P_MEMBER_Res& other)
     ids_arraysize = other.ids_arraysize;
     for (unsigned int i=0; i<ids_arraysize; i++)
         this->ids_var[i] = other.ids_var[i];
-    delete [] this->peer_to_chunk_ownership_var;
-    this->peer_to_chunk_ownership_var = (other.peer_to_chunk_ownership_arraysize==0) ? NULL : new CHUNKS_OWNED_Msg[other.peer_to_chunk_ownership_arraysize];
-    peer_to_chunk_ownership_arraysize = other.peer_to_chunk_ownership_arraysize;
-    for (unsigned int i=0; i<peer_to_chunk_ownership_arraysize; i++)
+    delete [] this->chunksOwned_var;
+    this->chunksOwned_var = (other.chunksOwned_arraysize==0) ? NULL : new CHUNKS_OWNED_Msg[other.chunksOwned_arraysize];
+    chunksOwned_arraysize = other.chunksOwned_arraysize;
+    for (unsigned int i=0; i<chunksOwned_arraysize; i++)
     {
-        take(&(this->peer_to_chunk_ownership_var[i]));
-        this->peer_to_chunk_ownership_var[i] = other.peer_to_chunk_ownership_var[i];
-        this->peer_to_chunk_ownership_var[i].setName(other.peer_to_chunk_ownership_var[i].getName());
+        take(&(this->chunksOwned_var[i]));
+        this->chunksOwned_var[i] = other.chunksOwned_var[i];
+        this->chunksOwned_var[i].setName(other.chunksOwned_var[i].getName());
     }
 }
 
@@ -630,8 +630,8 @@ void T2P_MEMBER_Res::parsimPack(cCommBuffer *b)
     P2T_Packet::parsimPack(b);
     b->pack(ids_arraysize);
     doPacking(b,this->ids_var,ids_arraysize);
-    b->pack(peer_to_chunk_ownership_arraysize);
-    doPacking(b,this->peer_to_chunk_ownership_var,peer_to_chunk_ownership_arraysize);
+    b->pack(chunksOwned_arraysize);
+    doPacking(b,this->chunksOwned_var,chunksOwned_arraysize);
 }
 
 void T2P_MEMBER_Res::parsimUnpack(cCommBuffer *b)
@@ -645,13 +645,13 @@ void T2P_MEMBER_Res::parsimUnpack(cCommBuffer *b)
         this->ids_var = new opp_string[ids_arraysize];
         doUnpacking(b,this->ids_var,ids_arraysize);
     }
-    delete [] this->peer_to_chunk_ownership_var;
-    b->unpack(peer_to_chunk_ownership_arraysize);
-    if (peer_to_chunk_ownership_arraysize==0) {
-        this->peer_to_chunk_ownership_var = 0;
+    delete [] this->chunksOwned_var;
+    b->unpack(chunksOwned_arraysize);
+    if (chunksOwned_arraysize==0) {
+        this->chunksOwned_var = 0;
     } else {
-        this->peer_to_chunk_ownership_var = new CHUNKS_OWNED_Msg[peer_to_chunk_ownership_arraysize];
-        doUnpacking(b,this->peer_to_chunk_ownership_var,peer_to_chunk_ownership_arraysize);
+        this->chunksOwned_var = new CHUNKS_OWNED_Msg[chunksOwned_arraysize];
+        doUnpacking(b,this->chunksOwned_var,chunksOwned_arraysize);
     }
 }
 
@@ -685,34 +685,34 @@ void T2P_MEMBER_Res::setIds(unsigned int k, const char * ids)
     this->ids_var[k] = ids;
 }
 
-void T2P_MEMBER_Res::setPeer_to_chunk_ownershipArraySize(unsigned int size)
+void T2P_MEMBER_Res::setChunksOwnedArraySize(unsigned int size)
 {
-    CHUNKS_OWNED_Msg *peer_to_chunk_ownership_var2 = (size==0) ? NULL : new CHUNKS_OWNED_Msg[size];
-    unsigned int sz = peer_to_chunk_ownership_arraysize < size ? peer_to_chunk_ownership_arraysize : size;
+    CHUNKS_OWNED_Msg *chunksOwned_var2 = (size==0) ? NULL : new CHUNKS_OWNED_Msg[size];
+    unsigned int sz = chunksOwned_arraysize < size ? chunksOwned_arraysize : size;
     for (unsigned int i=0; i<sz; i++)
-        peer_to_chunk_ownership_var2[i] = this->peer_to_chunk_ownership_var[i];
+        chunksOwned_var2[i] = this->chunksOwned_var[i];
     for (unsigned int i=sz; i<size; i++)
-        take(&(peer_to_chunk_ownership_var2[i]));
-    peer_to_chunk_ownership_arraysize = size;
-    delete [] this->peer_to_chunk_ownership_var;
-    this->peer_to_chunk_ownership_var = peer_to_chunk_ownership_var2;
+        take(&(chunksOwned_var2[i]));
+    chunksOwned_arraysize = size;
+    delete [] this->chunksOwned_var;
+    this->chunksOwned_var = chunksOwned_var2;
 }
 
-unsigned int T2P_MEMBER_Res::getPeer_to_chunk_ownershipArraySize() const
+unsigned int T2P_MEMBER_Res::getChunksOwnedArraySize() const
 {
-    return peer_to_chunk_ownership_arraysize;
+    return chunksOwned_arraysize;
 }
 
-CHUNKS_OWNED_Msg& T2P_MEMBER_Res::getPeer_to_chunk_ownership(unsigned int k)
+CHUNKS_OWNED_Msg& T2P_MEMBER_Res::getChunksOwned(unsigned int k)
 {
-    if (k>=peer_to_chunk_ownership_arraysize) throw cRuntimeError("Array of size %d indexed by %d", peer_to_chunk_ownership_arraysize, k);
-    return peer_to_chunk_ownership_var[k];
+    if (k>=chunksOwned_arraysize) throw cRuntimeError("Array of size %d indexed by %d", chunksOwned_arraysize, k);
+    return chunksOwned_var[k];
 }
 
-void T2P_MEMBER_Res::setPeer_to_chunk_ownership(unsigned int k, const CHUNKS_OWNED_Msg& peer_to_chunk_ownership)
+void T2P_MEMBER_Res::setChunksOwned(unsigned int k, const CHUNKS_OWNED_Msg& chunksOwned)
 {
-    if (k>=peer_to_chunk_ownership_arraysize) throw cRuntimeError("Array of size %d indexed by %d", peer_to_chunk_ownership_arraysize, k);
-    this->peer_to_chunk_ownership_var[k] = peer_to_chunk_ownership;
+    if (k>=chunksOwned_arraysize) throw cRuntimeError("Array of size %d indexed by %d", chunksOwned_arraysize, k);
+    this->chunksOwned_var[k] = chunksOwned;
 }
 
 class T2P_MEMBER_ResDescriptor : public cClassDescriptor
@@ -790,7 +790,7 @@ const char *T2P_MEMBER_ResDescriptor::getFieldName(void *object, int field) cons
     }
     static const char *fieldNames[] = {
         "ids",
-        "peer_to_chunk_ownership",
+        "chunksOwned",
     };
     return (field>=0 && field<2) ? fieldNames[field] : NULL;
 }
@@ -800,7 +800,7 @@ int T2P_MEMBER_ResDescriptor::findField(void *object, const char *fieldName) con
     cClassDescriptor *basedesc = getBaseClassDescriptor();
     int base = basedesc ? basedesc->getFieldCount(object) : 0;
     if (fieldName[0]=='i' && strcmp(fieldName, "ids")==0) return base+0;
-    if (fieldName[0]=='p' && strcmp(fieldName, "peer_to_chunk_ownership")==0) return base+1;
+    if (fieldName[0]=='c' && strcmp(fieldName, "chunksOwned")==0) return base+1;
     return basedesc ? basedesc->findField(object, fieldName) : -1;
 }
 
@@ -843,7 +843,7 @@ int T2P_MEMBER_ResDescriptor::getArraySize(void *object, int field) const
     T2P_MEMBER_Res *pp = (T2P_MEMBER_Res *)object; (void)pp;
     switch (field) {
         case 0: return pp->getIdsArraySize();
-        case 1: return pp->getPeer_to_chunk_ownershipArraySize();
+        case 1: return pp->getChunksOwnedArraySize();
         default: return 0;
     }
 }
@@ -859,7 +859,7 @@ std::string T2P_MEMBER_ResDescriptor::getFieldAsString(void *object, int field, 
     T2P_MEMBER_Res *pp = (T2P_MEMBER_Res *)object; (void)pp;
     switch (field) {
         case 0: return oppstring2string(pp->getIds(i));
-        case 1: {std::stringstream out; out << pp->getPeer_to_chunk_ownership(i); return out.str();}
+        case 1: {std::stringstream out; out << pp->getChunksOwned(i); return out.str();}
         default: return "";
     }
 }
@@ -904,7 +904,7 @@ void *T2P_MEMBER_ResDescriptor::getFieldStructPointer(void *object, int field, i
     }
     T2P_MEMBER_Res *pp = (T2P_MEMBER_Res *)object; (void)pp;
     switch (field) {
-        case 1: return (void *)static_cast<cObject *>(&pp->getPeer_to_chunk_ownership(i)); break;
+        case 1: return (void *)static_cast<cObject *>(&pp->getChunksOwned(i)); break;
         default: return NULL;
     }
 }

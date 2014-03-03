@@ -69,7 +69,7 @@ private:
     map<int, int> connToChunkMap_; // connection to chunk map
     map<string, vector<int> > peersToChunkMap_; // peer to chunk map
 
-    TCPSocket *trackerSocket_;        // socket to tracker
+    TCPSocket *trackerSocket_;           // tracker socket
     string trackerAddress_;              // tracker address
 
     void insertChunk(int);

@@ -138,7 +138,7 @@ void Peer::initialize(int stage) {
 
     TCPSocket *tracker_socket = new TCPSocket();
 
-    // register ourselves as the callback object - we are active here
+    // tracker is active
     bool *passive1 = new bool(false);
     tracker_socket->setCallbackObject(this, passive1);
 
@@ -159,8 +159,6 @@ void Peer::initialize(int stage) {
 
     // save this socket
     this->trackerSocket_ = tracker_socket;
-
-    // now we start a timer so that when it kicks in, we send refresh request to Tracker
 
     if (this->startAsSeed_ == true) {
         this->sendP2TRequest(this->trackerSocket_->getConnectionId(),
@@ -285,22 +283,20 @@ void Peer::socketEstablished(int connID, void *role) {
     // connection, then we initiate the next data transfer with the peer
     bool *passive = static_cast<bool *>(role);
     if (*passive) {
-        EV
-        << "=== We are in passive role and hence just wait for an incoming req ==="
-        << endl;
+        EV << "=== We are in passive role and hence just wait for an incoming req ===" << endl;
     } else {
         EV << "=== We are in active role and hence initiate a req ===" << endl;
 
-        // Connection established with Tracker
+        // if connection with the tracker is established
         if (connID == this->trackerSocket_->getConnectionId()) {
-            // send the request to the tracker from whom we need a response
+
             this->sendP2TRequest(connID, P2T_REG_REQUEST);
-        } else {
-            // send requests to the peer to whom we just got connected
-            map<int, int>::iterator connIter;
-            connIter = this->connToChunkMap_.find(connID);
-            if (connIter != this->connToChunkMap_.end()) {
-                this->sendRequest(connID, connIter->second);
+        } else { // else this is a connection with peer
+
+            map<int, int>::iterator mapIt;
+            mapIt = this->connToChunkMap_.find(connID);
+            if (mapIt != this->connToChunkMap_.end()) {
+                this->sendRequest(connID, mapIt->second);
             }
 
         }
@@ -310,6 +306,7 @@ void Peer::socketEstablished(int connID, void *role) {
 
     /** handle incoming data. Could be a request or response */
 void Peer::socketDataArrived(int connID, void *, cPacket *msg, bool) {
+
     EV<< "=== Peer: " << this->localAddress_
     << " received socketDataArrived message. ===" << endl;
 
@@ -317,21 +314,21 @@ void Peer::socketDataArrived(int connID, void *, cPacket *msg, bool) {
 
     P2T_Packet *packet = dynamic_cast<P2T_Packet *>(msg);
     if (packet) {
-        // handle P2T message
+
         switch ((P2T_MSG_TYPE) packet->getType()) {
             case T2P_MEMBER_RESPONSE: {
                 T2P_MEMBER_Res *res = dynamic_cast<T2P_MEMBER_Res *>(msg);
                 if (!res) {
-                    EV << "Arriving packet is not of type T2P_MEMBERSHIP_Res"
+                    EV << "Arriving packet is not of type T2P_MEMBER_Res"
                     << endl;
                 } else {
                     setStatusString("Tracker Response");
-                    EV << "Response arrived from tracker" << endl;
+                    EV << "Received response from tracker" << endl;
 
-                    int sizeOfMessages = res->getPeer_to_chunk_ownershipArraySize();
+                    int sizeOfMessages = res->getChunksOwnedArraySize();
                     for (int i = 0; i < sizeOfMessages; i++) {
                         CHUNKS_OWNED_Msg chunksOwnedMsg =
-                        res->getPeer_to_chunk_ownership(i);
+                        res->getChunksOwned(i);
                         string requestorId = chunksOwnedMsg.getId();
 
                         // create vector from chunklist array
