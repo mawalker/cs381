@@ -1,0 +1,91 @@
+//
+// $Id$
+//
+//
+// Homework 2, Ace-Tao pub/sub for CS381, Spring 2014
+// Based on TAO/examples/Event_Comm
+// 
+// Author: Michael A. Walker
+//       : Violetta Vylegzhanina
+// Date:   April 23, 2014
+//
+
+#if !defined (_PUB_SUB_IDL)
+#define _PUB_SUB_IDL
+
+typedef sequence <octet> Chunk;
+
+// Put the interfaces in a module, to avoid global namespace pollution
+module Pub_Sub
+{
+
+  // declared a single 'event' topic, to allow dynamic-run time filtering of topics based on 'tag_'
+  // this allows multiple topics to be declared using the same interface, and is more expandable.
+ struct Event
+  {
+    string tag_;
+    any value_;
+    Object object_ref_;
+  };
+
+  interface Consumer
+  {
+    // = TITLE
+    //   Defines the interface for a <Consumer> of events.
+
+    void push (in Event event_instance);
+    // Inform the <Consumer> that <event> has occurred.
+
+    void disconnect (in string reason);
+    // Disconnect the <Consumer> from the <Notifier>,
+    // giving it the <reason>.
+  };
+
+  interface Notifier
+  {
+    // = TITLE
+    //   Defines the interface for a <Notifier> of events.
+
+    exception CannotSubscribe
+    {
+      // = TITLE
+      //   This exception in thrown when a <subscribe> fails.
+
+      string reason_;
+    };
+
+    exception CannotUnsubscribe
+    {
+      // = TITLE
+      //   This exception in thrown when a <unsubscribe> fails.
+
+      string reason_;
+    };
+
+    // = The following operations are intended for Suppliers.
+
+    void disconnect (in string reason);
+    // Disconnect all the receivers, giving them the <reason>.
+
+    void push (in Event event_instance);
+    // Send the <event> to all the consumers who have subscribed and
+    // who match the filtering criteria.
+
+    // = The following operations are intended for Consumers.
+
+    void subscribe (in Consumer subscriber,
+                    in string filtering_criteria) raises (CannotSubscribe);
+    // Subscribe the <Consumer> to receive events that match the
+    // regular expresssion <filtering_criteria> applied by the
+    // <Notifier>.  If <filtering_criteria> is "" then all events are
+    // matched.
+
+    void unsubscribe (in Consumer unsubscriber,
+                      in string filtering_criteria) raises (CannotUnsubscribe);
+    // Unsubscribe the <Consumer> that matches the filtering criteria.
+    // If <filtering_criteria> is "" then all <Consumers> with the
+    // matching object reference are removed.
+  };
+};
+
+#endif /* _PUB_SUB_IDL */

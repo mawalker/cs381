@@ -1,0 +1,54 @@
+// -*- MPC -*-
+// $Id$
+
+project(*idl): taoidldefaults {
+  idlflags += -Sp
+  IDL_Files {
+    Torrent.idl
+  }
+  custom_only = 1
+}
+
+project(*notifier): namingexe, utils, avoids_corba_e_micro {
+  exename = notifier
+  after += *IDL
+  Source_Files {
+    Event_Comm_i.cpp
+    Notifier_Server.cpp
+    notifier.cpp
+    Event_CommS.cpp
+    Event_CommC.cpp
+  }
+  IDL_Files {
+  }
+}
+
+project(*consumer): namingexe, portableserver {
+  exename = consumer
+  after += *IDL
+  Source_Files {
+    Consumer_Input_Handler.cpp
+    Consumer_Handler.cpp
+    consumer.cpp
+    Event_Comm_i.cpp
+    Event_CommS.cpp
+    Event_CommC.cpp
+  }
+  IDL_Files {
+  }
+}
+
+project(*producer): namingexe, portableserver {
+  exename = producer
+  after += *IDL
+  Source_Files {
+    Event_Comm_i.cpp
+    Supplier_Input_Handler.cpp
+    supplier.cpp
+    Notifier_Handler.cpp
+    Event_CommS.cpp
+    Event_CommC.cpp
+  }
+  IDL_Files {
+  }
+}
