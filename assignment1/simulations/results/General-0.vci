@@ -1,0 +1,534 @@
+file 22384 1391922133                                           
+version 2
+run General-0-20140208-23:02:02-21338
+attr configname General
+attr datetime 20140208-23:02:02
+attr experiment General
+attr inifile simulations/wired.ini
+attr iterationvars ""
+attr iterationvars2 $repetition=0
+attr measurement ""
+attr network CSWired
+attr processid 21338
+attr repetition 0
+attr replication #0
+attr resultdir results
+attr runnumber 0
+attr seedset 0
+
+vector 251  CSWired.rte[0].ppp[0].queue  queueLength:vector  ETV
+attr interpolationmode  sample-hold
+attr title  "queue length, vector"
+vector 252  CSWired.rte[0].ppp[0].ppp  txState:vector  ETV
+attr interpolationmode  sample-hold
+attr title  "tx state, vector"
+vector 262  CSWired.rte[0].ppp[1].queue  queueLength:vector  ETV
+attr interpolationmode  sample-hold
+attr title  "queue length, vector"
+vector 263  CSWired.rte[0].ppp[1].ppp  txState:vector  ETV
+attr interpolationmode  sample-hold
+attr title  "tx state, vector"
+vector 287  CSWired.rte[2].ppp[0].queue  queueLength:vector  ETV
+attr interpolationmode  sample-hold
+attr title  "queue length, vector"
+vector 288  CSWired.rte[2].ppp[0].ppp  txState:vector  ETV
+attr interpolationmode  sample-hold
+attr title  "tx state, vector"
+vector 298  CSWired.rte[2].ppp[1].queue  queueLength:vector  ETV
+attr interpolationmode  sample-hold
+attr title  "queue length, vector"
+vector 299  CSWired.rte[2].ppp[1].ppp  txState:vector  ETV
+attr interpolationmode  sample-hold
+attr title  "tx state, vector"
+vector 316  CSWired.rte[3].ppp[0].queue  queueLength:vector  ETV
+attr interpolationmode  sample-hold
+attr title  "queue length, vector"
+vector 317  CSWired.rte[3].ppp[0].ppp  txState:vector  ETV
+attr interpolationmode  sample-hold
+attr title  "tx state, vector"
+vector 327  CSWired.rte[3].ppp[1].queue  queueLength:vector  ETV
+attr interpolationmode  sample-hold
+attr title  "queue length, vector"
+vector 328  CSWired.rte[3].ppp[1].ppp  txState:vector  ETV
+attr interpolationmode  sample-hold
+attr title  "tx state, vector"
+vector 345  CSWired.rte[4].ppp[0].queue  queueLength:vector  ETV
+attr interpolationmode  sample-hold
+attr title  "queue length, vector"
+vector 346  CSWired.rte[4].ppp[0].ppp  txState:vector  ETV
+attr interpolationmode  sample-hold
+attr title  "tx state, vector"
+vector 356  CSWired.rte[4].ppp[1].queue  queueLength:vector  ETV
+attr interpolationmode  sample-hold
+attr title  "queue length, vector"
+vector 357  CSWired.rte[4].ppp[1].ppp  txState:vector  ETV
+attr interpolationmode  sample-hold
+attr title  "tx state, vector"
+vector 374  CSWired.rte[5].ppp[0].queue  queueLength:vector  ETV
+attr interpolationmode  sample-hold
+attr title  "queue length, vector"
+vector 375  CSWired.rte[5].ppp[0].ppp  txState:vector  ETV
+attr interpolationmode  sample-hold
+attr title  "tx state, vector"
+vector 385  CSWired.rte[5].ppp[1].queue  queueLength:vector  ETV
+attr interpolationmode  sample-hold
+attr title  "queue length, vector"
+vector 386  CSWired.rte[5].ppp[1].ppp  txState:vector  ETV
+attr interpolationmode  sample-hold
+attr title  "tx state, vector"
+vector 403  CSWired.rte[6].ppp[0].queue  queueLength:vector  ETV
+attr interpolationmode  sample-hold
+attr title  "queue length, vector"
+vector 404  CSWired.rte[6].ppp[0].ppp  txState:vector  ETV
+attr interpolationmode  sample-hold
+attr title  "tx state, vector"
+vector 414  CSWired.rte[6].ppp[1].queue  queueLength:vector  ETV
+attr interpolationmode  sample-hold
+attr title  "queue length, vector"
+vector 415  CSWired.rte[6].ppp[1].ppp  txState:vector  ETV
+attr interpolationmode  sample-hold
+attr title  "tx state, vector"
+vector 432  CSWired.client[0].ppp[0].queue  queueLength:vector  ETV
+attr interpolationmode  sample-hold
+attr title  "queue length, vector"
+vector 433  CSWired.client[0].ppp[0].ppp  txState:vector  ETV
+attr interpolationmode  sample-hold
+attr title  "tx state, vector"
+vector 450  CSWired.server.ppp[0].queue  queueLength:vector  ETV
+attr interpolationmode  sample-hold
+attr title  "queue length, vector"
+vector 451  CSWired.server.ppp[0].ppp  txState:vector  ETV
+attr interpolationmode  sample-hold
+attr title  "tx state, vector"
+vector 473  CSWired.client[0].tcp  tcpRcvQueueBytes  ETV
+vector 460  CSWired.client[0].tcp  "advertised window"  ETV
+vector 459  CSWired.client[0].tcp  "receive window"  ETV
+vector 462  CSWired.client[0].tcp  "sent ack"  ETV
+vector 429  CSWired.client[0].ppp[0].queue  rcvdPk:vector(packetBytes)  ETV
+attr interpolationmode  none
+attr title  "received packets, vector(packetBytes)"
+vector 431  CSWired.client[0].ppp[0].queue  queueingTime:vector  ETV
+attr interpolationmode  none
+attr title  "queueing time, vector"
+vector 438  CSWired.client[0].ppp[0].ppp  rcvdPkFromHL:vector(packetBytes)  ETV
+attr interpolationmode  none
+attr source  packetReceivedFromUpper
+attr title  "packets received from higher layer, vector(packetBytes)"
+vector 434  CSWired.client[0].ppp[0].ppp  txPk:vector(packetBytes)  ETV
+attr interpolationmode  none
+attr source  packetSentToLower
+attr title  "packets transmitted, vector(packetBytes)"
+vector 254  CSWired.rte[0].ppp[0].ppp  rxPkOk:vector(packetBytes)  ETV
+attr interpolationmode  none
+attr source  rxPkOk
+attr title  "packets received OK, vector(packetBytes)"
+vector 258  CSWired.rte[0].ppp[0].ppp  passedUpPk:vector(packetBytes)  ETV
+attr interpolationmode  none
+attr source  packetSentToUpper
+attr title  "packets passed to higher layer, vector(packetBytes)"
+vector 259  CSWired.rte[0].ppp[1].queue  rcvdPk:vector(packetBytes)  ETV
+attr interpolationmode  none
+attr title  "received packets, vector(packetBytes)"
+vector 261  CSWired.rte[0].ppp[1].queue  queueingTime:vector  ETV
+attr interpolationmode  none
+attr title  "queueing time, vector"
+vector 268  CSWired.rte[0].ppp[1].ppp  rcvdPkFromHL:vector(packetBytes)  ETV
+attr interpolationmode  none
+attr source  packetReceivedFromUpper
+attr title  "packets received from higher layer, vector(packetBytes)"
+vector 264  CSWired.rte[0].ppp[1].ppp  txPk:vector(packetBytes)  ETV
+attr interpolationmode  none
+attr source  packetSentToLower
+attr title  "packets transmitted, vector(packetBytes)"
+vector 290  CSWired.rte[2].ppp[0].ppp  rxPkOk:vector(packetBytes)  ETV
+attr interpolationmode  none
+attr source  rxPkOk
+attr title  "packets received OK, vector(packetBytes)"
+vector 294  CSWired.rte[2].ppp[0].ppp  passedUpPk:vector(packetBytes)  ETV
+attr interpolationmode  none
+attr source  packetSentToUpper
+attr title  "packets passed to higher layer, vector(packetBytes)"
+vector 295  CSWired.rte[2].ppp[1].queue  rcvdPk:vector(packetBytes)  ETV
+attr interpolationmode  none
+attr title  "received packets, vector(packetBytes)"
+vector 297  CSWired.rte[2].ppp[1].queue  queueingTime:vector  ETV
+attr interpolationmode  none
+attr title  "queueing time, vector"
+vector 304  CSWired.rte[2].ppp[1].ppp  rcvdPkFromHL:vector(packetBytes)  ETV
+attr interpolationmode  none
+attr source  packetReceivedFromUpper
+attr title  "packets received from higher layer, vector(packetBytes)"
+vector 300  CSWired.rte[2].ppp[1].ppp  txPk:vector(packetBytes)  ETV
+attr interpolationmode  none
+attr source  packetSentToLower
+attr title  "packets transmitted, vector(packetBytes)"
+vector 319  CSWired.rte[3].ppp[0].ppp  rxPkOk:vector(packetBytes)  ETV
+attr interpolationmode  none
+attr source  rxPkOk
+attr title  "packets received OK, vector(packetBytes)"
+vector 323  CSWired.rte[3].ppp[0].ppp  passedUpPk:vector(packetBytes)  ETV
+attr interpolationmode  none
+attr source  packetSentToUpper
+attr title  "packets passed to higher layer, vector(packetBytes)"
+vector 324  CSWired.rte[3].ppp[1].queue  rcvdPk:vector(packetBytes)  ETV
+attr interpolationmode  none
+attr title  "received packets, vector(packetBytes)"
+vector 326  CSWired.rte[3].ppp[1].queue  queueingTime:vector  ETV
+attr interpolationmode  none
+attr title  "queueing time, vector"
+vector 333  CSWired.rte[3].ppp[1].ppp  rcvdPkFromHL:vector(packetBytes)  ETV
+attr interpolationmode  none
+attr source  packetReceivedFromUpper
+attr title  "packets received from higher layer, vector(packetBytes)"
+vector 329  CSWired.rte[3].ppp[1].ppp  txPk:vector(packetBytes)  ETV
+attr interpolationmode  none
+attr source  packetSentToLower
+attr title  "packets transmitted, vector(packetBytes)"
+vector 348  CSWired.rte[4].ppp[0].ppp  rxPkOk:vector(packetBytes)  ETV
+attr interpolationmode  none
+attr source  rxPkOk
+attr title  "packets received OK, vector(packetBytes)"
+vector 352  CSWired.rte[4].ppp[0].ppp  passedUpPk:vector(packetBytes)  ETV
+attr interpolationmode  none
+attr source  packetSentToUpper
+attr title  "packets passed to higher layer, vector(packetBytes)"
+vector 353  CSWired.rte[4].ppp[1].queue  rcvdPk:vector(packetBytes)  ETV
+attr interpolationmode  none
+attr title  "received packets, vector(packetBytes)"
+vector 355  CSWired.rte[4].ppp[1].queue  queueingTime:vector  ETV
+attr interpolationmode  none
+attr title  "queueing time, vector"
+vector 362  CSWired.rte[4].ppp[1].ppp  rcvdPkFromHL:vector(packetBytes)  ETV
+attr interpolationmode  none
+attr source  packetReceivedFromUpper
+attr title  "packets received from higher layer, vector(packetBytes)"
+vector 358  CSWired.rte[4].ppp[1].ppp  txPk:vector(packetBytes)  ETV
+attr interpolationmode  none
+attr source  packetSentToLower
+attr title  "packets transmitted, vector(packetBytes)"
+vector 377  CSWired.rte[5].ppp[0].ppp  rxPkOk:vector(packetBytes)  ETV
+attr interpolationmode  none
+attr source  rxPkOk
+attr title  "packets received OK, vector(packetBytes)"
+vector 381  CSWired.rte[5].ppp[0].ppp  passedUpPk:vector(packetBytes)  ETV
+attr interpolationmode  none
+attr source  packetSentToUpper
+attr title  "packets passed to higher layer, vector(packetBytes)"
+vector 382  CSWired.rte[5].ppp[1].queue  rcvdPk:vector(packetBytes)  ETV
+attr interpolationmode  none
+attr title  "received packets, vector(packetBytes)"
+vector 384  CSWired.rte[5].ppp[1].queue  queueingTime:vector  ETV
+attr interpolationmode  none
+attr title  "queueing time, vector"
+vector 391  CSWired.rte[5].ppp[1].ppp  rcvdPkFromHL:vector(packetBytes)  ETV
+attr interpolationmode  none
+attr source  packetReceivedFromUpper
+attr title  "packets received from higher layer, vector(packetBytes)"
+vector 387  CSWired.rte[5].ppp[1].ppp  txPk:vector(packetBytes)  ETV
+attr interpolationmode  none
+attr source  packetSentToLower
+attr title  "packets transmitted, vector(packetBytes)"
+vector 417  CSWired.rte[6].ppp[1].ppp  rxPkOk:vector(packetBytes)  ETV
+attr interpolationmode  none
+attr source  rxPkOk
+attr title  "packets received OK, vector(packetBytes)"
+vector 421  CSWired.rte[6].ppp[1].ppp  passedUpPk:vector(packetBytes)  ETV
+attr interpolationmode  none
+attr source  packetSentToUpper
+attr title  "packets passed to higher layer, vector(packetBytes)"
+vector 400  CSWired.rte[6].ppp[0].queue  rcvdPk:vector(packetBytes)  ETV
+attr interpolationmode  none
+attr title  "received packets, vector(packetBytes)"
+vector 402  CSWired.rte[6].ppp[0].queue  queueingTime:vector  ETV
+attr interpolationmode  none
+attr title  "queueing time, vector"
+vector 409  CSWired.rte[6].ppp[0].ppp  rcvdPkFromHL:vector(packetBytes)  ETV
+attr interpolationmode  none
+attr source  packetReceivedFromUpper
+attr title  "packets received from higher layer, vector(packetBytes)"
+vector 405  CSWired.rte[6].ppp[0].ppp  txPk:vector(packetBytes)  ETV
+attr interpolationmode  none
+attr source  packetSentToLower
+attr title  "packets transmitted, vector(packetBytes)"
+vector 453  CSWired.server.ppp[0].ppp  rxPkOk:vector(packetBytes)  ETV
+attr interpolationmode  none
+attr source  rxPkOk
+attr title  "packets received OK, vector(packetBytes)"
+vector 457  CSWired.server.ppp[0].ppp  passedUpPk:vector(packetBytes)  ETV
+attr interpolationmode  none
+attr source  packetSentToUpper
+attr title  "packets passed to higher layer, vector(packetBytes)"
+vector 447  CSWired.server.ppp[0].queue  rcvdPk:vector(packetBytes)  ETV
+attr interpolationmode  none
+attr title  "received packets, vector(packetBytes)"
+vector 449  CSWired.server.ppp[0].queue  queueingTime:vector  ETV
+attr interpolationmode  none
+attr title  "queueing time, vector"
+vector 456  CSWired.server.ppp[0].ppp  rcvdPkFromHL:vector(packetBytes)  ETV
+attr interpolationmode  none
+attr source  packetReceivedFromUpper
+attr title  "packets received from higher layer, vector(packetBytes)"
+vector 452  CSWired.server.ppp[0].ppp  txPk:vector(packetBytes)  ETV
+attr interpolationmode  none
+attr source  packetSentToLower
+attr title  "packets transmitted, vector(packetBytes)"
+vector 406  CSWired.rte[6].ppp[0].ppp  rxPkOk:vector(packetBytes)  ETV
+attr interpolationmode  none
+attr source  rxPkOk
+attr title  "packets received OK, vector(packetBytes)"
+vector 410  CSWired.rte[6].ppp[0].ppp  passedUpPk:vector(packetBytes)  ETV
+attr interpolationmode  none
+attr source  packetSentToUpper
+attr title  "packets passed to higher layer, vector(packetBytes)"
+vector 411  CSWired.rte[6].ppp[1].queue  rcvdPk:vector(packetBytes)  ETV
+attr interpolationmode  none
+attr title  "received packets, vector(packetBytes)"
+vector 413  CSWired.rte[6].ppp[1].queue  queueingTime:vector  ETV
+attr interpolationmode  none
+attr title  "queueing time, vector"
+vector 420  CSWired.rte[6].ppp[1].ppp  rcvdPkFromHL:vector(packetBytes)  ETV
+attr interpolationmode  none
+attr source  packetReceivedFromUpper
+attr title  "packets received from higher layer, vector(packetBytes)"
+vector 416  CSWired.rte[6].ppp[1].ppp  txPk:vector(packetBytes)  ETV
+attr interpolationmode  none
+attr source  packetSentToLower
+attr title  "packets transmitted, vector(packetBytes)"
+vector 388  CSWired.rte[5].ppp[1].ppp  rxPkOk:vector(packetBytes)  ETV
+attr interpolationmode  none
+attr source  rxPkOk
+attr title  "packets received OK, vector(packetBytes)"
+vector 392  CSWired.rte[5].ppp[1].ppp  passedUpPk:vector(packetBytes)  ETV
+attr interpolationmode  none
+attr source  packetSentToUpper
+attr title  "packets passed to higher layer, vector(packetBytes)"
+vector 371  CSWired.rte[5].ppp[0].queue  rcvdPk:vector(packetBytes)  ETV
+attr interpolationmode  none
+attr title  "received packets, vector(packetBytes)"
+vector 373  CSWired.rte[5].ppp[0].queue  queueingTime:vector  ETV
+attr interpolationmode  none
+attr title  "queueing time, vector"
+vector 380  CSWired.rte[5].ppp[0].ppp  rcvdPkFromHL:vector(packetBytes)  ETV
+attr interpolationmode  none
+attr source  packetReceivedFromUpper
+attr title  "packets received from higher layer, vector(packetBytes)"
+vector 376  CSWired.rte[5].ppp[0].ppp  txPk:vector(packetBytes)  ETV
+attr interpolationmode  none
+attr source  packetSentToLower
+attr title  "packets transmitted, vector(packetBytes)"
+vector 359  CSWired.rte[4].ppp[1].ppp  rxPkOk:vector(packetBytes)  ETV
+attr interpolationmode  none
+attr source  rxPkOk
+attr title  "packets received OK, vector(packetBytes)"
+vector 363  CSWired.rte[4].ppp[1].ppp  passedUpPk:vector(packetBytes)  ETV
+attr interpolationmode  none
+attr source  packetSentToUpper
+attr title  "packets passed to higher layer, vector(packetBytes)"
+vector 342  CSWired.rte[4].ppp[0].queue  rcvdPk:vector(packetBytes)  ETV
+attr interpolationmode  none
+attr title  "received packets, vector(packetBytes)"
+vector 344  CSWired.rte[4].ppp[0].queue  queueingTime:vector  ETV
+attr interpolationmode  none
+attr title  "queueing time, vector"
+vector 351  CSWired.rte[4].ppp[0].ppp  rcvdPkFromHL:vector(packetBytes)  ETV
+attr interpolationmode  none
+attr source  packetReceivedFromUpper
+attr title  "packets received from higher layer, vector(packetBytes)"
+vector 347  CSWired.rte[4].ppp[0].ppp  txPk:vector(packetBytes)  ETV
+attr interpolationmode  none
+attr source  packetSentToLower
+attr title  "packets transmitted, vector(packetBytes)"
+vector 330  CSWired.rte[3].ppp[1].ppp  rxPkOk:vector(packetBytes)  ETV
+attr interpolationmode  none
+attr source  rxPkOk
+attr title  "packets received OK, vector(packetBytes)"
+vector 334  CSWired.rte[3].ppp[1].ppp  passedUpPk:vector(packetBytes)  ETV
+attr interpolationmode  none
+attr source  packetSentToUpper
+attr title  "packets passed to higher layer, vector(packetBytes)"
+vector 313  CSWired.rte[3].ppp[0].queue  rcvdPk:vector(packetBytes)  ETV
+attr interpolationmode  none
+attr title  "received packets, vector(packetBytes)"
+vector 315  CSWired.rte[3].ppp[0].queue  queueingTime:vector  ETV
+attr interpolationmode  none
+attr title  "queueing time, vector"
+vector 322  CSWired.rte[3].ppp[0].ppp  rcvdPkFromHL:vector(packetBytes)  ETV
+attr interpolationmode  none
+attr source  packetReceivedFromUpper
+attr title  "packets received from higher layer, vector(packetBytes)"
+vector 318  CSWired.rte[3].ppp[0].ppp  txPk:vector(packetBytes)  ETV
+attr interpolationmode  none
+attr source  packetSentToLower
+attr title  "packets transmitted, vector(packetBytes)"
+vector 301  CSWired.rte[2].ppp[1].ppp  rxPkOk:vector(packetBytes)  ETV
+attr interpolationmode  none
+attr source  rxPkOk
+attr title  "packets received OK, vector(packetBytes)"
+vector 305  CSWired.rte[2].ppp[1].ppp  passedUpPk:vector(packetBytes)  ETV
+attr interpolationmode  none
+attr source  packetSentToUpper
+attr title  "packets passed to higher layer, vector(packetBytes)"
+vector 284  CSWired.rte[2].ppp[0].queue  rcvdPk:vector(packetBytes)  ETV
+attr interpolationmode  none
+attr title  "received packets, vector(packetBytes)"
+vector 286  CSWired.rte[2].ppp[0].queue  queueingTime:vector  ETV
+attr interpolationmode  none
+attr title  "queueing time, vector"
+vector 293  CSWired.rte[2].ppp[0].ppp  rcvdPkFromHL:vector(packetBytes)  ETV
+attr interpolationmode  none
+attr source  packetReceivedFromUpper
+attr title  "packets received from higher layer, vector(packetBytes)"
+vector 289  CSWired.rte[2].ppp[0].ppp  txPk:vector(packetBytes)  ETV
+attr interpolationmode  none
+attr source  packetSentToLower
+attr title  "packets transmitted, vector(packetBytes)"
+vector 265  CSWired.rte[0].ppp[1].ppp  rxPkOk:vector(packetBytes)  ETV
+attr interpolationmode  none
+attr source  rxPkOk
+attr title  "packets received OK, vector(packetBytes)"
+vector 269  CSWired.rte[0].ppp[1].ppp  passedUpPk:vector(packetBytes)  ETV
+attr interpolationmode  none
+attr source  packetSentToUpper
+attr title  "packets passed to higher layer, vector(packetBytes)"
+vector 248  CSWired.rte[0].ppp[0].queue  rcvdPk:vector(packetBytes)  ETV
+attr interpolationmode  none
+attr title  "received packets, vector(packetBytes)"
+vector 250  CSWired.rte[0].ppp[0].queue  queueingTime:vector  ETV
+attr interpolationmode  none
+attr title  "queueing time, vector"
+vector 257  CSWired.rte[0].ppp[0].ppp  rcvdPkFromHL:vector(packetBytes)  ETV
+attr interpolationmode  none
+attr source  packetReceivedFromUpper
+attr title  "packets received from higher layer, vector(packetBytes)"
+vector 253  CSWired.rte[0].ppp[0].ppp  txPk:vector(packetBytes)  ETV
+attr interpolationmode  none
+attr source  packetSentToLower
+attr title  "packets transmitted, vector(packetBytes)"
+vector 435  CSWired.client[0].ppp[0].ppp  rxPkOk:vector(packetBytes)  ETV
+attr interpolationmode  none
+attr source  rxPkOk
+attr title  "packets received OK, vector(packetBytes)"
+vector 439  CSWired.client[0].ppp[0].ppp  passedUpPk:vector(packetBytes)  ETV
+attr interpolationmode  none
+attr source  packetSentToUpper
+attr title  "packets passed to higher layer, vector(packetBytes)"
+vector 463  CSWired.client[0].tcp  "rcvd seq"  ETV
+vector 464  CSWired.client[0].tcp  "rcvd ack"  ETV
+459	19206 26 2 2 0.000795874504 0.000795874504 1 7504 7504 7504 56310016
+460	19232 26 2 2 0.000795874504 0.000795874504 1 7504 7504 7504 56310016
+462	19258 23 2 2 0.000795874504 0.000795874504 1 0 0 0 0
+463	19281 24 90 90 0.000967768254 0.000967768254 1 0 0 0 0
+464	19305 26 90 90 0.000967768254 0.000967768254 1 199 199 199 39601
+473	19331 23 2 2 0.000795874504 0.000795874504 1 0 0 0 0
+248	19354 25 85 85 0.000936168254 0.000936168254 1 20 20 20 400
+250	19379 24 85 85 0.000936168254 0.000936168254 1 0 0 0 0
+251	19403 10 0 0 0 0 1 0 0 0 0
+252	19413 58 0 87 0 0.000957768254 3 0 1 1 1
+253	19471 25 86 86 0.000936168254 0.000936168254 1 27 27 27 729
+254	19496 24 8 8 0.000846674504 0.000846674504 1 51 51 51 2601
+257	19520 25 86 86 0.000936168254 0.000936168254 1 20 20 20 400
+258	19545 24 8 8 0.000846674504 0.000846674504 1 44 44 44 1936
+259	19569 25 11 11 0.000846674504 0.000846674504 1 44 44 44 1936
+261	19594 24 11 11 0.000846674504 0.000846674504 1 0 0 0 0
+262	19618 10 0 0 0 0 1 0 0 0 0
+263	19628 58 0 13 0 0.000847471379 3 0 1 1 1
+264	19686 25 12 12 0.000846674504 0.000846674504 1 51 51 51 2601
+265	19711 25 82 82 0.000936168254 0.000936168254 1 27 27 27 729
+268	19736 25 12 12 0.000846674504 0.000846674504 1 44 44 44 1936
+269	19761 25 82 82 0.000936168254 0.000936168254 1 20 20 20 400
+284	19786 25 79 79 0.000935646379 0.000935646379 1 20 20 20 400
+286	19811 24 79 79 0.000935646379 0.000935646379 1 0 0 0 0
+287	19835 10 0 0 0 0 1 0 0 0 0
+288	19845 58 0 81 0 0.000936068254 3 0 1 1 1
+289	19903 25 80 80 0.000935646379 0.000935646379 1 27 27 27 729
+290	19928 25 14 14 0.000847571379 0.000847571379 1 51 51 51 2601
+293	19953 25 80 80 0.000935646379 0.000935646379 1 20 20 20 400
+294	19978 25 14 14 0.000847571379 0.000847571379 1 44 44 44 1936
+295	20003 25 17 17 0.000847571379 0.000847571379 1 44 44 44 1936
+297	20028 24 17 17 0.000847571379 0.000847571379 1 0 0 0 0
+298	20052 10 0 0 0 0 1 0 0 0 0
+299	20062 58 0 19 0 0.000848368254 3 0 1 1 1
+300	20120 25 18 18 0.000847571379 0.000847571379 1 51 51 51 2601
+301	20145 25 76 76 0.000935646379 0.000935646379 1 27 27 27 729
+304	20170 25 18 18 0.000847571379 0.000847571379 1 44 44 44 1936
+305	20195 25 76 76 0.000935646379 0.000935646379 1 20 20 20 400
+313	20220 25 73 73 0.000935124504 0.000935124504 1 20 20 20 400
+315	20245 24 73 73 0.000935124504 0.000935124504 1 0 0 0 0
+316	20269 10 0 0 0 0 1 0 0 0 0
+317	20279 58 0 75 0 0.000935546379 3 0 1 1 1
+318	20337 25 74 74 0.000935124504 0.000935124504 1 27 27 27 729
+319	20362 25 20 20 0.000848468254 0.000848468254 1 51 51 51 2601
+322	20387 25 74 74 0.000935124504 0.000935124504 1 20 20 20 400
+323	20412 25 20 20 0.000848468254 0.000848468254 1 44 44 44 1936
+324	20437 25 23 23 0.000848468254 0.000848468254 1 44 44 44 1936
+326	20462 24 23 23 0.000848468254 0.000848468254 1 0 0 0 0
+327	20486 10 0 0 0 0 1 0 0 0 0
+328	20496 58 0 25 0 0.000849265129 3 0 1 1 1
+329	20554 25 24 24 0.000848468254 0.000848468254 1 51 51 51 2601
+330	20579 25 70 70 0.000935124504 0.000935124504 1 27 27 27 729
+333	20604 25 24 24 0.000848468254 0.000848468254 1 44 44 44 1936
+334	20629 25 70 70 0.000935124504 0.000935124504 1 20 20 20 400
+342	20654 25 67 67 0.000934602629 0.000934602629 1 20 20 20 400
+344	20679 24 67 67 0.000934602629 0.000934602629 1 0 0 0 0
+345	20703 10 0 0 0 0 1 0 0 0 0
+346	20713 58 0 69 0 0.000935024504 3 0 1 1 1
+347	20771 25 68 68 0.000934602629 0.000934602629 1 27 27 27 729
+348	20796 25 26 26 0.000849365129 0.000849365129 1 51 51 51 2601
+351	20821 25 68 68 0.000934602629 0.000934602629 1 20 20 20 400
+352	20846 25 26 26 0.000849365129 0.000849365129 1 44 44 44 1936
+353	20871 25 29 29 0.000849365129 0.000849365129 1 44 44 44 1936
+355	20896 24 29 29 0.000849365129 0.000849365129 1 0 0 0 0
+356	20920 10 0 0 0 0 1 0 0 0 0
+357	20930 58 0 31 0 0.000850162004 3 0 1 1 1
+358	20988 25 30 30 0.000849365129 0.000849365129 1 51 51 51 2601
+359	21013 25 64 64 0.000934602629 0.000934602629 1 27 27 27 729
+362	21038 25 30 30 0.000849365129 0.000849365129 1 44 44 44 1936
+363	21063 25 64 64 0.000934602629 0.000934602629 1 20 20 20 400
+371	21088 25 61 61 0.000934080754 0.000934080754 1 20 20 20 400
+373	21113 24 61 61 0.000934080754 0.000934080754 1 0 0 0 0
+374	21137 10 0 0 0 0 1 0 0 0 0
+375	21147 58 0 63 0 0.000934502629 3 0 1 1 1
+376	21205 25 62 62 0.000934080754 0.000934080754 1 27 27 27 729
+377	21230 25 32 32 0.000850262004 0.000850262004 1 51 51 51 2601
+380	21255 25 62 62 0.000934080754 0.000934080754 1 20 20 20 400
+381	21280 25 32 32 0.000850262004 0.000850262004 1 44 44 44 1936
+382	21305 25 35 35 0.000850262004 0.000850262004 1 44 44 44 1936
+384	21330 24 35 35 0.000850262004 0.000850262004 1 0 0 0 0
+385	21354 10 0 0 0 0 1 0 0 0 0
+386	21364 58 0 37 0 0.000851058879 3 0 1 1 1
+387	21422 25 36 36 0.000850262004 0.000850262004 1 51 51 51 2601
+388	21447 25 58 58 0.000934080754 0.000934080754 1 27 27 27 729
+391	21472 25 36 36 0.000850262004 0.000850262004 1 44 44 44 1936
+392	21497 25 58 58 0.000934080754 0.000934080754 1 20 20 20 400
+400	21522 25 41 41 0.000851158879 0.000851158879 1 44 44 44 1936
+402	21547 24 41 41 0.000851158879 0.000851158879 1 0 0 0 0
+403	21571 10 0 0 0 0 1 0 0 0 0
+404	21581 58 0 43 0 0.000891958879 3 0 1 1 1
+405	21639 25 42 42 0.000851158879 0.000851158879 1 51 51 51 2601
+406	21664 25 52 52 0.000933558879 0.000933558879 1 27 27 27 729
+409	21689 25 42 42 0.000851158879 0.000851158879 1 44 44 44 1936
+410	21714 25 52 52 0.000933558879 0.000933558879 1 20 20 20 400
+411	21739 25 55 55 0.000933558879 0.000933558879 1 20 20 20 400
+413	21764 24 55 55 0.000933558879 0.000933558879 1 0 0 0 0
+414	21788 10 0 0 0 0 1 0 0 0 0
+415	21798 58 0 57 0 0.000933980754 3 0 1 1 1
+416	21856 25 56 56 0.000933558879 0.000933558879 1 27 27 27 729
+417	21881 25 38 38 0.000851158879 0.000851158879 1 51 51 51 2601
+420	21906 25 56 56 0.000933558879 0.000933558879 1 20 20 20 400
+421	21931 25 38 38 0.000851158879 0.000851158879 1 44 44 44 1936
+429	21956 24 5 5 0.000795874504 0.000795874504 1 44 44 44 1936
+431	21980 23 5 5 0.000795874504 0.000795874504 1 0 0 0 0
+432	22003 10 0 0 0 0 1 0 0 0 0
+433	22013 56 0 7 0 0.000836674504 3 0 1 1 1
+434	22069 24 6 6 0.000795874504 0.000795874504 1 51 51 51 2601
+435	22093 25 88 88 0.000967768254 0.000967768254 1 27 27 27 729
+438	22118 24 6 6 0.000795874504 0.000795874504 1 44 44 44 1936
+439	22142 25 88 88 0.000967768254 0.000967768254 1 20 20 20 400
+447	22167 25 49 49 0.000901958879 0.000901958879 1 20 20 20 400
+449	22192 24 49 49 0.000901958879 0.000901958879 1 0 0 0 0
+450	22216 10 0 0 0 0 1 0 0 0 0
+451	22226 58 0 51 0 0.000923558879 3 0 1 1 1
+452	22284 25 50 50 0.000901958879 0.000901958879 1 27 27 27 729
+453	22309 25 44 44 0.000901958879 0.000901958879 1 51 51 51 2601
+456	22334 25 50 50 0.000901958879 0.000901958879 1 20 20 20 400
+457	22359 25 44 44 0.000901958879 0.000901958879 1 44 44 44 1936
