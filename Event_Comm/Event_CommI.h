@@ -28,43 +28,43 @@
 // TAO_IDL - Generated from
 // be/be_codegen.cpp:1616
 
-#ifndef PUBSUBI_5GPUP2_H_
-#define PUBSUBI_5GPUP2_H_
+#ifndef EVENT_COMMI_PTRUWM_H_
+#define EVENT_COMMI_PTRUWM_H_
 
-#include "PubSubS.h"
+#include "Event_CommS.h"
 
 #if !defined (ACE_LACKS_PRAGMA_ONCE)
 #pragma once
 #endif /* ACE_LACKS_PRAGMA_ONCE */
 
-class  Pub_Sub_Consumer_i
-  : public virtual POA_Pub_Sub::Consumer
+class  Event_Comm_Consumer_i
+  : public virtual POA_Event_Comm::Consumer
 {
 public:
   // Constructor
-  Pub_Sub_Consumer_i (void);
+  Event_Comm_Consumer_i (void);
 
   // Destructor
-  virtual ~Pub_Sub_Consumer_i (void);
+  virtual ~Event_Comm_Consumer_i (void);
 
   virtual
   void push (
-    const ::Pub_Sub::Event & event_instance);
+    const ::Event_Comm::Event & event_instance);
 
   virtual
   void disconnect (
     const char * reason);
 };
 
-class  Pub_Sub_Notifier_i
-  : public virtual POA_Pub_Sub::Notifier
+class  Event_Comm_Notifier_i
+  : public virtual POA_Event_Comm::Notifier
 {
 public:
   // Constructor
-  Pub_Sub_Notifier_i (void);
+  Event_Comm_Notifier_i (void);
 
   // Destructor
-  virtual ~Pub_Sub_Notifier_i (void);
+  virtual ~Event_Comm_Notifier_i (void);
 
   virtual
   void disconnect (
@@ -72,18 +72,18 @@ public:
 
   virtual
   void push (
-    const ::Pub_Sub::Event & event_instance);
+    const ::Event_Comm::Event & event_instance);
 
   virtual
   void subscribe (
-    ::Pub_Sub::Consumer_ptr subscriber,
+    ::Event_Comm::Consumer_ptr subscriber,
     const char * filtering_criteria);
 
   virtual
   void unsubscribe (
-    ::Pub_Sub::Consumer_ptr unsubscriber,
+    ::Event_Comm::Consumer_ptr unsubscriber,
     const char * filtering_criteria);
 };
 
 
-#endif /* PUBSUBI_H_  */
+#endif /* EVENT_COMMI_H_  */

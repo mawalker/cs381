@@ -28,8 +28,8 @@
 // TAO_IDL - Generated from
 // be/be_codegen.cpp:152
 
-#ifndef _TAO_IDL_PUBSUBC_FSCX6P_H_
-#define _TAO_IDL_PUBSUBC_FSCX6P_H_
+#ifndef _TAO_IDL_EVENT_COMMC_8ADKRA_H_
+#define _TAO_IDL_EVENT_COMMC_8ADKRA_H_
 
 
 #include /**/ "ace/config-all.h"
@@ -51,10 +51,7 @@
 #include "tao/AnyTypeCode/TypeCode_Constants.h"
 #include "tao/AnyTypeCode/Any.h"
 #include "tao/String_Manager_T.h"
-#include "tao/Sequence_T.h"
 #include "tao/Objref_VarOut_T.h"
-#include "tao/Seq_Var_T.h"
-#include "tao/Seq_Out_T.h"
 #include "tao/VarOut_T.h"
 #include "tao/Arg_Traits_T.h"
 #include "tao/Basic_Arguments.h"
@@ -91,74 +88,9 @@ TAO_END_VERSIONED_NAMESPACE_DECL
 
 
 // TAO_IDL - Generated from
-// be/be_visitor_sequence/sequence_ch.cpp:102
-
-#if !defined (_CHUNK_CH_)
-#define _CHUNK_CH_
-
-class Chunk;
-
-typedef
-  ::TAO_FixedSeq_Var_T<
-      Chunk
-    >
-  Chunk_var;
-
-typedef
-  ::TAO_Seq_Out_T<
-      Chunk
-    >
-  Chunk_out;
-
-class  Chunk
-  : public
-      ::TAO::unbounded_value_sequence<
-          ::CORBA::Octet
-        >
-{
-public:
-  Chunk (void);
-  Chunk ( ::CORBA::ULong max);
-  Chunk (
-    ::CORBA::ULong max,
-    ::CORBA::ULong length,
-    ::CORBA::Octet* buffer,
-    ::CORBA::Boolean release = false);
-  Chunk (const Chunk &);
-  virtual ~Chunk (void);
-  
-
-  // TAO_IDL - Generated from
-  // be/be_type.cpp:307
-
-  
-  typedef Chunk_var _var_type;
-  typedef Chunk_out _out_type;
-
-  static void _tao_any_destructor (void *);
-
-  
-
-#if (TAO_NO_COPY_OCTET_SEQUENCES == 1)
-  Chunk (
-      ::CORBA::ULong length,
-      const ACE_Message_Block* mb
-    )
-    : ::TAO::unbounded_value_sequence< ::CORBA::Octet> (length, mb) {}
-#endif /* TAO_NO_COPY_OCTET_SEQUENCE == 1 */
-};
-
-#endif /* end #if !defined */
-
-// TAO_IDL - Generated from
-// be/be_visitor_typecode/typecode_decl.cpp:37
-
-extern  ::CORBA::TypeCode_ptr const _tc_Chunk;
-
-// TAO_IDL - Generated from
 // be/be_visitor_module/module_ch.cpp:38
 
-namespace Pub_Sub
+namespace Event_Comm
 {
 
   // TAO_IDL - Generated from
@@ -206,8 +138,8 @@ namespace Pub_Sub
   // TAO_IDL - Generated from
   // be/be_interface.cpp:751
 
-#if !defined (_PUB_SUB_CONSUMER__VAR_OUT_CH_)
-#define _PUB_SUB_CONSUMER__VAR_OUT_CH_
+#if !defined (_EVENT_COMM_CONSUMER__VAR_OUT_CH_)
+#define _EVENT_COMM_CONSUMER__VAR_OUT_CH_
 
   class Consumer;
   typedef Consumer *Consumer_ptr;
@@ -254,7 +186,7 @@ namespace Pub_Sub
     static Consumer_ptr _nil (void);
 
     virtual void push (
-      const ::Pub_Sub::Event & event_instance);
+      const ::Event_Comm::Event & event_instance);
 
     virtual void disconnect (
       const char * reason);
@@ -299,8 +231,8 @@ namespace Pub_Sub
   // TAO_IDL - Generated from
   // be/be_interface.cpp:751
 
-#if !defined (_PUB_SUB_NOTIFIER__VAR_OUT_CH_)
-#define _PUB_SUB_NOTIFIER__VAR_OUT_CH_
+#if !defined (_EVENT_COMM_NOTIFIER__VAR_OUT_CH_)
+#define _EVENT_COMM_NOTIFIER__VAR_OUT_CH_
 
   class Notifier;
   typedef Notifier *Notifier_ptr;
@@ -434,14 +366,14 @@ namespace Pub_Sub
       const char * reason);
 
     virtual void push (
-      const ::Pub_Sub::Event & event_instance);
+      const ::Event_Comm::Event & event_instance);
 
     virtual void subscribe (
-      ::Pub_Sub::Consumer_ptr subscriber,
+      ::Event_Comm::Consumer_ptr subscriber,
       const char * filtering_criteria);
 
     virtual void unsubscribe (
-      ::Pub_Sub::Consumer_ptr unsubscriber,
+      ::Event_Comm::Consumer_ptr unsubscriber,
       const char * filtering_criteria);
 
     // TAO_IDL - Generated from
@@ -484,7 +416,7 @@ namespace Pub_Sub
 // TAO_IDL - Generated from
 // be/be_visitor_module/module_ch.cpp:67
 
-} // module Pub_Sub
+} // module Event_Comm
 
 // TAO_IDL - Generated from
 // be/be_visitor_arg_traits.cpp:68
@@ -497,26 +429,13 @@ namespace TAO
 {
 
   // TAO_IDL - Generated from
-  // be/be_visitor_arg_traits.cpp:685
-
-  template<>
-  class Arg_Traits< ::Chunk>
-    : public
-        Var_Size_Arg_Traits_T<
-            ::Chunk,
-            TAO::Any_Insert_Policy_Stream
-          >
-  {
-  };
-
-  // TAO_IDL - Generated from
   // be/be_visitor_arg_traits.cpp:947
 
   template<>
-  class Arg_Traits< ::Pub_Sub::Event>
+  class Arg_Traits< ::Event_Comm::Event>
     : public
         Var_Size_Arg_Traits_T<
-            ::Pub_Sub::Event,
+            ::Event_Comm::Event,
             TAO::Any_Insert_Policy_Stream
           >
   {
@@ -525,17 +444,17 @@ namespace TAO
   // TAO_IDL - Generated from
   // be/be_visitor_arg_traits.cpp:147
 
-#if !defined (_PUB_SUB_CONSUMER__ARG_TRAITS_)
-#define _PUB_SUB_CONSUMER__ARG_TRAITS_
+#if !defined (_EVENT_COMM_CONSUMER__ARG_TRAITS_)
+#define _EVENT_COMM_CONSUMER__ARG_TRAITS_
 
   template<>
-  class  Arg_Traits< ::Pub_Sub::Consumer>
+  class  Arg_Traits< ::Event_Comm::Consumer>
     : public
         Object_Arg_Traits_T<
-            ::Pub_Sub::Consumer_ptr,
-            ::Pub_Sub::Consumer_var,
-            ::Pub_Sub::Consumer_out,
-            TAO::Objref_Traits<Pub_Sub::Consumer>,
+            ::Event_Comm::Consumer_ptr,
+            ::Event_Comm::Consumer_var,
+            ::Event_Comm::Consumer_out,
+            TAO::Objref_Traits<Event_Comm::Consumer>,
             TAO::Any_Insert_Policy_Stream
           >
   {
@@ -546,17 +465,17 @@ namespace TAO
   // TAO_IDL - Generated from
   // be/be_visitor_arg_traits.cpp:147
 
-#if !defined (_PUB_SUB_NOTIFIER__ARG_TRAITS_)
-#define _PUB_SUB_NOTIFIER__ARG_TRAITS_
+#if !defined (_EVENT_COMM_NOTIFIER__ARG_TRAITS_)
+#define _EVENT_COMM_NOTIFIER__ARG_TRAITS_
 
   template<>
-  class  Arg_Traits< ::Pub_Sub::Notifier>
+  class  Arg_Traits< ::Event_Comm::Notifier>
     : public
         Object_Arg_Traits_T<
-            ::Pub_Sub::Notifier_ptr,
-            ::Pub_Sub::Notifier_var,
-            ::Pub_Sub::Notifier_out,
-            TAO::Objref_Traits<Pub_Sub::Notifier>,
+            ::Event_Comm::Notifier_ptr,
+            ::Event_Comm::Notifier_var,
+            ::Event_Comm::Notifier_out,
+            TAO::Objref_Traits<Event_Comm::Notifier>,
             TAO::Any_Insert_Policy_Stream
           >
   {
@@ -578,56 +497,42 @@ TAO_BEGIN_VERSIONED_NAMESPACE_DECL
 namespace TAO
 {
 
-#if !defined (_PUB_SUB_CONSUMER__TRAITS_)
-#define _PUB_SUB_CONSUMER__TRAITS_
+#if !defined (_EVENT_COMM_CONSUMER__TRAITS_)
+#define _EVENT_COMM_CONSUMER__TRAITS_
 
   template<>
-  struct  Objref_Traits< ::Pub_Sub::Consumer>
+  struct  Objref_Traits< ::Event_Comm::Consumer>
   {
-    static ::Pub_Sub::Consumer_ptr duplicate (
-        ::Pub_Sub::Consumer_ptr p);
+    static ::Event_Comm::Consumer_ptr duplicate (
+        ::Event_Comm::Consumer_ptr p);
     static void release (
-        ::Pub_Sub::Consumer_ptr p);
-    static ::Pub_Sub::Consumer_ptr nil (void);
+        ::Event_Comm::Consumer_ptr p);
+    static ::Event_Comm::Consumer_ptr nil (void);
     static ::CORBA::Boolean marshal (
-        const ::Pub_Sub::Consumer_ptr p,
+        const ::Event_Comm::Consumer_ptr p,
         TAO_OutputCDR & cdr);
   };
 
 #endif /* end #if !defined */
 
-#if !defined (_PUB_SUB_NOTIFIER__TRAITS_)
-#define _PUB_SUB_NOTIFIER__TRAITS_
+#if !defined (_EVENT_COMM_NOTIFIER__TRAITS_)
+#define _EVENT_COMM_NOTIFIER__TRAITS_
 
   template<>
-  struct  Objref_Traits< ::Pub_Sub::Notifier>
+  struct  Objref_Traits< ::Event_Comm::Notifier>
   {
-    static ::Pub_Sub::Notifier_ptr duplicate (
-        ::Pub_Sub::Notifier_ptr p);
+    static ::Event_Comm::Notifier_ptr duplicate (
+        ::Event_Comm::Notifier_ptr p);
     static void release (
-        ::Pub_Sub::Notifier_ptr p);
-    static ::Pub_Sub::Notifier_ptr nil (void);
+        ::Event_Comm::Notifier_ptr p);
+    static ::Event_Comm::Notifier_ptr nil (void);
     static ::CORBA::Boolean marshal (
-        const ::Pub_Sub::Notifier_ptr p,
+        const ::Event_Comm::Notifier_ptr p,
         TAO_OutputCDR & cdr);
   };
 
 #endif /* end #if !defined */
 }
-TAO_END_VERSIONED_NAMESPACE_DECL
-
-
-
-// TAO_IDL - Generated from
-// be/be_visitor_sequence/any_op_ch.cpp:50
-
-
-TAO_BEGIN_VERSIONED_NAMESPACE_DECL
-
- void operator<<= ( ::CORBA::Any &, const Chunk &); // copying version
- void operator<<= ( ::CORBA::Any &, Chunk*); // noncopying version
- ::CORBA::Boolean operator>>= (const ::CORBA::Any &, Chunk *&); // deprecated
- ::CORBA::Boolean operator>>= (const ::CORBA::Any &, const Chunk *&);
 TAO_END_VERSIONED_NAMESPACE_DECL
 
 
@@ -639,12 +544,12 @@ TAO_END_VERSIONED_NAMESPACE_DECL
 
 #if defined (ACE_ANY_OPS_USE_NAMESPACE)
 
-namespace Pub_Sub
+namespace Event_Comm
 {
-   void operator<<= (::CORBA::Any &, const ::Pub_Sub::Event &); // copying version
-   void operator<<= (::CORBA::Any &, ::Pub_Sub::Event*); // noncopying version
-   ::CORBA::Boolean operator>>= (const ::CORBA::Any &, ::Pub_Sub::Event *&); // deprecated
- ::CORBA::Boolean operator>>= (const ::CORBA::Any &, const ::Pub_Sub::Event *&);
+   void operator<<= (::CORBA::Any &, const ::Event_Comm::Event &); // copying version
+   void operator<<= (::CORBA::Any &, ::Event_Comm::Event*); // noncopying version
+   ::CORBA::Boolean operator>>= (const ::CORBA::Any &, ::Event_Comm::Event *&); // deprecated
+ ::CORBA::Boolean operator>>= (const ::CORBA::Any &, const ::Event_Comm::Event *&);
 }
 
 #else
@@ -652,10 +557,10 @@ namespace Pub_Sub
 
 TAO_BEGIN_VERSIONED_NAMESPACE_DECL
 
- void operator<<= (::CORBA::Any &, const Pub_Sub::Event &); // copying version
- void operator<<= (::CORBA::Any &, Pub_Sub::Event*); // noncopying version
- ::CORBA::Boolean operator>>= (const ::CORBA::Any &, Pub_Sub::Event *&); // deprecated
- ::CORBA::Boolean operator>>= (const ::CORBA::Any &, const Pub_Sub::Event *&);
+ void operator<<= (::CORBA::Any &, const Event_Comm::Event &); // copying version
+ void operator<<= (::CORBA::Any &, Event_Comm::Event*); // noncopying version
+ ::CORBA::Boolean operator>>= (const ::CORBA::Any &, Event_Comm::Event *&); // deprecated
+ ::CORBA::Boolean operator>>= (const ::CORBA::Any &, const Event_Comm::Event *&);
 TAO_END_VERSIONED_NAMESPACE_DECL
 
 
@@ -669,7 +574,7 @@ TAO_END_VERSIONED_NAMESPACE_DECL
 
 #if defined (ACE_ANY_OPS_USE_NAMESPACE)
 
-namespace Pub_Sub
+namespace Event_Comm
 {
    void operator<<= ( ::CORBA::Any &, Consumer_ptr); // copying
    void operator<<= ( ::CORBA::Any &, Consumer_ptr *); // non-copying
@@ -681,9 +586,9 @@ namespace Pub_Sub
 
 TAO_BEGIN_VERSIONED_NAMESPACE_DECL
 
- void operator<<= (::CORBA::Any &, Pub_Sub::Consumer_ptr); // copying
- void operator<<= (::CORBA::Any &, Pub_Sub::Consumer_ptr *); // non-copying
- ::CORBA::Boolean operator>>= (const ::CORBA::Any &, Pub_Sub::Consumer_ptr &);
+ void operator<<= (::CORBA::Any &, Event_Comm::Consumer_ptr); // copying
+ void operator<<= (::CORBA::Any &, Event_Comm::Consumer_ptr *); // non-copying
+ ::CORBA::Boolean operator>>= (const ::CORBA::Any &, Event_Comm::Consumer_ptr &);
 TAO_END_VERSIONED_NAMESPACE_DECL
 
 
@@ -697,7 +602,7 @@ TAO_END_VERSIONED_NAMESPACE_DECL
 
 #if defined (ACE_ANY_OPS_USE_NAMESPACE)
 
-namespace Pub_Sub
+namespace Event_Comm
 {
    void operator<<= ( ::CORBA::Any &, Notifier_ptr); // copying
    void operator<<= ( ::CORBA::Any &, Notifier_ptr *); // non-copying
@@ -709,9 +614,9 @@ namespace Pub_Sub
 
 TAO_BEGIN_VERSIONED_NAMESPACE_DECL
 
- void operator<<= (::CORBA::Any &, Pub_Sub::Notifier_ptr); // copying
- void operator<<= (::CORBA::Any &, Pub_Sub::Notifier_ptr *); // non-copying
- ::CORBA::Boolean operator>>= (const ::CORBA::Any &, Pub_Sub::Notifier_ptr &);
+ void operator<<= (::CORBA::Any &, Event_Comm::Notifier_ptr); // copying
+ void operator<<= (::CORBA::Any &, Event_Comm::Notifier_ptr *); // non-copying
+ ::CORBA::Boolean operator>>= (const ::CORBA::Any &, Event_Comm::Notifier_ptr &);
 TAO_END_VERSIONED_NAMESPACE_DECL
 
 
@@ -723,14 +628,14 @@ TAO_END_VERSIONED_NAMESPACE_DECL
 
 #if defined (ACE_ANY_OPS_USE_NAMESPACE)
 
-namespace Pub_Sub
+namespace Event_Comm
 {
   
 
-   void operator<<= (::CORBA::Any &, const ::Pub_Sub::Notifier::CannotSubscribe &); // copying version
-   void operator<<= (::CORBA::Any &, ::Pub_Sub::Notifier::CannotSubscribe*); // noncopying version
-   ::CORBA::Boolean operator>>= (const ::CORBA::Any &, ::Pub_Sub::Notifier::CannotSubscribe *&); // deprecated
- ::CORBA::Boolean operator>>= (const ::CORBA::Any &, const ::Pub_Sub::Notifier::CannotSubscribe *&);
+   void operator<<= (::CORBA::Any &, const ::Event_Comm::Notifier::CannotSubscribe &); // copying version
+   void operator<<= (::CORBA::Any &, ::Event_Comm::Notifier::CannotSubscribe*); // noncopying version
+   ::CORBA::Boolean operator>>= (const ::CORBA::Any &, ::Event_Comm::Notifier::CannotSubscribe *&); // deprecated
+ ::CORBA::Boolean operator>>= (const ::CORBA::Any &, const ::Event_Comm::Notifier::CannotSubscribe *&);
 }
 
 #else
@@ -740,10 +645,10 @@ TAO_BEGIN_VERSIONED_NAMESPACE_DECL
 
 
 
- void operator<<= (::CORBA::Any &, const Pub_Sub::Notifier::CannotSubscribe &); // copying version
- void operator<<= (::CORBA::Any &, Pub_Sub::Notifier::CannotSubscribe*); // noncopying version
- ::CORBA::Boolean operator>>= (const ::CORBA::Any &, Pub_Sub::Notifier::CannotSubscribe *&); // deprecated
- ::CORBA::Boolean operator>>= (const ::CORBA::Any &, const Pub_Sub::Notifier::CannotSubscribe *&);
+ void operator<<= (::CORBA::Any &, const Event_Comm::Notifier::CannotSubscribe &); // copying version
+ void operator<<= (::CORBA::Any &, Event_Comm::Notifier::CannotSubscribe*); // noncopying version
+ ::CORBA::Boolean operator>>= (const ::CORBA::Any &, Event_Comm::Notifier::CannotSubscribe *&); // deprecated
+ ::CORBA::Boolean operator>>= (const ::CORBA::Any &, const Event_Comm::Notifier::CannotSubscribe *&);
 TAO_END_VERSIONED_NAMESPACE_DECL
 
 
@@ -755,14 +660,14 @@ TAO_END_VERSIONED_NAMESPACE_DECL
 
 #if defined (ACE_ANY_OPS_USE_NAMESPACE)
 
-namespace Pub_Sub
+namespace Event_Comm
 {
   
 
-   void operator<<= (::CORBA::Any &, const ::Pub_Sub::Notifier::CannotUnsubscribe &); // copying version
-   void operator<<= (::CORBA::Any &, ::Pub_Sub::Notifier::CannotUnsubscribe*); // noncopying version
-   ::CORBA::Boolean operator>>= (const ::CORBA::Any &, ::Pub_Sub::Notifier::CannotUnsubscribe *&); // deprecated
- ::CORBA::Boolean operator>>= (const ::CORBA::Any &, const ::Pub_Sub::Notifier::CannotUnsubscribe *&);
+   void operator<<= (::CORBA::Any &, const ::Event_Comm::Notifier::CannotUnsubscribe &); // copying version
+   void operator<<= (::CORBA::Any &, ::Event_Comm::Notifier::CannotUnsubscribe*); // noncopying version
+   ::CORBA::Boolean operator>>= (const ::CORBA::Any &, ::Event_Comm::Notifier::CannotUnsubscribe *&); // deprecated
+ ::CORBA::Boolean operator>>= (const ::CORBA::Any &, const ::Event_Comm::Notifier::CannotUnsubscribe *&);
 }
 
 #else
@@ -772,36 +677,15 @@ TAO_BEGIN_VERSIONED_NAMESPACE_DECL
 
 
 
- void operator<<= (::CORBA::Any &, const Pub_Sub::Notifier::CannotUnsubscribe &); // copying version
- void operator<<= (::CORBA::Any &, Pub_Sub::Notifier::CannotUnsubscribe*); // noncopying version
- ::CORBA::Boolean operator>>= (const ::CORBA::Any &, Pub_Sub::Notifier::CannotUnsubscribe *&); // deprecated
- ::CORBA::Boolean operator>>= (const ::CORBA::Any &, const Pub_Sub::Notifier::CannotUnsubscribe *&);
+ void operator<<= (::CORBA::Any &, const Event_Comm::Notifier::CannotUnsubscribe &); // copying version
+ void operator<<= (::CORBA::Any &, Event_Comm::Notifier::CannotUnsubscribe*); // noncopying version
+ ::CORBA::Boolean operator>>= (const ::CORBA::Any &, Event_Comm::Notifier::CannotUnsubscribe *&); // deprecated
+ ::CORBA::Boolean operator>>= (const ::CORBA::Any &, const Event_Comm::Notifier::CannotUnsubscribe *&);
 TAO_END_VERSIONED_NAMESPACE_DECL
 
 
 
 #endif
-
-// TAO_IDL - Generated from
-// be/be_visitor_sequence/cdr_op_ch.cpp:68
-
-#if !defined _TAO_CDR_OP_Chunk_H_
-#define _TAO_CDR_OP_Chunk_H_
-TAO_BEGIN_VERSIONED_NAMESPACE_DECL
-
-
- ::CORBA::Boolean operator<< (
-    TAO_OutputCDR &strm,
-    const Chunk &_tao_sequence);
- ::CORBA::Boolean operator>> (
-    TAO_InputCDR &strm,
-    Chunk &_tao_sequence);
-
-TAO_END_VERSIONED_NAMESPACE_DECL
-
-
-
-#endif /* _TAO_CDR_OP_Chunk_H_ */
 
 // TAO_IDL - Generated from
 // be/be_visitor_structure/cdr_op_ch.cpp:46
@@ -809,8 +693,8 @@ TAO_END_VERSIONED_NAMESPACE_DECL
 
 TAO_BEGIN_VERSIONED_NAMESPACE_DECL
 
- ::CORBA::Boolean operator<< (TAO_OutputCDR &, const Pub_Sub::Event &);
- ::CORBA::Boolean operator>> (TAO_InputCDR &, Pub_Sub::Event &);
+ ::CORBA::Boolean operator<< (TAO_OutputCDR &, const Event_Comm::Event &);
+ ::CORBA::Boolean operator>> (TAO_InputCDR &, Event_Comm::Event &);
 
 TAO_END_VERSIONED_NAMESPACE_DECL
 
@@ -821,8 +705,8 @@ TAO_END_VERSIONED_NAMESPACE_DECL
 
 TAO_BEGIN_VERSIONED_NAMESPACE_DECL
 
- ::CORBA::Boolean operator<< (TAO_OutputCDR &, const Pub_Sub::Consumer_ptr );
- ::CORBA::Boolean operator>> (TAO_InputCDR &, Pub_Sub::Consumer_ptr &);
+ ::CORBA::Boolean operator<< (TAO_OutputCDR &, const Event_Comm::Consumer_ptr );
+ ::CORBA::Boolean operator>> (TAO_InputCDR &, Event_Comm::Consumer_ptr &);
 
 TAO_END_VERSIONED_NAMESPACE_DECL
 
@@ -833,8 +717,8 @@ TAO_END_VERSIONED_NAMESPACE_DECL
 
 TAO_BEGIN_VERSIONED_NAMESPACE_DECL
 
- ::CORBA::Boolean operator<< (TAO_OutputCDR &, const Pub_Sub::Notifier_ptr );
- ::CORBA::Boolean operator>> (TAO_InputCDR &, Pub_Sub::Notifier_ptr &);
+ ::CORBA::Boolean operator<< (TAO_OutputCDR &, const Event_Comm::Notifier_ptr );
+ ::CORBA::Boolean operator>> (TAO_InputCDR &, Event_Comm::Notifier_ptr &);
 
 TAO_END_VERSIONED_NAMESPACE_DECL
 
@@ -846,8 +730,8 @@ TAO_BEGIN_VERSIONED_NAMESPACE_DECL
 
 
 
- ::CORBA::Boolean operator<< (TAO_OutputCDR &, const Pub_Sub::Notifier::CannotSubscribe &);
- ::CORBA::Boolean operator>> (TAO_InputCDR &, Pub_Sub::Notifier::CannotSubscribe &);
+ ::CORBA::Boolean operator<< (TAO_OutputCDR &, const Event_Comm::Notifier::CannotSubscribe &);
+ ::CORBA::Boolean operator>> (TAO_InputCDR &, Event_Comm::Notifier::CannotSubscribe &);
 
 TAO_END_VERSIONED_NAMESPACE_DECL
 
@@ -859,8 +743,8 @@ TAO_BEGIN_VERSIONED_NAMESPACE_DECL
 
 
 
- ::CORBA::Boolean operator<< (TAO_OutputCDR &, const Pub_Sub::Notifier::CannotUnsubscribe &);
- ::CORBA::Boolean operator>> (TAO_InputCDR &, Pub_Sub::Notifier::CannotUnsubscribe &);
+ ::CORBA::Boolean operator<< (TAO_OutputCDR &, const Event_Comm::Notifier::CannotUnsubscribe &);
+ ::CORBA::Boolean operator>> (TAO_InputCDR &, Event_Comm::Notifier::CannotUnsubscribe &);
 
 TAO_END_VERSIONED_NAMESPACE_DECL
 
@@ -869,7 +753,7 @@ TAO_END_VERSIONED_NAMESPACE_DECL
 // TAO_IDL - Generated from
 // be/be_codegen.cpp:1703
 #if defined (__ACE_INLINE__)
-#include "PubSubC.inl"
+#include "Event_CommC.inl"
 #endif /* defined INLINE */
 
 #endif /* ifndef */

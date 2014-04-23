@@ -28,11 +28,11 @@
 // TAO_IDL - Generated from
 // be/be_codegen.cpp:461
 
-#ifndef _TAO_IDL_PUBSUBS_TSTUSB_H_
-#define _TAO_IDL_PUBSUBS_TSTUSB_H_
+#ifndef _TAO_IDL_EVENT_COMMS_BRTNB7_H_
+#define _TAO_IDL_EVENT_COMMS_BRTNB7_H_
 
 
-#include "PubSubC.h"
+#include "Event_CommC.h"
 #include "tao/PortableServer/Basic_SArguments.h"
 #include "tao/PortableServer/Special_Basic_SArguments.h"
 #include "tao/PortableServer/Fixed_Size_SArgument_T.h"
@@ -62,26 +62,13 @@ namespace TAO
 {
 
   // TAO_IDL - Generated from
-  // be/be_visitor_arg_traits.cpp:685
-
-  template<>
-  class SArg_Traits< ::Chunk>
-    : public
-        Var_Size_SArg_Traits_T<
-            ::Chunk,
-            TAO::Any_Insert_Policy_Stream
-          >
-  {
-  };
-
-  // TAO_IDL - Generated from
   // be/be_visitor_arg_traits.cpp:947
 
   template<>
-  class SArg_Traits< ::Pub_Sub::Event>
+  class SArg_Traits< ::Event_Comm::Event>
     : public
         Var_Size_SArg_Traits_T<
-            ::Pub_Sub::Event,
+            ::Event_Comm::Event,
             TAO::Any_Insert_Policy_Stream
           >
   {
@@ -90,16 +77,16 @@ namespace TAO
   // TAO_IDL - Generated from
   // be/be_visitor_arg_traits.cpp:147
 
-#if !defined (_PUB_SUB_CONSUMER__SARG_TRAITS_)
-#define _PUB_SUB_CONSUMER__SARG_TRAITS_
+#if !defined (_EVENT_COMM_CONSUMER__SARG_TRAITS_)
+#define _EVENT_COMM_CONSUMER__SARG_TRAITS_
 
   template<>
-  class  SArg_Traits< ::Pub_Sub::Consumer>
+  class  SArg_Traits< ::Event_Comm::Consumer>
     : public
         Object_SArg_Traits_T<
-            ::Pub_Sub::Consumer_ptr,
-            ::Pub_Sub::Consumer_var,
-            ::Pub_Sub::Consumer_out,
+            ::Event_Comm::Consumer_ptr,
+            ::Event_Comm::Consumer_var,
+            ::Event_Comm::Consumer_out,
             TAO::Any_Insert_Policy_Stream
           >
   {
@@ -110,16 +97,16 @@ namespace TAO
   // TAO_IDL - Generated from
   // be/be_visitor_arg_traits.cpp:147
 
-#if !defined (_PUB_SUB_NOTIFIER__SARG_TRAITS_)
-#define _PUB_SUB_NOTIFIER__SARG_TRAITS_
+#if !defined (_EVENT_COMM_NOTIFIER__SARG_TRAITS_)
+#define _EVENT_COMM_NOTIFIER__SARG_TRAITS_
 
   template<>
-  class  SArg_Traits< ::Pub_Sub::Notifier>
+  class  SArg_Traits< ::Event_Comm::Notifier>
     : public
         Object_SArg_Traits_T<
-            ::Pub_Sub::Notifier_ptr,
-            ::Pub_Sub::Notifier_var,
-            ::Pub_Sub::Notifier_out,
+            ::Event_Comm::Notifier_ptr,
+            ::Event_Comm::Notifier_var,
+            ::Event_Comm::Notifier_out,
             TAO::Any_Insert_Policy_Stream
           >
   {
@@ -135,7 +122,7 @@ TAO_END_VERSIONED_NAMESPACE_DECL
 // TAO_IDL - Generated from
 // be/be_visitor_module/module_sh.cpp:38
 
-namespace POA_Pub_Sub
+namespace POA_Event_Comm
 {
   
 
@@ -153,9 +140,9 @@ namespace POA_Pub_Sub
   
   public:
     /// Useful for template programming.
-    typedef ::Pub_Sub::Consumer _stub_type;
-    typedef ::Pub_Sub::Consumer_ptr _stub_ptr_type;
-    typedef ::Pub_Sub::Consumer_var _stub_var_type;
+    typedef ::Event_Comm::Consumer _stub_type;
+    typedef ::Event_Comm::Consumer_ptr _stub_ptr_type;
+    typedef ::Event_Comm::Consumer_var _stub_var_type;
 
     Consumer (const Consumer& rhs);
     virtual ~Consumer (void);
@@ -166,7 +153,7 @@ namespace POA_Pub_Sub
         TAO_ServerRequest & req,
         TAO::Portable_Server::Servant_Upcall *servant_upcall);
     
-    ::Pub_Sub::Consumer *_this (void);
+    ::Event_Comm::Consumer *_this (void);
     
     virtual const char* _interface_repository_id (void) const;
 
@@ -174,7 +161,7 @@ namespace POA_Pub_Sub
     // be/be_visitor_operation/operation_sh.cpp:39
 
     virtual void push (
-      const ::Pub_Sub::Event & event_instance) = 0;
+      const ::Event_Comm::Event & event_instance) = 0;
 
     static void push_skel (
         TAO_ServerRequest &server_request,
@@ -207,9 +194,9 @@ namespace POA_Pub_Sub
   
   public:
     /// Useful for template programming.
-    typedef ::Pub_Sub::Notifier _stub_type;
-    typedef ::Pub_Sub::Notifier_ptr _stub_ptr_type;
-    typedef ::Pub_Sub::Notifier_var _stub_var_type;
+    typedef ::Event_Comm::Notifier _stub_type;
+    typedef ::Event_Comm::Notifier_ptr _stub_ptr_type;
+    typedef ::Event_Comm::Notifier_var _stub_var_type;
 
     Notifier (const Notifier& rhs);
     virtual ~Notifier (void);
@@ -220,7 +207,7 @@ namespace POA_Pub_Sub
         TAO_ServerRequest & req,
         TAO::Portable_Server::Servant_Upcall *servant_upcall);
     
-    ::Pub_Sub::Notifier *_this (void);
+    ::Event_Comm::Notifier *_this (void);
     
     virtual const char* _interface_repository_id (void) const;
 
@@ -239,7 +226,7 @@ namespace POA_Pub_Sub
     // be/be_visitor_operation/operation_sh.cpp:39
 
     virtual void push (
-      const ::Pub_Sub::Event & event_instance) = 0;
+      const ::Event_Comm::Event & event_instance) = 0;
 
     static void push_skel (
         TAO_ServerRequest &server_request,
@@ -250,7 +237,7 @@ namespace POA_Pub_Sub
     // be/be_visitor_operation/operation_sh.cpp:39
 
     virtual void subscribe (
-      ::Pub_Sub::Consumer_ptr subscriber,
+      ::Event_Comm::Consumer_ptr subscriber,
       const char * filtering_criteria) = 0;
 
     static void subscribe_skel (
@@ -262,7 +249,7 @@ namespace POA_Pub_Sub
     // be/be_visitor_operation/operation_sh.cpp:39
 
     virtual void unsubscribe (
-      ::Pub_Sub::Consumer_ptr unsubscriber,
+      ::Event_Comm::Consumer_ptr unsubscriber,
       const char * filtering_criteria) = 0;
 
     static void unsubscribe_skel (
@@ -274,7 +261,7 @@ namespace POA_Pub_Sub
 // TAO_IDL - Generated from
 // be/be_visitor_module/module_sh.cpp:69
 
-} // module Pub_Sub
+} // module Event_Comm
 
 #endif /* ifndef */
 

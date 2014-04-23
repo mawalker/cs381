@@ -28,61 +28,61 @@
 // TAO_IDL - Generated from
 // be/be_codegen.cpp:1673
 
-#include "PubSubI.h"
+#include "Event_CommI.h"
 
 // Implementation skeleton constructor
-Pub_Sub_Consumer_i::Pub_Sub_Consumer_i (void)
+Event_Comm_Consumer_i::Event_Comm_Consumer_i (void)
 {
 }
 
 // Implementation skeleton destructor
-Pub_Sub_Consumer_i::~Pub_Sub_Consumer_i (void)
+Event_Comm_Consumer_i::~Event_Comm_Consumer_i (void)
 {
 }
 
-void Pub_Sub_Consumer_i::push (
-  const ::Pub_Sub::Event & event_instance)
+void Event_Comm_Consumer_i::push (
+  const ::Event_Comm::Event & event_instance)
 {
   // Add your implementation here
 }
 
-void Pub_Sub_Consumer_i::disconnect (
+void Event_Comm_Consumer_i::disconnect (
   const char * reason)
 {
   // Add your implementation here
 }
 
 // Implementation skeleton constructor
-Pub_Sub_Notifier_i::Pub_Sub_Notifier_i (void)
+Event_Comm_Notifier_i::Event_Comm_Notifier_i (void)
 {
 }
 
 // Implementation skeleton destructor
-Pub_Sub_Notifier_i::~Pub_Sub_Notifier_i (void)
+Event_Comm_Notifier_i::~Event_Comm_Notifier_i (void)
 {
 }
 
-void Pub_Sub_Notifier_i::disconnect (
+void Event_Comm_Notifier_i::disconnect (
   const char * reason)
 {
   // Add your implementation here
 }
 
-void Pub_Sub_Notifier_i::push (
-  const ::Pub_Sub::Event & event_instance)
+void Event_Comm_Notifier_i::push (
+  const ::Event_Comm::Event & event_instance)
 {
   // Add your implementation here
 }
 
-void Pub_Sub_Notifier_i::subscribe (
-  ::Pub_Sub::Consumer_ptr subscriber,
+void Event_Comm_Notifier_i::subscribe (
+  ::Event_Comm::Consumer_ptr subscriber,
   const char * filtering_criteria)
 {
   // Add your implementation here
 }
 
-void Pub_Sub_Notifier_i::unsubscribe (
-  ::Pub_Sub::Consumer_ptr unsubscriber,
+void Event_Comm_Notifier_i::unsubscribe (
+  ::Event_Comm::Consumer_ptr unsubscriber,
   const char * filtering_criteria)
 {
   // Add your implementation here

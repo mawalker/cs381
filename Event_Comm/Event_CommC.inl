@@ -30,7 +30,7 @@
 // be/be_visitor_interface/interface_ci.cpp:62
 
 ACE_INLINE
-Pub_Sub::Consumer::Consumer (
+Event_Comm::Consumer::Consumer (
     TAO_Stub *objref,
     ::CORBA::Boolean _tao_collocated,
     TAO_Abstract_ServantBase *servant,
@@ -40,7 +40,7 @@ Pub_Sub::Consumer::Consumer (
 }
 
 ACE_INLINE
-Pub_Sub::Consumer::Consumer (
+Event_Comm::Consumer::Consumer (
     ::IOP::IOR *ior,
     TAO_ORB_Core *oc)
   : ::CORBA::Object (ior, oc)
@@ -51,7 +51,7 @@ Pub_Sub::Consumer::Consumer (
 // be/be_visitor_interface/interface_ci.cpp:62
 
 ACE_INLINE
-Pub_Sub::Notifier::Notifier (
+Event_Comm::Notifier::Notifier (
     TAO_Stub *objref,
     ::CORBA::Boolean _tao_collocated,
     TAO_Abstract_ServantBase *servant,
@@ -61,7 +61,7 @@ Pub_Sub::Notifier::Notifier (
 }
 
 ACE_INLINE
-Pub_Sub::Notifier::Notifier (
+Event_Comm::Notifier::Notifier (
     ::IOP::IOR *ior,
     TAO_ORB_Core *oc)
   : ::CORBA::Object (ior, oc)

@@ -29,12 +29,11 @@
 // be/be_codegen.cpp:376
 
 
-#include "PubSubC.h"
+#include "Event_CommC.h"
 #include "tao/AnyTypeCode/Null_RefCount_Policy.h"
 #include "tao/AnyTypeCode/TypeCode_Constants.h"
 #include "tao/AnyTypeCode/Alias_TypeCode_Static.h"
 #include "tao/AnyTypeCode/Objref_TypeCode_Static.h"
-#include "tao/AnyTypeCode/Sequence_TypeCode_Static.h"
 #include "tao/AnyTypeCode/String_TypeCode_Static.h"
 #include "tao/AnyTypeCode/Struct_TypeCode_Static.h"
 #include "tao/AnyTypeCode/TypeCode_Struct_Field.h"
@@ -42,7 +41,6 @@
 #include "tao/Exception_Data.h"
 #include "tao/Invocation_Adapter.h"
 #include "tao/Object_T.h"
-#include "tao/ORB_Core.h"
 #include "tao/SystemException.h"
 #include "tao/CDR.h"
 #include "tao/AnyTypeCode/Any.h"
@@ -51,105 +49,8 @@
 #include "ace/OS_NS_string.h"
 
 #if !defined (__ACE_INLINE__)
-#include "PubSubC.inl"
+#include "Event_CommC.inl"
 #endif /* !defined INLINE */
-
-// TAO_IDL - Generated from
-// be/be_visitor_sequence/sequence_cs.cpp:73
-
-#if !defined (_CHUNK_CS_)
-#define _CHUNK_CS_
-
-Chunk::Chunk (void)
-{}
-
-Chunk::Chunk (
-    ::CORBA::ULong max)
-  : ::TAO::unbounded_value_sequence<
-        ::CORBA::Octet
-      > (max)
-{}
-
-Chunk::Chunk (
-    ::CORBA::ULong max,
-    ::CORBA::ULong length,
-    ::CORBA::Octet * buffer,
-    ::CORBA::Boolean release
-  )
-  : ::TAO::unbounded_value_sequence<
-        ::CORBA::Octet
-      >
-    (max, length, buffer, release)
-{}
-
-Chunk::Chunk (
-    const Chunk &seq)
-  : ::TAO::unbounded_value_sequence<
-        ::CORBA::Octet
-      > (seq)
-{}
-
-Chunk::~Chunk (void)
-{}
-
-void Chunk::_tao_any_destructor (
-    void * _tao_void_pointer)
-{
-  Chunk * _tao_tmp_pointer =
-    static_cast<Chunk *> (_tao_void_pointer);
-  delete _tao_tmp_pointer;
-}
-
-#endif /* end #if !defined */
-
-// TAO_IDL - Generated from
-// be/be_visitor_typecode/alias_typecode.cpp:51
-
-
-
-// TAO_IDL - Generated from
-// be/be_visitor_typecode/typecode_defn.cpp:466
-
-
-#ifndef _TAO_TYPECODE_Chunk_GUARD
-#define _TAO_TYPECODE_Chunk_GUARD
-
-TAO_BEGIN_VERSIONED_NAMESPACE_DECL
-
-namespace TAO
-{
-  namespace TypeCode
-  {
-    namespace
-    {
-      TAO::TypeCode::Sequence< ::CORBA::TypeCode_ptr const *,
-                              TAO::Null_RefCount_Policy>
-        Chunk_0 (
-          ::CORBA::tk_sequence,
-          &CORBA::_tc_octet,
-          0U);
-        
-      ::CORBA::TypeCode_ptr const tc_Chunk_0 =
-        &Chunk_0;
-    }
-  }
-}
-
-TAO_END_VERSIONED_NAMESPACE_DECL
-
-#endif /* _TAO_TYPECODE_Chunk_GUARD */
-
-static TAO::TypeCode::Alias<char const *,
-                            ::CORBA::TypeCode_ptr const *,
-                            TAO::Null_RefCount_Policy>
-  _tao_tc_Chunk (
-    ::CORBA::tk_alias,
-    "IDL:Chunk:1.0",
-    "Chunk",
-    &TAO::TypeCode::tc_Chunk_0);
-  
-::CORBA::TypeCode_ptr const _tc_Chunk =
-  &_tao_tc_Chunk;
 
 // TAO_IDL - Generated from
 // be/be_visitor_typecode/struct_typecode.cpp:88
@@ -157,7 +58,7 @@ static TAO::TypeCode::Alias<char const *,
 static TAO::TypeCode::Struct_Field<
   char const *,
   ::CORBA::TypeCode_ptr const *> const 
-    _tao_fields_Pub_Sub_Event[] =
+    _tao_fields_Event_Comm_Event[] =
       {
         { "tag_", &CORBA::_tc_string },
         { "value_", &CORBA::_tc_any },
@@ -171,25 +72,25 @@ static TAO::TypeCode::Struct<
     char const *,
     ::CORBA::TypeCode_ptr const *> const *,
   TAO::Null_RefCount_Policy>
-_tao_tc_Pub_Sub_Event (
+_tao_tc_Event_Comm_Event (
   ::CORBA::tk_struct,
-  "IDL:Pub_Sub/Event:1.0",
+  "IDL:Event_Comm/Event:1.0",
   "Event",
-  _tao_fields_Pub_Sub_Event,
+  _tao_fields_Event_Comm_Event,
   3);
 
 
-namespace Pub_Sub
+namespace Event_Comm
 {
   ::CORBA::TypeCode_ptr const _tc_Event =
-    &_tao_tc_Pub_Sub_Event;
+    &_tao_tc_Event_Comm_Event;
 }
 
 // TAO_IDL - Generated from
 // be/be_visitor_structure/structure_cs.cpp:59
 
 void
-Pub_Sub::Event::_tao_any_destructor (
+Event_Comm::Event::_tao_any_destructor (
     void *_tao_void_pointer)
 {
   Event *_tao_tmp_pointer =
@@ -200,31 +101,31 @@ Pub_Sub::Event::_tao_any_destructor (
 // TAO_IDL - Generated from
 // be/be_visitor_interface/interface_cs.cpp:51
 
-// Traits specializations for Pub_Sub::Consumer.
+// Traits specializations for Event_Comm::Consumer.
 
-Pub_Sub::Consumer_ptr
-TAO::Objref_Traits<Pub_Sub::Consumer>::duplicate (
-    Pub_Sub::Consumer_ptr p)
+Event_Comm::Consumer_ptr
+TAO::Objref_Traits<Event_Comm::Consumer>::duplicate (
+    Event_Comm::Consumer_ptr p)
 {
-  return Pub_Sub::Consumer::_duplicate (p);
+  return Event_Comm::Consumer::_duplicate (p);
 }
 
 void
-TAO::Objref_Traits<Pub_Sub::Consumer>::release (
-    Pub_Sub::Consumer_ptr p)
+TAO::Objref_Traits<Event_Comm::Consumer>::release (
+    Event_Comm::Consumer_ptr p)
 {
   ::CORBA::release (p);
 }
 
-Pub_Sub::Consumer_ptr
-TAO::Objref_Traits<Pub_Sub::Consumer>::nil (void)
+Event_Comm::Consumer_ptr
+TAO::Objref_Traits<Event_Comm::Consumer>::nil (void)
 {
-  return Pub_Sub::Consumer::_nil ();
+  return Event_Comm::Consumer::_nil ();
 }
 
 ::CORBA::Boolean
-TAO::Objref_Traits<Pub_Sub::Consumer>::marshal (
-    const Pub_Sub::Consumer_ptr p,
+TAO::Objref_Traits<Event_Comm::Consumer>::marshal (
+    const Event_Comm::Consumer_ptr p,
     TAO_OutputCDR & cdr)
 {
   return ::CORBA::Object::marshal (p, cdr);
@@ -234,8 +135,8 @@ TAO::Objref_Traits<Pub_Sub::Consumer>::marshal (
 // be/be_visitor_operation/operation_cs.cpp:91
 
 void
-Pub_Sub::Consumer::push (
-  const ::Pub_Sub::Event & event_instance)
+Event_Comm::Consumer::push (
+  const ::Event_Comm::Event & event_instance)
 {
   if (!this->is_evaluated ())
     {
@@ -243,7 +144,7 @@ Pub_Sub::Consumer::push (
     }
   
   TAO::Arg_Traits< void>::ret_val _tao_retval;
-  TAO::Arg_Traits< ::Pub_Sub::Event>::in_arg_val _tao_event_instance (event_instance);
+  TAO::Arg_Traits< ::Event_Comm::Event>::in_arg_val _tao_event_instance (event_instance);
 
   TAO::Argument *_the_tao_operation_signature [] =
     {
@@ -268,7 +169,7 @@ Pub_Sub::Consumer::push (
 // be/be_visitor_operation/operation_cs.cpp:91
 
 void
-Pub_Sub::Consumer::disconnect (
+Event_Comm::Consumer::disconnect (
   const char * reason)
 {
   if (!this->is_evaluated ())
@@ -298,34 +199,34 @@ Pub_Sub::Consumer::disconnect (
   _tao_call.invoke (0, 0);
 }
 
-Pub_Sub::Consumer::Consumer (void)
+Event_Comm::Consumer::Consumer (void)
 {
 }
 
-Pub_Sub::Consumer::~Consumer (void)
+Event_Comm::Consumer::~Consumer (void)
 {
 }
 
 void
-Pub_Sub::Consumer::_tao_any_destructor (void *_tao_void_pointer)
+Event_Comm::Consumer::_tao_any_destructor (void *_tao_void_pointer)
 {
   Consumer *_tao_tmp_pointer =
     static_cast<Consumer *> (_tao_void_pointer);
   ::CORBA::release (_tao_tmp_pointer);
 }
 
-Pub_Sub::Consumer_ptr
-Pub_Sub::Consumer::_narrow (
+Event_Comm::Consumer_ptr
+Event_Comm::Consumer::_narrow (
     ::CORBA::Object_ptr _tao_objref)
 {
   return
     TAO::Narrow_Utils<Consumer>::narrow (
         _tao_objref,
-        "IDL:Pub_Sub/Consumer:1.0");
+        "IDL:Event_Comm/Consumer:1.0");
 }
 
-Pub_Sub::Consumer_ptr
-Pub_Sub::Consumer::_unchecked_narrow (
+Event_Comm::Consumer_ptr
+Event_Comm::Consumer::_unchecked_narrow (
     ::CORBA::Object_ptr _tao_objref)
 {
   return
@@ -333,14 +234,14 @@ Pub_Sub::Consumer::_unchecked_narrow (
         _tao_objref);
 }
 
-Pub_Sub::Consumer_ptr
-Pub_Sub::Consumer::_nil (void)
+Event_Comm::Consumer_ptr
+Event_Comm::Consumer::_nil (void)
 {
   return 0;
 }
 
-Pub_Sub::Consumer_ptr
-Pub_Sub::Consumer::_duplicate (Consumer_ptr obj)
+Event_Comm::Consumer_ptr
+Event_Comm::Consumer::_duplicate (Consumer_ptr obj)
 {
   if (! ::CORBA::is_nil (obj))
     {
@@ -350,18 +251,18 @@ Pub_Sub::Consumer::_duplicate (Consumer_ptr obj)
 }
 
 void
-Pub_Sub::Consumer::_tao_release (Consumer_ptr obj)
+Event_Comm::Consumer::_tao_release (Consumer_ptr obj)
 {
   ::CORBA::release (obj);
 }
 
 ::CORBA::Boolean
-Pub_Sub::Consumer::_is_a (const char *value)
+Event_Comm::Consumer::_is_a (const char *value)
 {
   if (
       ACE_OS::strcmp (
           value,
-          "IDL:Pub_Sub/Consumer:1.0"
+          "IDL:Event_Comm/Consumer:1.0"
         ) == 0 ||
       ACE_OS::strcmp (
           value,
@@ -377,13 +278,13 @@ Pub_Sub::Consumer::_is_a (const char *value)
     }
 }
 
-const char* Pub_Sub::Consumer::_interface_repository_id (void) const
+const char* Event_Comm::Consumer::_interface_repository_id (void) const
 {
-  return "IDL:Pub_Sub/Consumer:1.0";
+  return "IDL:Event_Comm/Consumer:1.0";
 }
 
 ::CORBA::Boolean
-Pub_Sub::Consumer::marshal (TAO_OutputCDR &cdr)
+Event_Comm::Consumer::marshal (TAO_OutputCDR &cdr)
 {
   return (cdr << this);
 }
@@ -393,46 +294,46 @@ Pub_Sub::Consumer::marshal (TAO_OutputCDR &cdr)
 
 static TAO::TypeCode::Objref<char const *,
                              TAO::Null_RefCount_Policy>
-  _tao_tc_Pub_Sub_Consumer (
+  _tao_tc_Event_Comm_Consumer (
     ::CORBA::tk_objref,
-    "IDL:Pub_Sub/Consumer:1.0",
+    "IDL:Event_Comm/Consumer:1.0",
     "Consumer");
   
 
-namespace Pub_Sub
+namespace Event_Comm
 {
   ::CORBA::TypeCode_ptr const _tc_Consumer =
-    &_tao_tc_Pub_Sub_Consumer;
+    &_tao_tc_Event_Comm_Consumer;
 }
 
 // TAO_IDL - Generated from
 // be/be_visitor_interface/interface_cs.cpp:51
 
-// Traits specializations for Pub_Sub::Notifier.
+// Traits specializations for Event_Comm::Notifier.
 
-Pub_Sub::Notifier_ptr
-TAO::Objref_Traits<Pub_Sub::Notifier>::duplicate (
-    Pub_Sub::Notifier_ptr p)
+Event_Comm::Notifier_ptr
+TAO::Objref_Traits<Event_Comm::Notifier>::duplicate (
+    Event_Comm::Notifier_ptr p)
 {
-  return Pub_Sub::Notifier::_duplicate (p);
+  return Event_Comm::Notifier::_duplicate (p);
 }
 
 void
-TAO::Objref_Traits<Pub_Sub::Notifier>::release (
-    Pub_Sub::Notifier_ptr p)
+TAO::Objref_Traits<Event_Comm::Notifier>::release (
+    Event_Comm::Notifier_ptr p)
 {
   ::CORBA::release (p);
 }
 
-Pub_Sub::Notifier_ptr
-TAO::Objref_Traits<Pub_Sub::Notifier>::nil (void)
+Event_Comm::Notifier_ptr
+TAO::Objref_Traits<Event_Comm::Notifier>::nil (void)
 {
-  return Pub_Sub::Notifier::_nil ();
+  return Event_Comm::Notifier::_nil ();
 }
 
 ::CORBA::Boolean
-TAO::Objref_Traits<Pub_Sub::Notifier>::marshal (
-    const Pub_Sub::Notifier_ptr p,
+TAO::Objref_Traits<Event_Comm::Notifier>::marshal (
+    const Event_Comm::Notifier_ptr p,
     TAO_OutputCDR & cdr)
 {
   return ::CORBA::Object::marshal (p, cdr);
@@ -441,10 +342,10 @@ TAO::Objref_Traits<Pub_Sub::Notifier>::marshal (
 // TAO_IDL - Generated from
 // be/be_visitor_exception/exception_ctor.cpp:54
 
-Pub_Sub::Notifier::CannotSubscribe::CannotSubscribe (
+Event_Comm::Notifier::CannotSubscribe::CannotSubscribe (
     const char * _tao_reason_)
   : ::CORBA::UserException (
-        "IDL:Pub_Sub/Notifier/CannotSubscribe:1.0",
+        "IDL:Event_Comm/Notifier/CannotSubscribe:1.0",
         "CannotSubscribe"
       )
 {
@@ -456,19 +357,19 @@ Pub_Sub::Notifier::CannotSubscribe::CannotSubscribe (
 // TAO_IDL - Generated from
 // be/be_visitor_exception/exception_cs.cpp:101
 
-Pub_Sub::Notifier::CannotSubscribe::CannotSubscribe (void)
+Event_Comm::Notifier::CannotSubscribe::CannotSubscribe (void)
   : ::CORBA::UserException (
-        "IDL:Pub_Sub/Notifier/CannotSubscribe:1.0",
+        "IDL:Event_Comm/Notifier/CannotSubscribe:1.0",
         "CannotSubscribe"
       )
 {
 }
 
-Pub_Sub::Notifier::CannotSubscribe::~CannotSubscribe (void)
+Event_Comm::Notifier::CannotSubscribe::~CannotSubscribe (void)
 {
 }
 
-Pub_Sub::Notifier::CannotSubscribe::CannotSubscribe (const ::Pub_Sub::Notifier::CannotSubscribe &_tao_excp)
+Event_Comm::Notifier::CannotSubscribe::CannotSubscribe (const ::Event_Comm::Notifier::CannotSubscribe &_tao_excp)
   : ::CORBA::UserException (
         _tao_excp._rep_id (),
         _tao_excp._name ()
@@ -477,58 +378,58 @@ Pub_Sub::Notifier::CannotSubscribe::CannotSubscribe (const ::Pub_Sub::Notifier::
   this->reason_ = ::CORBA::string_dup (_tao_excp.reason_.in ());
 }
 
-Pub_Sub::Notifier::CannotSubscribe&
-Pub_Sub::Notifier::CannotSubscribe::operator= (const ::Pub_Sub::Notifier::CannotSubscribe &_tao_excp)
+Event_Comm::Notifier::CannotSubscribe&
+Event_Comm::Notifier::CannotSubscribe::operator= (const ::Event_Comm::Notifier::CannotSubscribe &_tao_excp)
 {
   this->::CORBA::UserException::operator= (_tao_excp);
   this->reason_ = ::CORBA::string_dup (_tao_excp.reason_.in ());
   return *this;
 }
 
-void Pub_Sub::Notifier::CannotSubscribe::_tao_any_destructor (void *_tao_void_pointer)
+void Event_Comm::Notifier::CannotSubscribe::_tao_any_destructor (void *_tao_void_pointer)
 {
   CannotSubscribe *_tao_tmp_pointer =
     static_cast<CannotSubscribe *> (_tao_void_pointer);
   delete _tao_tmp_pointer;
 }
 
-Pub_Sub::Notifier::CannotSubscribe *
-Pub_Sub::Notifier::CannotSubscribe::_downcast ( ::CORBA::Exception *_tao_excp)
+Event_Comm::Notifier::CannotSubscribe *
+Event_Comm::Notifier::CannotSubscribe::_downcast ( ::CORBA::Exception *_tao_excp)
 {
   return dynamic_cast<CannotSubscribe *> (_tao_excp);
 }
 
-const Pub_Sub::Notifier::CannotSubscribe *
-Pub_Sub::Notifier::CannotSubscribe::_downcast ( ::CORBA::Exception const *_tao_excp)
+const Event_Comm::Notifier::CannotSubscribe *
+Event_Comm::Notifier::CannotSubscribe::_downcast ( ::CORBA::Exception const *_tao_excp)
 {
   return dynamic_cast<const CannotSubscribe *> (_tao_excp);
 }
 
-::CORBA::Exception *Pub_Sub::Notifier::CannotSubscribe::_alloc (void)
+::CORBA::Exception *Event_Comm::Notifier::CannotSubscribe::_alloc (void)
 {
   ::CORBA::Exception *retval = 0;
-  ACE_NEW_RETURN (retval, ::Pub_Sub::Notifier::CannotSubscribe, 0);
+  ACE_NEW_RETURN (retval, ::Event_Comm::Notifier::CannotSubscribe, 0);
   return retval;
 }
 
 ::CORBA::Exception *
-Pub_Sub::Notifier::CannotSubscribe::_tao_duplicate (void) const
+Event_Comm::Notifier::CannotSubscribe::_tao_duplicate (void) const
 {
   ::CORBA::Exception *result = 0;
   ACE_NEW_RETURN (
       result,
-      ::Pub_Sub::Notifier::CannotSubscribe (*this),
+      ::Event_Comm::Notifier::CannotSubscribe (*this),
       0
     );
   return result;
 }
 
-void Pub_Sub::Notifier::CannotSubscribe::_raise (void) const
+void Event_Comm::Notifier::CannotSubscribe::_raise (void) const
 {
   throw *this;
 }
 
-void Pub_Sub::Notifier::CannotSubscribe::_tao_encode (TAO_OutputCDR &cdr) const
+void Event_Comm::Notifier::CannotSubscribe::_tao_encode (TAO_OutputCDR &cdr) const
 {
   if (!(cdr << *this))
     {
@@ -536,7 +437,7 @@ void Pub_Sub::Notifier::CannotSubscribe::_tao_encode (TAO_OutputCDR &cdr) const
     }
 }
 
-void Pub_Sub::Notifier::CannotSubscribe::_tao_decode (TAO_InputCDR &cdr)
+void Event_Comm::Notifier::CannotSubscribe::_tao_decode (TAO_InputCDR &cdr)
 {
   if (!(cdr >> *this))
     {
@@ -545,9 +446,9 @@ void Pub_Sub::Notifier::CannotSubscribe::_tao_decode (TAO_InputCDR &cdr)
 }
 
 // TAO extension - the virtual _type method.
-::CORBA::TypeCode_ptr Pub_Sub::Notifier::CannotSubscribe::_tao_type (void) const
+::CORBA::TypeCode_ptr Event_Comm::Notifier::CannotSubscribe::_tao_type (void) const
 {
-  return ::Pub_Sub::Notifier::_tc_CannotSubscribe;
+  return ::Event_Comm::Notifier::_tc_CannotSubscribe;
 }
 
 // TAO_IDL - Generated from
@@ -556,7 +457,7 @@ void Pub_Sub::Notifier::CannotSubscribe::_tao_decode (TAO_InputCDR &cdr)
 static TAO::TypeCode::Struct_Field<
   char const *,
   ::CORBA::TypeCode_ptr const *> const 
-    _tao_fields_Pub_Sub_Notifier_CannotSubscribe[] =
+    _tao_fields_Event_Comm_Notifier_CannotSubscribe[] =
       {
         { "reason_", &CORBA::_tc_string }
       };
@@ -568,23 +469,23 @@ static TAO::TypeCode::Struct<
     char const *,
     ::CORBA::TypeCode_ptr const *> const *,
   TAO::Null_RefCount_Policy>
-_tao_tc_Pub_Sub_Notifier_CannotSubscribe (
+_tao_tc_Event_Comm_Notifier_CannotSubscribe (
   ::CORBA::tk_except,
-  "IDL:Pub_Sub/Notifier/CannotSubscribe:1.0",
+  "IDL:Event_Comm/Notifier/CannotSubscribe:1.0",
   "CannotSubscribe",
-  _tao_fields_Pub_Sub_Notifier_CannotSubscribe,
+  _tao_fields_Event_Comm_Notifier_CannotSubscribe,
   1);
 
-::CORBA::TypeCode_ptr const Pub_Sub::Notifier::_tc_CannotSubscribe =
-  &_tao_tc_Pub_Sub_Notifier_CannotSubscribe;
+::CORBA::TypeCode_ptr const Event_Comm::Notifier::_tc_CannotSubscribe =
+  &_tao_tc_Event_Comm_Notifier_CannotSubscribe;
 
 // TAO_IDL - Generated from
 // be/be_visitor_exception/exception_ctor.cpp:54
 
-Pub_Sub::Notifier::CannotUnsubscribe::CannotUnsubscribe (
+Event_Comm::Notifier::CannotUnsubscribe::CannotUnsubscribe (
     const char * _tao_reason_)
   : ::CORBA::UserException (
-        "IDL:Pub_Sub/Notifier/CannotUnsubscribe:1.0",
+        "IDL:Event_Comm/Notifier/CannotUnsubscribe:1.0",
         "CannotUnsubscribe"
       )
 {
@@ -596,19 +497,19 @@ Pub_Sub::Notifier::CannotUnsubscribe::CannotUnsubscribe (
 // TAO_IDL - Generated from
 // be/be_visitor_exception/exception_cs.cpp:101
 
-Pub_Sub::Notifier::CannotUnsubscribe::CannotUnsubscribe (void)
+Event_Comm::Notifier::CannotUnsubscribe::CannotUnsubscribe (void)
   : ::CORBA::UserException (
-        "IDL:Pub_Sub/Notifier/CannotUnsubscribe:1.0",
+        "IDL:Event_Comm/Notifier/CannotUnsubscribe:1.0",
         "CannotUnsubscribe"
       )
 {
 }
 
-Pub_Sub::Notifier::CannotUnsubscribe::~CannotUnsubscribe (void)
+Event_Comm::Notifier::CannotUnsubscribe::~CannotUnsubscribe (void)
 {
 }
 
-Pub_Sub::Notifier::CannotUnsubscribe::CannotUnsubscribe (const ::Pub_Sub::Notifier::CannotUnsubscribe &_tao_excp)
+Event_Comm::Notifier::CannotUnsubscribe::CannotUnsubscribe (const ::Event_Comm::Notifier::CannotUnsubscribe &_tao_excp)
   : ::CORBA::UserException (
         _tao_excp._rep_id (),
         _tao_excp._name ()
@@ -617,58 +518,58 @@ Pub_Sub::Notifier::CannotUnsubscribe::CannotUnsubscribe (const ::Pub_Sub::Notifi
   this->reason_ = ::CORBA::string_dup (_tao_excp.reason_.in ());
 }
 
-Pub_Sub::Notifier::CannotUnsubscribe&
-Pub_Sub::Notifier::CannotUnsubscribe::operator= (const ::Pub_Sub::Notifier::CannotUnsubscribe &_tao_excp)
+Event_Comm::Notifier::CannotUnsubscribe&
+Event_Comm::Notifier::CannotUnsubscribe::operator= (const ::Event_Comm::Notifier::CannotUnsubscribe &_tao_excp)
 {
   this->::CORBA::UserException::operator= (_tao_excp);
   this->reason_ = ::CORBA::string_dup (_tao_excp.reason_.in ());
   return *this;
 }
 
-void Pub_Sub::Notifier::CannotUnsubscribe::_tao_any_destructor (void *_tao_void_pointer)
+void Event_Comm::Notifier::CannotUnsubscribe::_tao_any_destructor (void *_tao_void_pointer)
 {
   CannotUnsubscribe *_tao_tmp_pointer =
     static_cast<CannotUnsubscribe *> (_tao_void_pointer);
   delete _tao_tmp_pointer;
 }
 
-Pub_Sub::Notifier::CannotUnsubscribe *
-Pub_Sub::Notifier::CannotUnsubscribe::_downcast ( ::CORBA::Exception *_tao_excp)
+Event_Comm::Notifier::CannotUnsubscribe *
+Event_Comm::Notifier::CannotUnsubscribe::_downcast ( ::CORBA::Exception *_tao_excp)
 {
   return dynamic_cast<CannotUnsubscribe *> (_tao_excp);
 }
 
-const Pub_Sub::Notifier::CannotUnsubscribe *
-Pub_Sub::Notifier::CannotUnsubscribe::_downcast ( ::CORBA::Exception const *_tao_excp)
+const Event_Comm::Notifier::CannotUnsubscribe *
+Event_Comm::Notifier::CannotUnsubscribe::_downcast ( ::CORBA::Exception const *_tao_excp)
 {
   return dynamic_cast<const CannotUnsubscribe *> (_tao_excp);
 }
 
-::CORBA::Exception *Pub_Sub::Notifier::CannotUnsubscribe::_alloc (void)
+::CORBA::Exception *Event_Comm::Notifier::CannotUnsubscribe::_alloc (void)
 {
   ::CORBA::Exception *retval = 0;
-  ACE_NEW_RETURN (retval, ::Pub_Sub::Notifier::CannotUnsubscribe, 0);
+  ACE_NEW_RETURN (retval, ::Event_Comm::Notifier::CannotUnsubscribe, 0);
   return retval;
 }
 
 ::CORBA::Exception *
-Pub_Sub::Notifier::CannotUnsubscribe::_tao_duplicate (void) const
+Event_Comm::Notifier::CannotUnsubscribe::_tao_duplicate (void) const
 {
   ::CORBA::Exception *result = 0;
   ACE_NEW_RETURN (
       result,
-      ::Pub_Sub::Notifier::CannotUnsubscribe (*this),
+      ::Event_Comm::Notifier::CannotUnsubscribe (*this),
       0
     );
   return result;
 }
 
-void Pub_Sub::Notifier::CannotUnsubscribe::_raise (void) const
+void Event_Comm::Notifier::CannotUnsubscribe::_raise (void) const
 {
   throw *this;
 }
 
-void Pub_Sub::Notifier::CannotUnsubscribe::_tao_encode (TAO_OutputCDR &cdr) const
+void Event_Comm::Notifier::CannotUnsubscribe::_tao_encode (TAO_OutputCDR &cdr) const
 {
   if (!(cdr << *this))
     {
@@ -676,7 +577,7 @@ void Pub_Sub::Notifier::CannotUnsubscribe::_tao_encode (TAO_OutputCDR &cdr) cons
     }
 }
 
-void Pub_Sub::Notifier::CannotUnsubscribe::_tao_decode (TAO_InputCDR &cdr)
+void Event_Comm::Notifier::CannotUnsubscribe::_tao_decode (TAO_InputCDR &cdr)
 {
   if (!(cdr >> *this))
     {
@@ -685,9 +586,9 @@ void Pub_Sub::Notifier::CannotUnsubscribe::_tao_decode (TAO_InputCDR &cdr)
 }
 
 // TAO extension - the virtual _type method.
-::CORBA::TypeCode_ptr Pub_Sub::Notifier::CannotUnsubscribe::_tao_type (void) const
+::CORBA::TypeCode_ptr Event_Comm::Notifier::CannotUnsubscribe::_tao_type (void) const
 {
-  return ::Pub_Sub::Notifier::_tc_CannotUnsubscribe;
+  return ::Event_Comm::Notifier::_tc_CannotUnsubscribe;
 }
 
 // TAO_IDL - Generated from
@@ -696,7 +597,7 @@ void Pub_Sub::Notifier::CannotUnsubscribe::_tao_decode (TAO_InputCDR &cdr)
 static TAO::TypeCode::Struct_Field<
   char const *,
   ::CORBA::TypeCode_ptr const *> const 
-    _tao_fields_Pub_Sub_Notifier_CannotUnsubscribe[] =
+    _tao_fields_Event_Comm_Notifier_CannotUnsubscribe[] =
       {
         { "reason_", &CORBA::_tc_string }
       };
@@ -708,21 +609,21 @@ static TAO::TypeCode::Struct<
     char const *,
     ::CORBA::TypeCode_ptr const *> const *,
   TAO::Null_RefCount_Policy>
-_tao_tc_Pub_Sub_Notifier_CannotUnsubscribe (
+_tao_tc_Event_Comm_Notifier_CannotUnsubscribe (
   ::CORBA::tk_except,
-  "IDL:Pub_Sub/Notifier/CannotUnsubscribe:1.0",
+  "IDL:Event_Comm/Notifier/CannotUnsubscribe:1.0",
   "CannotUnsubscribe",
-  _tao_fields_Pub_Sub_Notifier_CannotUnsubscribe,
+  _tao_fields_Event_Comm_Notifier_CannotUnsubscribe,
   1);
 
-::CORBA::TypeCode_ptr const Pub_Sub::Notifier::_tc_CannotUnsubscribe =
-  &_tao_tc_Pub_Sub_Notifier_CannotUnsubscribe;
+::CORBA::TypeCode_ptr const Event_Comm::Notifier::_tc_CannotUnsubscribe =
+  &_tao_tc_Event_Comm_Notifier_CannotUnsubscribe;
 
 // TAO_IDL - Generated from
 // be/be_visitor_operation/operation_cs.cpp:91
 
 void
-Pub_Sub::Notifier::disconnect (
+Event_Comm::Notifier::disconnect (
   const char * reason)
 {
   if (!this->is_evaluated ())
@@ -756,8 +657,8 @@ Pub_Sub::Notifier::disconnect (
 // be/be_visitor_operation/operation_cs.cpp:91
 
 void
-Pub_Sub::Notifier::push (
-  const ::Pub_Sub::Event & event_instance)
+Event_Comm::Notifier::push (
+  const ::Event_Comm::Event & event_instance)
 {
   if (!this->is_evaluated ())
     {
@@ -765,7 +666,7 @@ Pub_Sub::Notifier::push (
     }
   
   TAO::Arg_Traits< void>::ret_val _tao_retval;
-  TAO::Arg_Traits< ::Pub_Sub::Event>::in_arg_val _tao_event_instance (event_instance);
+  TAO::Arg_Traits< ::Event_Comm::Event>::in_arg_val _tao_event_instance (event_instance);
 
   TAO::Argument *_the_tao_operation_signature [] =
     {
@@ -790,8 +691,8 @@ Pub_Sub::Notifier::push (
 // be/be_visitor_operation/operation_cs.cpp:91
 
 void
-Pub_Sub::Notifier::subscribe (
-  ::Pub_Sub::Consumer_ptr subscriber,
+Event_Comm::Notifier::subscribe (
+  ::Event_Comm::Consumer_ptr subscriber,
   const char * filtering_criteria)
 {
   if (!this->is_evaluated ())
@@ -800,7 +701,7 @@ Pub_Sub::Notifier::subscribe (
     }
   
   TAO::Arg_Traits< void>::ret_val _tao_retval;
-  TAO::Arg_Traits< ::Pub_Sub::Consumer>::in_arg_val _tao_subscriber (subscriber);
+  TAO::Arg_Traits< ::Event_Comm::Consumer>::in_arg_val _tao_subscriber (subscriber);
   TAO::Arg_Traits< char *>::in_arg_val _tao_filtering_criteria (filtering_criteria);
 
   TAO::Argument *_the_tao_operation_signature [] =
@@ -811,13 +712,13 @@ Pub_Sub::Notifier::subscribe (
     };
 
   static TAO::Exception_Data
-  _tao_Pub_Sub_Notifier_subscribe_exceptiondata [] = 
+  _tao_Event_Comm_Notifier_subscribe_exceptiondata [] = 
     {
       {
-        "IDL:Pub_Sub/Notifier/CannotSubscribe:1.0",
-        Pub_Sub::Notifier::CannotSubscribe::_alloc
+        "IDL:Event_Comm/Notifier/CannotSubscribe:1.0",
+        Event_Comm::Notifier::CannotSubscribe::_alloc
 #if TAO_HAS_INTERCEPTORS == 1
-        , Pub_Sub::Notifier::_tc_CannotSubscribe
+        , Event_Comm::Notifier::_tc_CannotSubscribe
 #endif /* TAO_HAS_INTERCEPTORS */
       }
     };
@@ -833,7 +734,7 @@ Pub_Sub::Notifier::subscribe (
     );
 
   _tao_call.invoke (
-      _tao_Pub_Sub_Notifier_subscribe_exceptiondata,
+      _tao_Event_Comm_Notifier_subscribe_exceptiondata,
       1
     );
 }
@@ -842,8 +743,8 @@ Pub_Sub::Notifier::subscribe (
 // be/be_visitor_operation/operation_cs.cpp:91
 
 void
-Pub_Sub::Notifier::unsubscribe (
-  ::Pub_Sub::Consumer_ptr unsubscriber,
+Event_Comm::Notifier::unsubscribe (
+  ::Event_Comm::Consumer_ptr unsubscriber,
   const char * filtering_criteria)
 {
   if (!this->is_evaluated ())
@@ -852,7 +753,7 @@ Pub_Sub::Notifier::unsubscribe (
     }
   
   TAO::Arg_Traits< void>::ret_val _tao_retval;
-  TAO::Arg_Traits< ::Pub_Sub::Consumer>::in_arg_val _tao_unsubscriber (unsubscriber);
+  TAO::Arg_Traits< ::Event_Comm::Consumer>::in_arg_val _tao_unsubscriber (unsubscriber);
   TAO::Arg_Traits< char *>::in_arg_val _tao_filtering_criteria (filtering_criteria);
 
   TAO::Argument *_the_tao_operation_signature [] =
@@ -863,13 +764,13 @@ Pub_Sub::Notifier::unsubscribe (
     };
 
   static TAO::Exception_Data
-  _tao_Pub_Sub_Notifier_unsubscribe_exceptiondata [] = 
+  _tao_Event_Comm_Notifier_unsubscribe_exceptiondata [] = 
     {
       {
-        "IDL:Pub_Sub/Notifier/CannotUnsubscribe:1.0",
-        Pub_Sub::Notifier::CannotUnsubscribe::_alloc
+        "IDL:Event_Comm/Notifier/CannotUnsubscribe:1.0",
+        Event_Comm::Notifier::CannotUnsubscribe::_alloc
 #if TAO_HAS_INTERCEPTORS == 1
-        , Pub_Sub::Notifier::_tc_CannotUnsubscribe
+        , Event_Comm::Notifier::_tc_CannotUnsubscribe
 #endif /* TAO_HAS_INTERCEPTORS */
       }
     };
@@ -885,39 +786,39 @@ Pub_Sub::Notifier::unsubscribe (
     );
 
   _tao_call.invoke (
-      _tao_Pub_Sub_Notifier_unsubscribe_exceptiondata,
+      _tao_Event_Comm_Notifier_unsubscribe_exceptiondata,
       1
     );
 }
 
-Pub_Sub::Notifier::Notifier (void)
+Event_Comm::Notifier::Notifier (void)
 {
 }
 
-Pub_Sub::Notifier::~Notifier (void)
+Event_Comm::Notifier::~Notifier (void)
 {
 }
 
 void
-Pub_Sub::Notifier::_tao_any_destructor (void *_tao_void_pointer)
+Event_Comm::Notifier::_tao_any_destructor (void *_tao_void_pointer)
 {
   Notifier *_tao_tmp_pointer =
     static_cast<Notifier *> (_tao_void_pointer);
   ::CORBA::release (_tao_tmp_pointer);
 }
 
-Pub_Sub::Notifier_ptr
-Pub_Sub::Notifier::_narrow (
+Event_Comm::Notifier_ptr
+Event_Comm::Notifier::_narrow (
     ::CORBA::Object_ptr _tao_objref)
 {
   return
     TAO::Narrow_Utils<Notifier>::narrow (
         _tao_objref,
-        "IDL:Pub_Sub/Notifier:1.0");
+        "IDL:Event_Comm/Notifier:1.0");
 }
 
-Pub_Sub::Notifier_ptr
-Pub_Sub::Notifier::_unchecked_narrow (
+Event_Comm::Notifier_ptr
+Event_Comm::Notifier::_unchecked_narrow (
     ::CORBA::Object_ptr _tao_objref)
 {
   return
@@ -925,14 +826,14 @@ Pub_Sub::Notifier::_unchecked_narrow (
         _tao_objref);
 }
 
-Pub_Sub::Notifier_ptr
-Pub_Sub::Notifier::_nil (void)
+Event_Comm::Notifier_ptr
+Event_Comm::Notifier::_nil (void)
 {
   return 0;
 }
 
-Pub_Sub::Notifier_ptr
-Pub_Sub::Notifier::_duplicate (Notifier_ptr obj)
+Event_Comm::Notifier_ptr
+Event_Comm::Notifier::_duplicate (Notifier_ptr obj)
 {
   if (! ::CORBA::is_nil (obj))
     {
@@ -942,18 +843,18 @@ Pub_Sub::Notifier::_duplicate (Notifier_ptr obj)
 }
 
 void
-Pub_Sub::Notifier::_tao_release (Notifier_ptr obj)
+Event_Comm::Notifier::_tao_release (Notifier_ptr obj)
 {
   ::CORBA::release (obj);
 }
 
 ::CORBA::Boolean
-Pub_Sub::Notifier::_is_a (const char *value)
+Event_Comm::Notifier::_is_a (const char *value)
 {
   if (
       ACE_OS::strcmp (
           value,
-          "IDL:Pub_Sub/Notifier:1.0"
+          "IDL:Event_Comm/Notifier:1.0"
         ) == 0 ||
       ACE_OS::strcmp (
           value,
@@ -969,13 +870,13 @@ Pub_Sub::Notifier::_is_a (const char *value)
     }
 }
 
-const char* Pub_Sub::Notifier::_interface_repository_id (void) const
+const char* Event_Comm::Notifier::_interface_repository_id (void) const
 {
-  return "IDL:Pub_Sub/Notifier:1.0";
+  return "IDL:Event_Comm/Notifier:1.0";
 }
 
 ::CORBA::Boolean
-Pub_Sub::Notifier::marshal (TAO_OutputCDR &cdr)
+Event_Comm::Notifier::marshal (TAO_OutputCDR &cdr)
 {
   return (cdr << this);
 }
@@ -985,86 +886,17 @@ Pub_Sub::Notifier::marshal (TAO_OutputCDR &cdr)
 
 static TAO::TypeCode::Objref<char const *,
                              TAO::Null_RefCount_Policy>
-  _tao_tc_Pub_Sub_Notifier (
+  _tao_tc_Event_Comm_Notifier (
     ::CORBA::tk_objref,
-    "IDL:Pub_Sub/Notifier:1.0",
+    "IDL:Event_Comm/Notifier:1.0",
     "Notifier");
   
 
-namespace Pub_Sub
+namespace Event_Comm
 {
   ::CORBA::TypeCode_ptr const _tc_Notifier =
-    &_tao_tc_Pub_Sub_Notifier;
+    &_tao_tc_Event_Comm_Notifier;
 }
-
-// TAO_IDL - Generated from
-// be/be_visitor_sequence/any_op_cs.cpp:48
-
-
-TAO_BEGIN_VERSIONED_NAMESPACE_DECL
-
-
-TAO_END_VERSIONED_NAMESPACE_DECL
-
-
-TAO_BEGIN_VERSIONED_NAMESPACE_DECL
-
-
-// Copying insertion.
-void operator<<= (
-    ::CORBA::Any &_tao_any,
-    const Chunk &_tao_elem)
-{
-  if (0 == &_tao_elem) // Trying to de-reference NULL object
-    _tao_any <<= static_cast<Chunk *>( 0 ); // Use non-copying insertion of a NULL
-  else
-    TAO::Any_Dual_Impl_T<Chunk>::insert_copy (
-        _tao_any,
-        Chunk::_tao_any_destructor,
-        _tc_Chunk,
-        _tao_elem
-      );
-}
-
-// Non-copying insertion.
-void operator<<= (
-    ::CORBA::Any &_tao_any,
-    Chunk *_tao_elem)
-{
-  TAO::Any_Dual_Impl_T<Chunk>::insert (
-      _tao_any,
-      Chunk::_tao_any_destructor,
-      _tc_Chunk,
-      _tao_elem
-    );
-}
-
-// Extraction to non-const pointer (deprecated).
-::CORBA::Boolean operator>>= (
-    const ::CORBA::Any &_tao_any,
-    Chunk *&_tao_elem)
-{
-  return _tao_any >>= const_cast<
-      const Chunk *&> (
-      _tao_elem
-    );
-}
-
-// Extraction to const pointer.
-::CORBA::Boolean operator>>= (
-    const ::CORBA::Any &_tao_any,
-    const Chunk *&_tao_elem)
-{
-  return
-    TAO::Any_Dual_Impl_T<Chunk>::extract (
-        _tao_any,
-        Chunk::_tao_any_destructor,
-        _tc_Chunk,
-        _tao_elem);
-}
-TAO_END_VERSIONED_NAMESPACE_DECL
-
-
 
 // TAO_IDL - Generated from
 // be/be_visitor_structure/any_op_cs.cpp:46
@@ -1073,55 +905,55 @@ TAO_END_VERSIONED_NAMESPACE_DECL
 
 #if defined (ACE_ANY_OPS_USE_NAMESPACE)
 
-namespace Pub_Sub
+namespace Event_Comm
 {
   /// Copying insertion.
   void operator<<= (
       ::CORBA::Any &_tao_any,
-      const ::Pub_Sub::Event &_tao_elem)
+      const ::Event_Comm::Event &_tao_elem)
   {
     if (0 == &_tao_elem) // Trying to de-reference NULL object
-      _tao_any <<= static_cast< ::Pub_Sub::Event *>( 0 ); // Use non-copying insertion of a NULL
+      _tao_any <<= static_cast< ::Event_Comm::Event *>( 0 ); // Use non-copying insertion of a NULL
     else
-      TAO::Any_Dual_Impl_T< ::Pub_Sub::Event>::insert_copy (
+      TAO::Any_Dual_Impl_T< ::Event_Comm::Event>::insert_copy (
           _tao_any,
-          ::Pub_Sub::Event::_tao_any_destructor,
-          ::Pub_Sub::_tc_Event,
+          ::Event_Comm::Event::_tao_any_destructor,
+          ::Event_Comm::_tc_Event,
           _tao_elem);
   }
 
   /// Non-copying insertion.
   void operator<<= (
       ::CORBA::Any &_tao_any, ::
-      Pub_Sub::Event *_tao_elem)
+      Event_Comm::Event *_tao_elem)
   {
-    TAO::Any_Dual_Impl_T< ::Pub_Sub::Event>::insert (
+    TAO::Any_Dual_Impl_T< ::Event_Comm::Event>::insert (
         _tao_any,
-        ::Pub_Sub::Event::_tao_any_destructor,
-        ::Pub_Sub::_tc_Event,
+        ::Event_Comm::Event::_tao_any_destructor,
+        ::Event_Comm::_tc_Event,
         _tao_elem);
   }
 
   /// Extraction to non-const pointer (deprecated).
   ::CORBA::Boolean operator>>= (
       const ::CORBA::Any &_tao_any,
-      ::Pub_Sub::Event *&_tao_elem)
+      ::Event_Comm::Event *&_tao_elem)
   {
     return _tao_any >>= const_cast<
-        const ::Pub_Sub::Event *&> (
+        const ::Event_Comm::Event *&> (
         _tao_elem);
   }
 
   /// Extraction to const pointer.
   ::CORBA::Boolean operator>>= (
       const ::CORBA::Any &_tao_any,
-      const ::Pub_Sub::Event *&_tao_elem)
+      const ::Event_Comm::Event *&_tao_elem)
   {
     return
-      TAO::Any_Dual_Impl_T< ::Pub_Sub::Event>::extract (
+      TAO::Any_Dual_Impl_T< ::Event_Comm::Event>::extract (
           _tao_any,
-          ::Pub_Sub::Event::_tao_any_destructor,
-          ::Pub_Sub::_tc_Event,
+          ::Event_Comm::Event::_tao_any_destructor,
+          ::Event_Comm::_tc_Event,
           _tao_elem
         );
   }
@@ -1134,50 +966,50 @@ TAO_BEGIN_VERSIONED_NAMESPACE_DECL
 /// Copying insertion.
 void operator<<= (
   ::CORBA::Any &_tao_any,
-  const Pub_Sub::Event &_tao_elem)
+  const Event_Comm::Event &_tao_elem)
 {
   if (0 == &_tao_elem) // Trying to de-reference NULL object
-    _tao_any <<= static_cast<Pub_Sub::Event *>( 0 ); // Use non-copying insertion of a NULL
+    _tao_any <<= static_cast<Event_Comm::Event *>( 0 ); // Use non-copying insertion of a NULL
   else
-    TAO::Any_Dual_Impl_T<Pub_Sub::Event>::insert_copy (
+    TAO::Any_Dual_Impl_T<Event_Comm::Event>::insert_copy (
       _tao_any,
-      Pub_Sub::Event::_tao_any_destructor,
-      Pub_Sub::_tc_Event,
+      Event_Comm::Event::_tao_any_destructor,
+      Event_Comm::_tc_Event,
       _tao_elem);
 }
 
 /// Non-copying insertion.
 void operator<<= (
   ::CORBA::Any &_tao_any,
-  Pub_Sub::Event *_tao_elem)
+  Event_Comm::Event *_tao_elem)
 {
-  TAO::Any_Dual_Impl_T<Pub_Sub::Event>::insert (
+  TAO::Any_Dual_Impl_T<Event_Comm::Event>::insert (
     _tao_any,
-    Pub_Sub::Event::_tao_any_destructor,
-    Pub_Sub::_tc_Event,
+    Event_Comm::Event::_tao_any_destructor,
+    Event_Comm::_tc_Event,
     _tao_elem);
 }
 
 /// Extraction to non-const pointer (deprecated).
 ::CORBA::Boolean operator>>= (
   const ::CORBA::Any &_tao_any,
-  Pub_Sub::Event *&_tao_elem)
+  Event_Comm::Event *&_tao_elem)
 {
   return _tao_any >>= const_cast<
-      const Pub_Sub::Event *&> (
+      const Event_Comm::Event *&> (
       _tao_elem);
 }
 
 /// Extraction to const pointer.
 ::CORBA::Boolean operator>>= (
   const ::CORBA::Any &_tao_any,
-  const Pub_Sub::Event *&_tao_elem)
+  const Event_Comm::Event *&_tao_elem)
 {
   return
-    TAO::Any_Dual_Impl_T<Pub_Sub::Event>::extract (
+    TAO::Any_Dual_Impl_T<Event_Comm::Event>::extract (
       _tao_any,
-      Pub_Sub::Event::_tao_any_destructor,
-      Pub_Sub::_tc_Event,
+      Event_Comm::Event::_tao_any_destructor,
+      Event_Comm::_tc_Event,
       _tao_elem);
 }
 TAO_END_VERSIONED_NAMESPACE_DECL
@@ -1196,7 +1028,7 @@ namespace TAO
 {
   template<>
   ::CORBA::Boolean
-  Any_Impl_T<Pub_Sub::Consumer>::to_object (
+  Any_Impl_T<Event_Comm::Consumer>::to_object (
       ::CORBA::Object_ptr &_tao_elem) const
   {
     _tao_elem = ::CORBA::Object::_duplicate (this->value_);
@@ -1209,7 +1041,7 @@ TAO_END_VERSIONED_NAMESPACE_DECL
 
 #if defined (ACE_ANY_OPS_USE_NAMESPACE)
 
-namespace Pub_Sub
+namespace Event_Comm
 {
   
 
@@ -1261,10 +1093,10 @@ TAO_BEGIN_VERSIONED_NAMESPACE_DECL
 void
 operator<<= (
     ::CORBA::Any &_tao_any,
-    Pub_Sub::Consumer_ptr _tao_elem)
+    Event_Comm::Consumer_ptr _tao_elem)
 {
-  Pub_Sub::Consumer_ptr _tao_objptr =
-    Pub_Sub::Consumer::_duplicate (_tao_elem);
+  Event_Comm::Consumer_ptr _tao_objptr =
+    Event_Comm::Consumer::_duplicate (_tao_elem);
   _tao_any <<= &_tao_objptr;
 }
 
@@ -1272,25 +1104,25 @@ operator<<= (
 void
 operator<<= (
     ::CORBA::Any &_tao_any,
-    Pub_Sub::Consumer_ptr *_tao_elem)
+    Event_Comm::Consumer_ptr *_tao_elem)
 {
-  TAO::Any_Impl_T<Pub_Sub::Consumer>::insert (
+  TAO::Any_Impl_T<Event_Comm::Consumer>::insert (
       _tao_any,
-      Pub_Sub::Consumer::_tao_any_destructor,
-      Pub_Sub::_tc_Consumer,
+      Event_Comm::Consumer::_tao_any_destructor,
+      Event_Comm::_tc_Consumer,
       *_tao_elem);
 }
 
 ::CORBA::Boolean
 operator>>= (
     const ::CORBA::Any &_tao_any,
-    Pub_Sub::Consumer_ptr &_tao_elem)
+    Event_Comm::Consumer_ptr &_tao_elem)
 {
   return
-    TAO::Any_Impl_T<Pub_Sub::Consumer>::extract (
+    TAO::Any_Impl_T<Event_Comm::Consumer>::extract (
         _tao_any,
-        Pub_Sub::Consumer::_tao_any_destructor,
-        Pub_Sub::_tc_Consumer,
+        Event_Comm::Consumer::_tao_any_destructor,
+        Event_Comm::_tc_Consumer,
         _tao_elem);
 }
 
@@ -1310,7 +1142,7 @@ namespace TAO
 {
   template<>
   ::CORBA::Boolean
-  Any_Impl_T<Pub_Sub::Notifier>::to_object (
+  Any_Impl_T<Event_Comm::Notifier>::to_object (
       ::CORBA::Object_ptr &_tao_elem) const
   {
     _tao_elem = ::CORBA::Object::_duplicate (this->value_);
@@ -1323,7 +1155,7 @@ TAO_END_VERSIONED_NAMESPACE_DECL
 
 #if defined (ACE_ANY_OPS_USE_NAMESPACE)
 
-namespace Pub_Sub
+namespace Event_Comm
 {
   
 
@@ -1375,10 +1207,10 @@ TAO_BEGIN_VERSIONED_NAMESPACE_DECL
 void
 operator<<= (
     ::CORBA::Any &_tao_any,
-    Pub_Sub::Notifier_ptr _tao_elem)
+    Event_Comm::Notifier_ptr _tao_elem)
 {
-  Pub_Sub::Notifier_ptr _tao_objptr =
-    Pub_Sub::Notifier::_duplicate (_tao_elem);
+  Event_Comm::Notifier_ptr _tao_objptr =
+    Event_Comm::Notifier::_duplicate (_tao_elem);
   _tao_any <<= &_tao_objptr;
 }
 
@@ -1386,25 +1218,25 @@ operator<<= (
 void
 operator<<= (
     ::CORBA::Any &_tao_any,
-    Pub_Sub::Notifier_ptr *_tao_elem)
+    Event_Comm::Notifier_ptr *_tao_elem)
 {
-  TAO::Any_Impl_T<Pub_Sub::Notifier>::insert (
+  TAO::Any_Impl_T<Event_Comm::Notifier>::insert (
       _tao_any,
-      Pub_Sub::Notifier::_tao_any_destructor,
-      Pub_Sub::_tc_Notifier,
+      Event_Comm::Notifier::_tao_any_destructor,
+      Event_Comm::_tc_Notifier,
       *_tao_elem);
 }
 
 ::CORBA::Boolean
 operator>>= (
     const ::CORBA::Any &_tao_any,
-    Pub_Sub::Notifier_ptr &_tao_elem)
+    Event_Comm::Notifier_ptr &_tao_elem)
 {
   return
-    TAO::Any_Impl_T<Pub_Sub::Notifier>::extract (
+    TAO::Any_Impl_T<Event_Comm::Notifier>::extract (
         _tao_any,
-        Pub_Sub::Notifier::_tao_any_destructor,
-        Pub_Sub::_tc_Notifier,
+        Event_Comm::Notifier::_tao_any_destructor,
+        Event_Comm::_tc_Notifier,
         _tao_elem);
 }
 
@@ -1424,7 +1256,7 @@ namespace TAO
 {
   template<>
   ::CORBA::Boolean
-  Any_Dual_Impl_T<Pub_Sub::Notifier::CannotSubscribe>::demarshal_value (TAO_InputCDR & cdr)
+  Any_Dual_Impl_T<Event_Comm::Notifier::CannotSubscribe>::demarshal_value (TAO_InputCDR & cdr)
   {
     ::CORBA::String_var id;
 
@@ -1451,54 +1283,54 @@ TAO_END_VERSIONED_NAMESPACE_DECL
 
 #if defined (ACE_ANY_OPS_USE_NAMESPACE)
 
-namespace Pub_Sub
+namespace Event_Comm
 {
   
 
   // Copying insertion.
   void operator<<= (
       ::CORBA::Any &_tao_any,
-      const ::Pub_Sub::Notifier::CannotSubscribe &_tao_elem)
+      const ::Event_Comm::Notifier::CannotSubscribe &_tao_elem)
   {
-    TAO::Any_Dual_Impl_T< ::Pub_Sub::Notifier::CannotSubscribe>::insert_copy (
+    TAO::Any_Dual_Impl_T< ::Event_Comm::Notifier::CannotSubscribe>::insert_copy (
         _tao_any,
-        ::Pub_Sub::Notifier::CannotSubscribe::_tao_any_destructor,
-        ::Pub_Sub::Notifier::_tc_CannotSubscribe,
+        ::Event_Comm::Notifier::CannotSubscribe::_tao_any_destructor,
+        ::Event_Comm::Notifier::_tc_CannotSubscribe,
         _tao_elem);
   }
 
   // Non-copying insertion.
   void operator<<= (
       ::CORBA::Any &_tao_any,
-      ::Pub_Sub::Notifier::CannotSubscribe *_tao_elem)
+      ::Event_Comm::Notifier::CannotSubscribe *_tao_elem)
   {
-    TAO::Any_Dual_Impl_T< ::Pub_Sub::Notifier::CannotSubscribe>::insert (
+    TAO::Any_Dual_Impl_T< ::Event_Comm::Notifier::CannotSubscribe>::insert (
         _tao_any,
-        ::Pub_Sub::Notifier::CannotSubscribe::_tao_any_destructor,
-        ::Pub_Sub::Notifier::_tc_CannotSubscribe,
+        ::Event_Comm::Notifier::CannotSubscribe::_tao_any_destructor,
+        ::Event_Comm::Notifier::_tc_CannotSubscribe,
         _tao_elem);
   }
 
   // Extraction to non-const pointer (deprecated).
   ::CORBA::Boolean operator>>= (
       const ::CORBA::Any &_tao_any,
-      ::Pub_Sub::Notifier::CannotSubscribe *&_tao_elem)
+      ::Event_Comm::Notifier::CannotSubscribe *&_tao_elem)
   {
     return _tao_any >>= const_cast<
-        const ::Pub_Sub::Notifier::CannotSubscribe *&> (
+        const ::Event_Comm::Notifier::CannotSubscribe *&> (
         _tao_elem);
   }
 
   // Extraction to const pointer.
   ::CORBA::Boolean operator>>= (
       const ::CORBA::Any &_tao_any,
-      const ::Pub_Sub::Notifier::CannotSubscribe *&_tao_elem)
+      const ::Event_Comm::Notifier::CannotSubscribe *&_tao_elem)
   {
     return
-      TAO::Any_Dual_Impl_T< ::Pub_Sub::Notifier::CannotSubscribe>::extract (
+      TAO::Any_Dual_Impl_T< ::Event_Comm::Notifier::CannotSubscribe>::extract (
           _tao_any,
-          ::Pub_Sub::Notifier::CannotSubscribe::_tao_any_destructor,
-          ::Pub_Sub::Notifier::_tc_CannotSubscribe,
+          ::Event_Comm::Notifier::CannotSubscribe::_tao_any_destructor,
+          ::Event_Comm::Notifier::_tc_CannotSubscribe,
           _tao_elem);
   }
 }
@@ -1512,12 +1344,12 @@ TAO_BEGIN_VERSIONED_NAMESPACE_DECL
 // Copying insertion.
 void operator<<= (
     ::CORBA::Any &_tao_any,
-    const Pub_Sub::Notifier::CannotSubscribe &_tao_elem)
+    const Event_Comm::Notifier::CannotSubscribe &_tao_elem)
 {
-  TAO::Any_Dual_Impl_T<Pub_Sub::Notifier::CannotSubscribe>::insert_copy (
+  TAO::Any_Dual_Impl_T<Event_Comm::Notifier::CannotSubscribe>::insert_copy (
       _tao_any,
-      Pub_Sub::Notifier::CannotSubscribe::_tao_any_destructor,
-      Pub_Sub::Notifier::_tc_CannotSubscribe,
+      Event_Comm::Notifier::CannotSubscribe::_tao_any_destructor,
+      Event_Comm::Notifier::_tc_CannotSubscribe,
       _tao_elem
     );
 }
@@ -1525,12 +1357,12 @@ void operator<<= (
 // Non-copying insertion.
 void operator<<= (
     ::CORBA::Any &_tao_any,
-    Pub_Sub::Notifier::CannotSubscribe *_tao_elem)
+    Event_Comm::Notifier::CannotSubscribe *_tao_elem)
 {
-  TAO::Any_Dual_Impl_T<Pub_Sub::Notifier::CannotSubscribe>::insert (
+  TAO::Any_Dual_Impl_T<Event_Comm::Notifier::CannotSubscribe>::insert (
       _tao_any,
-      Pub_Sub::Notifier::CannotSubscribe::_tao_any_destructor,
-      Pub_Sub::Notifier::_tc_CannotSubscribe,
+      Event_Comm::Notifier::CannotSubscribe::_tao_any_destructor,
+      Event_Comm::Notifier::_tc_CannotSubscribe,
       _tao_elem
     );
 }
@@ -1538,24 +1370,24 @@ void operator<<= (
 // Extraction to non-const pointer (deprecated).
 ::CORBA::Boolean operator>>= (
     const ::CORBA::Any &_tao_any,
-    Pub_Sub::Notifier::CannotSubscribe *&_tao_elem)
+    Event_Comm::Notifier::CannotSubscribe *&_tao_elem)
 {
   return _tao_any >>= const_cast<
-      const Pub_Sub::Notifier::CannotSubscribe *&> (
+      const Event_Comm::Notifier::CannotSubscribe *&> (
       _tao_elem);
 }
 
 // Extraction to const pointer.
 ::CORBA::Boolean operator>>= (
     const ::CORBA::Any &_tao_any,
-    const Pub_Sub::Notifier::CannotSubscribe *&_tao_elem
+    const Event_Comm::Notifier::CannotSubscribe *&_tao_elem
   )
 {
   return
-    TAO::Any_Dual_Impl_T<Pub_Sub::Notifier::CannotSubscribe>::extract (
+    TAO::Any_Dual_Impl_T<Event_Comm::Notifier::CannotSubscribe>::extract (
         _tao_any,
-        Pub_Sub::Notifier::CannotSubscribe::_tao_any_destructor,
-        Pub_Sub::Notifier::_tc_CannotSubscribe,
+        Event_Comm::Notifier::CannotSubscribe::_tao_any_destructor,
+        Event_Comm::Notifier::_tc_CannotSubscribe,
         _tao_elem);
 }
 TAO_END_VERSIONED_NAMESPACE_DECL
@@ -1574,7 +1406,7 @@ namespace TAO
 {
   template<>
   ::CORBA::Boolean
-  Any_Dual_Impl_T<Pub_Sub::Notifier::CannotUnsubscribe>::demarshal_value (TAO_InputCDR & cdr)
+  Any_Dual_Impl_T<Event_Comm::Notifier::CannotUnsubscribe>::demarshal_value (TAO_InputCDR & cdr)
   {
     ::CORBA::String_var id;
 
@@ -1601,54 +1433,54 @@ TAO_END_VERSIONED_NAMESPACE_DECL
 
 #if defined (ACE_ANY_OPS_USE_NAMESPACE)
 
-namespace Pub_Sub
+namespace Event_Comm
 {
   
 
   // Copying insertion.
   void operator<<= (
       ::CORBA::Any &_tao_any,
-      const ::Pub_Sub::Notifier::CannotUnsubscribe &_tao_elem)
+      const ::Event_Comm::Notifier::CannotUnsubscribe &_tao_elem)
   {
-    TAO::Any_Dual_Impl_T< ::Pub_Sub::Notifier::CannotUnsubscribe>::insert_copy (
+    TAO::Any_Dual_Impl_T< ::Event_Comm::Notifier::CannotUnsubscribe>::insert_copy (
         _tao_any,
-        ::Pub_Sub::Notifier::CannotUnsubscribe::_tao_any_destructor,
-        ::Pub_Sub::Notifier::_tc_CannotUnsubscribe,
+        ::Event_Comm::Notifier::CannotUnsubscribe::_tao_any_destructor,
+        ::Event_Comm::Notifier::_tc_CannotUnsubscribe,
         _tao_elem);
   }
 
   // Non-copying insertion.
   void operator<<= (
       ::CORBA::Any &_tao_any,
-      ::Pub_Sub::Notifier::CannotUnsubscribe *_tao_elem)
+      ::Event_Comm::Notifier::CannotUnsubscribe *_tao_elem)
   {
-    TAO::Any_Dual_Impl_T< ::Pub_Sub::Notifier::CannotUnsubscribe>::insert (
+    TAO::Any_Dual_Impl_T< ::Event_Comm::Notifier::CannotUnsubscribe>::insert (
         _tao_any,
-        ::Pub_Sub::Notifier::CannotUnsubscribe::_tao_any_destructor,
-        ::Pub_Sub::Notifier::_tc_CannotUnsubscribe,
+        ::Event_Comm::Notifier::CannotUnsubscribe::_tao_any_destructor,
+        ::Event_Comm::Notifier::_tc_CannotUnsubscribe,
         _tao_elem);
   }
 
   // Extraction to non-const pointer (deprecated).
   ::CORBA::Boolean operator>>= (
       const ::CORBA::Any &_tao_any,
-      ::Pub_Sub::Notifier::CannotUnsubscribe *&_tao_elem)
+      ::Event_Comm::Notifier::CannotUnsubscribe *&_tao_elem)
   {
     return _tao_any >>= const_cast<
-        const ::Pub_Sub::Notifier::CannotUnsubscribe *&> (
+        const ::Event_Comm::Notifier::CannotUnsubscribe *&> (
         _tao_elem);
   }
 
   // Extraction to const pointer.
   ::CORBA::Boolean operator>>= (
       const ::CORBA::Any &_tao_any,
-      const ::Pub_Sub::Notifier::CannotUnsubscribe *&_tao_elem)
+      const ::Event_Comm::Notifier::CannotUnsubscribe *&_tao_elem)
   {
     return
-      TAO::Any_Dual_Impl_T< ::Pub_Sub::Notifier::CannotUnsubscribe>::extract (
+      TAO::Any_Dual_Impl_T< ::Event_Comm::Notifier::CannotUnsubscribe>::extract (
           _tao_any,
-          ::Pub_Sub::Notifier::CannotUnsubscribe::_tao_any_destructor,
-          ::Pub_Sub::Notifier::_tc_CannotUnsubscribe,
+          ::Event_Comm::Notifier::CannotUnsubscribe::_tao_any_destructor,
+          ::Event_Comm::Notifier::_tc_CannotUnsubscribe,
           _tao_elem);
   }
 }
@@ -1662,12 +1494,12 @@ TAO_BEGIN_VERSIONED_NAMESPACE_DECL
 // Copying insertion.
 void operator<<= (
     ::CORBA::Any &_tao_any,
-    const Pub_Sub::Notifier::CannotUnsubscribe &_tao_elem)
+    const Event_Comm::Notifier::CannotUnsubscribe &_tao_elem)
 {
-  TAO::Any_Dual_Impl_T<Pub_Sub::Notifier::CannotUnsubscribe>::insert_copy (
+  TAO::Any_Dual_Impl_T<Event_Comm::Notifier::CannotUnsubscribe>::insert_copy (
       _tao_any,
-      Pub_Sub::Notifier::CannotUnsubscribe::_tao_any_destructor,
-      Pub_Sub::Notifier::_tc_CannotUnsubscribe,
+      Event_Comm::Notifier::CannotUnsubscribe::_tao_any_destructor,
+      Event_Comm::Notifier::_tc_CannotUnsubscribe,
       _tao_elem
     );
 }
@@ -1675,12 +1507,12 @@ void operator<<= (
 // Non-copying insertion.
 void operator<<= (
     ::CORBA::Any &_tao_any,
-    Pub_Sub::Notifier::CannotUnsubscribe *_tao_elem)
+    Event_Comm::Notifier::CannotUnsubscribe *_tao_elem)
 {
-  TAO::Any_Dual_Impl_T<Pub_Sub::Notifier::CannotUnsubscribe>::insert (
+  TAO::Any_Dual_Impl_T<Event_Comm::Notifier::CannotUnsubscribe>::insert (
       _tao_any,
-      Pub_Sub::Notifier::CannotUnsubscribe::_tao_any_destructor,
-      Pub_Sub::Notifier::_tc_CannotUnsubscribe,
+      Event_Comm::Notifier::CannotUnsubscribe::_tao_any_destructor,
+      Event_Comm::Notifier::_tc_CannotUnsubscribe,
       _tao_elem
     );
 }
@@ -1688,24 +1520,24 @@ void operator<<= (
 // Extraction to non-const pointer (deprecated).
 ::CORBA::Boolean operator>>= (
     const ::CORBA::Any &_tao_any,
-    Pub_Sub::Notifier::CannotUnsubscribe *&_tao_elem)
+    Event_Comm::Notifier::CannotUnsubscribe *&_tao_elem)
 {
   return _tao_any >>= const_cast<
-      const Pub_Sub::Notifier::CannotUnsubscribe *&> (
+      const Event_Comm::Notifier::CannotUnsubscribe *&> (
       _tao_elem);
 }
 
 // Extraction to const pointer.
 ::CORBA::Boolean operator>>= (
     const ::CORBA::Any &_tao_any,
-    const Pub_Sub::Notifier::CannotUnsubscribe *&_tao_elem
+    const Event_Comm::Notifier::CannotUnsubscribe *&_tao_elem
   )
 {
   return
-    TAO::Any_Dual_Impl_T<Pub_Sub::Notifier::CannotUnsubscribe>::extract (
+    TAO::Any_Dual_Impl_T<Event_Comm::Notifier::CannotUnsubscribe>::extract (
         _tao_any,
-        Pub_Sub::Notifier::CannotUnsubscribe::_tao_any_destructor,
-        Pub_Sub::Notifier::_tc_CannotUnsubscribe,
+        Event_Comm::Notifier::CannotUnsubscribe::_tao_any_destructor,
+        Event_Comm::Notifier::_tc_CannotUnsubscribe,
         _tao_elem);
 }
 TAO_END_VERSIONED_NAMESPACE_DECL
@@ -1713,32 +1545,6 @@ TAO_END_VERSIONED_NAMESPACE_DECL
 
 
 #endif
-
-// TAO_IDL - Generated from
-// be/be_visitor_sequence/cdr_op_cs.cpp:96
-#if !defined _TAO_CDR_OP_Chunk_CPP_
-#define _TAO_CDR_OP_Chunk_CPP_
-
-TAO_BEGIN_VERSIONED_NAMESPACE_DECL
-
-::CORBA::Boolean operator<< (
-    TAO_OutputCDR &strm,
-    const Chunk &_tao_sequence)
-{
-  return TAO::marshal_sequence(strm, _tao_sequence);
-}
-
-::CORBA::Boolean operator>> (
-    TAO_InputCDR &strm,
-    Chunk &_tao_sequence)
-{
-  return TAO::demarshal_sequence(strm, _tao_sequence);
-}
-
-
-TAO_END_VERSIONED_NAMESPACE_DECL
-
-#endif /* _TAO_CDR_OP_Chunk_CPP_ */
 
 // TAO_IDL - Generated from
 // be/be_visitor_structure/cdr_op_cs.cpp:52
@@ -1747,7 +1553,7 @@ TAO_BEGIN_VERSIONED_NAMESPACE_DECL
 
 ::CORBA::Boolean operator<< (
     TAO_OutputCDR &strm,
-    const Pub_Sub::Event &_tao_aggregate)
+    const Event_Comm::Event &_tao_aggregate)
 {
   return
     (strm << _tao_aggregate.tag_.in ()) &&
@@ -1757,7 +1563,7 @@ TAO_BEGIN_VERSIONED_NAMESPACE_DECL
 
 ::CORBA::Boolean operator>> (
     TAO_InputCDR &strm,
-    Pub_Sub::Event &_tao_aggregate)
+    Event_Comm::Event &_tao_aggregate)
 {
   return
     (strm >> _tao_aggregate.tag_.out ()) &&
@@ -1776,7 +1582,7 @@ TAO_BEGIN_VERSIONED_NAMESPACE_DECL
 
 ::CORBA::Boolean operator<< (
     TAO_OutputCDR &strm,
-    const Pub_Sub::Consumer_ptr _tao_objref)
+    const Event_Comm::Consumer_ptr _tao_objref)
 {
   ::CORBA::Object_ptr _tao_corba_obj = _tao_objref;
   return (strm << _tao_corba_obj);
@@ -1784,7 +1590,7 @@ TAO_BEGIN_VERSIONED_NAMESPACE_DECL
 
 ::CORBA::Boolean operator>> (
     TAO_InputCDR &strm,
-    Pub_Sub::Consumer_ptr &_tao_objref)
+    Event_Comm::Consumer_ptr &_tao_objref)
 {
   ::CORBA::Object_var obj;
 
@@ -1793,7 +1599,7 @@ TAO_BEGIN_VERSIONED_NAMESPACE_DECL
       return false;
     }
   
-  typedef ::Pub_Sub::Consumer RHS_SCOPED_NAME;
+  typedef ::Event_Comm::Consumer RHS_SCOPED_NAME;
 
   // Narrow to the right type.
   _tao_objref =
@@ -1814,7 +1620,7 @@ TAO_BEGIN_VERSIONED_NAMESPACE_DECL
 
 ::CORBA::Boolean operator<< (
     TAO_OutputCDR &strm,
-    const Pub_Sub::Notifier::CannotSubscribe &_tao_aggregate
+    const Event_Comm::Notifier::CannotSubscribe &_tao_aggregate
   )
 {
   // First marshal the repository ID.
@@ -1833,7 +1639,7 @@ TAO_BEGIN_VERSIONED_NAMESPACE_DECL
 
 ::CORBA::Boolean operator>> (
     TAO_InputCDR &strm,
-    Pub_Sub::Notifier::CannotSubscribe &_tao_aggregate
+    Event_Comm::Notifier::CannotSubscribe &_tao_aggregate
   )
 {
   // Demarshal the members.
@@ -1854,7 +1660,7 @@ TAO_BEGIN_VERSIONED_NAMESPACE_DECL
 
 ::CORBA::Boolean operator<< (
     TAO_OutputCDR &strm,
-    const Pub_Sub::Notifier::CannotUnsubscribe &_tao_aggregate
+    const Event_Comm::Notifier::CannotUnsubscribe &_tao_aggregate
   )
 {
   // First marshal the repository ID.
@@ -1873,7 +1679,7 @@ TAO_BEGIN_VERSIONED_NAMESPACE_DECL
 
 ::CORBA::Boolean operator>> (
     TAO_InputCDR &strm,
-    Pub_Sub::Notifier::CannotUnsubscribe &_tao_aggregate
+    Event_Comm::Notifier::CannotUnsubscribe &_tao_aggregate
   )
 {
   // Demarshal the members.
@@ -1893,7 +1699,7 @@ TAO_BEGIN_VERSIONED_NAMESPACE_DECL
 
 ::CORBA::Boolean operator<< (
     TAO_OutputCDR &strm,
-    const Pub_Sub::Notifier_ptr _tao_objref)
+    const Event_Comm::Notifier_ptr _tao_objref)
 {
   ::CORBA::Object_ptr _tao_corba_obj = _tao_objref;
   return (strm << _tao_corba_obj);
@@ -1901,7 +1707,7 @@ TAO_BEGIN_VERSIONED_NAMESPACE_DECL
 
 ::CORBA::Boolean operator>> (
     TAO_InputCDR &strm,
-    Pub_Sub::Notifier_ptr &_tao_objref)
+    Event_Comm::Notifier_ptr &_tao_objref)
 {
   ::CORBA::Object_var obj;
 
@@ -1910,7 +1716,7 @@ TAO_BEGIN_VERSIONED_NAMESPACE_DECL
       return false;
     }
   
-  typedef ::Pub_Sub::Notifier RHS_SCOPED_NAME;
+  typedef ::Event_Comm::Notifier RHS_SCOPED_NAME;
 
   // Narrow to the right type.
   _tao_objref =

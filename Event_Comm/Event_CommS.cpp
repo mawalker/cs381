@@ -29,11 +29,11 @@
 // TAO_IDL - Generated from
 // be/be_codegen.cpp:652
 
-#ifndef _TAO_IDL_PUBSUBS_PSLPHS_CPP_
-#define _TAO_IDL_PUBSUBS_PSLPHS_CPP_
+#ifndef _TAO_IDL_EVENT_COMMS_39TQMC_CPP_
+#define _TAO_IDL_EVENT_COMMS_39TQMC_CPP_
 
 
-#include "PubSubS.h"
+#include "Event_CommS.h"
 #include "tao/PortableServer/Operation_Table_Perfect_Hash.h"
 #include "tao/PortableServer/Upcall_Command.h"
 #include "tao/PortableServer/Upcall_Wrapper.h"
@@ -54,7 +54,7 @@
 // TAO_IDL - Generated from
 // be/be_interface.cpp:1868
 
-class TAO_Pub_Sub_Consumer_Perfect_Hash_OpTable
+class TAO_Event_Comm_Consumer_Perfect_Hash_OpTable
   : public TAO_Perfect_Hash_OpTable
 {
 private:
@@ -65,9 +65,9 @@ public:
 };
 
 /* C++ code produced by gperf version 2.8 (ACE version) */
-/* Command-line: /home/ace/development/ACE_wrappers//bin/ace_gperf -m -M -J -c -C -D -E -T -f 0 -F 0,0 -a -o -t -p -K opname -L C++ -Z TAO_Pub_Sub_Consumer_Perfect_Hash_OpTable -N lookup  */
+/* Command-line: /home/ace/development/ACE_wrappers//bin/ace_gperf -m -M -J -c -C -D -E -T -f 0 -F 0,0 -a -o -t -p -K opname -L C++ -Z TAO_Event_Comm_Consumer_Perfect_Hash_OpTable -N lookup  */
 unsigned int
-TAO_Pub_Sub_Consumer_Perfect_Hash_OpTable::hash (const char *str, unsigned int len)
+TAO_Event_Comm_Consumer_Perfect_Hash_OpTable::hash (const char *str, unsigned int len)
 {
   static const unsigned char asso_values[] =
     {
@@ -89,7 +89,7 @@ TAO_Pub_Sub_Consumer_Perfect_Hash_OpTable::hash (const char *str, unsigned int l
 }
 
 const TAO_operation_db_entry *
-TAO_Pub_Sub_Consumer_Perfect_Hash_OpTable::lookup (const char *str, unsigned int len)
+TAO_Event_Comm_Consumer_Perfect_Hash_OpTable::lookup (const char *str, unsigned int len)
 {
   enum
     {
@@ -106,7 +106,7 @@ TAO_Pub_Sub_Consumer_Perfect_Hash_OpTable::lookup (const char *str, unsigned int
   static const TAO_operation_db_entry wordlist[] =
     {
       {"",0,0},{"",0,0},{"",0,0},{"",0,0},
-      {"push", &POA_Pub_Sub::Consumer::push_skel, 0},
+      {"push", &POA_Event_Comm::Consumer::push_skel, 0},
       {"_is_a", &TAO_ServantBase::_is_a_thru_poa_skel, 0},
       {"",0,0},{"",0,0},{"",0,0},{"",0,0},
       {"_component", &TAO_ServantBase::_component_thru_poa_skel, 0},
@@ -114,7 +114,7 @@ TAO_Pub_Sub_Consumer_Perfect_Hash_OpTable::lookup (const char *str, unsigned int
       {"_interface", &TAO_ServantBase::_interface_skel, 0},
       {"_non_existent", &TAO_ServantBase::_non_existent_thru_poa_skel, 0},
       {"",0,0},
-      {"disconnect", &POA_Pub_Sub::Consumer::disconnect_skel, 0},
+      {"disconnect", &POA_Event_Comm::Consumer::disconnect_skel, 0},
       {"",0,0},{"",0,0},{"",0,0},
       {"_repository_id", &TAO_ServantBase::_repository_id_thru_poa_skel, 0},
     };
@@ -134,28 +134,28 @@ TAO_Pub_Sub_Consumer_Perfect_Hash_OpTable::lookup (const char *str, unsigned int
   return 0;
 }
 
-static TAO_Pub_Sub_Consumer_Perfect_Hash_OpTable tao_Pub_Sub_Consumer_optable;
+static TAO_Event_Comm_Consumer_Perfect_Hash_OpTable tao_Event_Comm_Consumer_optable;
 
 // TAO_IDL - Generated from
 // be/be_visitor_interface/interface_ss.cpp:93
 
-POA_Pub_Sub::Consumer::Consumer (void)
+POA_Event_Comm::Consumer::Consumer (void)
   : TAO_ServantBase ()
 {
-  this->optable_ = &tao_Pub_Sub_Consumer_optable;
+  this->optable_ = &tao_Event_Comm_Consumer_optable;
 }
 
-POA_Pub_Sub::Consumer::Consumer (const Consumer& rhs)
+POA_Event_Comm::Consumer::Consumer (const Consumer& rhs)
   : TAO_Abstract_ServantBase (rhs),
     TAO_ServantBase (rhs)
 {
 }
 
-POA_Pub_Sub::Consumer::~Consumer (void)
+POA_Event_Comm::Consumer::~Consumer (void)
 {
 }
 
-namespace POA_Pub_Sub
+namespace POA_Event_Comm
 {
   
 
@@ -167,7 +167,7 @@ namespace POA_Pub_Sub
   {
   public:
     inline push_Consumer (
-      POA_Pub_Sub::Consumer * servant,
+      POA_Event_Comm::Consumer * servant,
       TAO_Operation_Details const * operation_details,
       TAO::Argument * const args[])
       : servant_ (servant)
@@ -178,8 +178,8 @@ namespace POA_Pub_Sub
 
     virtual void execute (void)
     {
-      TAO::SArg_Traits< ::Pub_Sub::Event>::in_arg_type arg_1 =
-        TAO::Portable_Server::get_in_arg< ::Pub_Sub::Event> (
+      TAO::SArg_Traits< ::Event_Comm::Event>::in_arg_type arg_1 =
+        TAO::Portable_Server::get_in_arg< ::Event_Comm::Event> (
           this->operation_details_,
           this->args_,
           1);
@@ -189,7 +189,7 @@ namespace POA_Pub_Sub
     }
   
   private:
-    POA_Pub_Sub::Consumer * const servant_;
+    POA_Event_Comm::Consumer * const servant_;
     TAO_Operation_Details const * const operation_details_;
     TAO::Argument * const * const args_;
   };
@@ -198,7 +198,7 @@ namespace POA_Pub_Sub
 // TAO_IDL - Generated from
 // be/be_visitor_operation/operation_ss.cpp:171
 
-void POA_Pub_Sub::Consumer::push_skel (
+void POA_Event_Comm::Consumer::push_skel (
   TAO_ServerRequest & server_request,
   TAO::Portable_Server::Servant_Upcall *TAO_INTERCEPTOR (servant_upcall),
   TAO_ServantBase *servant)
@@ -209,7 +209,7 @@ void POA_Pub_Sub::Consumer::push_skel (
 #endif /* TAO_HAS_INTERCEPTORS */
 
   TAO::SArg_Traits< void>::ret_val retval;
-  TAO::SArg_Traits< ::Pub_Sub::Event>::in_arg_val _tao_event_instance;
+  TAO::SArg_Traits< ::Event_Comm::Event>::in_arg_val _tao_event_instance;
 
   TAO::Argument * const args[] =
     {
@@ -219,8 +219,8 @@ void POA_Pub_Sub::Consumer::push_skel (
   
   static size_t const nargs = 2;
 
-  POA_Pub_Sub::Consumer * const impl =
-    dynamic_cast<POA_Pub_Sub::Consumer *> (servant);
+  POA_Event_Comm::Consumer * const impl =
+    dynamic_cast<POA_Event_Comm::Consumer *> (servant);
 
   if (!impl)
     {
@@ -246,7 +246,7 @@ void POA_Pub_Sub::Consumer::push_skel (
 }
 
 
-namespace POA_Pub_Sub
+namespace POA_Event_Comm
 {
   
 
@@ -258,7 +258,7 @@ namespace POA_Pub_Sub
   {
   public:
     inline disconnect_Consumer (
-      POA_Pub_Sub::Consumer * servant,
+      POA_Event_Comm::Consumer * servant,
       TAO_Operation_Details const * operation_details,
       TAO::Argument * const args[])
       : servant_ (servant)
@@ -280,7 +280,7 @@ namespace POA_Pub_Sub
     }
   
   private:
-    POA_Pub_Sub::Consumer * const servant_;
+    POA_Event_Comm::Consumer * const servant_;
     TAO_Operation_Details const * const operation_details_;
     TAO::Argument * const * const args_;
   };
@@ -289,7 +289,7 @@ namespace POA_Pub_Sub
 // TAO_IDL - Generated from
 // be/be_visitor_operation/operation_ss.cpp:171
 
-void POA_Pub_Sub::Consumer::disconnect_skel (
+void POA_Event_Comm::Consumer::disconnect_skel (
   TAO_ServerRequest & server_request,
   TAO::Portable_Server::Servant_Upcall *TAO_INTERCEPTOR (servant_upcall),
   TAO_ServantBase *servant)
@@ -310,8 +310,8 @@ void POA_Pub_Sub::Consumer::disconnect_skel (
   
   static size_t const nargs = 2;
 
-  POA_Pub_Sub::Consumer * const impl =
-    dynamic_cast<POA_Pub_Sub::Consumer *> (servant);
+  POA_Event_Comm::Consumer * const impl =
+    dynamic_cast<POA_Event_Comm::Consumer *> (servant);
 
   if (!impl)
     {
@@ -343,13 +343,13 @@ void POA_Pub_Sub::Consumer::disconnect_skel (
 
 
 
-::CORBA::Boolean POA_Pub_Sub::Consumer::_is_a (const char* value)
+::CORBA::Boolean POA_Event_Comm::Consumer::_is_a (const char* value)
 {
   return
     (
       ACE_OS::strcmp (
           value,
-          "IDL:Pub_Sub/Consumer:1.0"
+          "IDL:Event_Comm/Consumer:1.0"
         ) == 0 ||
       !ACE_OS::strcmp (
           value,
@@ -358,15 +358,15 @@ void POA_Pub_Sub::Consumer::disconnect_skel (
     );
 }
 
-const char* POA_Pub_Sub::Consumer::_interface_repository_id (void) const
+const char* POA_Event_Comm::Consumer::_interface_repository_id (void) const
 {
-  return "IDL:Pub_Sub/Consumer:1.0";
+  return "IDL:Event_Comm/Consumer:1.0";
 }
 
 // TAO_IDL - Generated from
 // be/be_visitor_interface/interface_ss.cpp:426
 
-void POA_Pub_Sub::Consumer::_dispatch (
+void POA_Event_Comm::Consumer::_dispatch (
   TAO_ServerRequest & req,
   TAO::Portable_Server::Servant_Upcall* servant_upcall)
 {
@@ -376,8 +376,8 @@ void POA_Pub_Sub::Consumer::_dispatch (
 // TAO_IDL - Generated from
 // be/be_visitor_interface/interface_ss.cpp:373
 
-Pub_Sub::Consumer *
-POA_Pub_Sub::Consumer::_this (void)
+Event_Comm::Consumer *
+POA_Event_Comm::Consumer::_this (void)
 {
   TAO_Stub *stub = this->_create_stub ();
 
@@ -395,7 +395,7 @@ POA_Pub_Sub::Consumer::_this (void)
   ::CORBA::Object_var obj = tmp;
   (void) safe_stub.release ();
 
-  typedef ::Pub_Sub::Consumer STUB_SCOPED_NAME;
+  typedef ::Event_Comm::Consumer STUB_SCOPED_NAME;
   return
     TAO::Narrow_Utils<STUB_SCOPED_NAME>::unchecked_narrow (
         obj.in ());
@@ -404,7 +404,7 @@ POA_Pub_Sub::Consumer::_this (void)
 // TAO_IDL - Generated from
 // be/be_interface.cpp:1868
 
-class TAO_Pub_Sub_Notifier_Perfect_Hash_OpTable
+class TAO_Event_Comm_Notifier_Perfect_Hash_OpTable
   : public TAO_Perfect_Hash_OpTable
 {
 private:
@@ -415,9 +415,9 @@ public:
 };
 
 /* C++ code produced by gperf version 2.8 (ACE version) */
-/* Command-line: /home/ace/development/ACE_wrappers//bin/ace_gperf -m -M -J -c -C -D -E -T -f 0 -F 0,0 -a -o -t -p -K opname -L C++ -Z TAO_Pub_Sub_Notifier_Perfect_Hash_OpTable -N lookup  */
+/* Command-line: /home/ace/development/ACE_wrappers//bin/ace_gperf -m -M -J -c -C -D -E -T -f 0 -F 0,0 -a -o -t -p -K opname -L C++ -Z TAO_Event_Comm_Notifier_Perfect_Hash_OpTable -N lookup  */
 unsigned int
-TAO_Pub_Sub_Notifier_Perfect_Hash_OpTable::hash (const char *str, unsigned int len)
+TAO_Event_Comm_Notifier_Perfect_Hash_OpTable::hash (const char *str, unsigned int len)
 {
   static const unsigned char asso_values[] =
     {
@@ -439,7 +439,7 @@ TAO_Pub_Sub_Notifier_Perfect_Hash_OpTable::hash (const char *str, unsigned int l
 }
 
 const TAO_operation_db_entry *
-TAO_Pub_Sub_Notifier_Perfect_Hash_OpTable::lookup (const char *str, unsigned int len)
+TAO_Event_Comm_Notifier_Perfect_Hash_OpTable::lookup (const char *str, unsigned int len)
 {
   enum
     {
@@ -456,17 +456,17 @@ TAO_Pub_Sub_Notifier_Perfect_Hash_OpTable::lookup (const char *str, unsigned int
   static const TAO_operation_db_entry wordlist[] =
     {
       {"",0,0},{"",0,0},{"",0,0},{"",0,0},
-      {"push", &POA_Pub_Sub::Notifier::push_skel, 0},
+      {"push", &POA_Event_Comm::Notifier::push_skel, 0},
       {"_is_a", &TAO_ServantBase::_is_a_thru_poa_skel, 0},
       {"",0,0},{"",0,0},{"",0,0},{"",0,0},
       {"_component", &TAO_ServantBase::_component_thru_poa_skel, 0},
       {"",0,0},{"",0,0},
       {"_non_existent", &TAO_ServantBase::_non_existent_thru_poa_skel, 0},
-      {"subscribe", &POA_Pub_Sub::Notifier::subscribe_skel, 0},
+      {"subscribe", &POA_Event_Comm::Notifier::subscribe_skel, 0},
       {"_interface", &TAO_ServantBase::_interface_skel, 0},
-      {"unsubscribe", &POA_Pub_Sub::Notifier::unsubscribe_skel, 0},
+      {"unsubscribe", &POA_Event_Comm::Notifier::unsubscribe_skel, 0},
       {"",0,0},{"",0,0},{"",0,0},
-      {"disconnect", &POA_Pub_Sub::Notifier::disconnect_skel, 0},
+      {"disconnect", &POA_Event_Comm::Notifier::disconnect_skel, 0},
       {"",0,0},{"",0,0},{"",0,0},
       {"_repository_id", &TAO_ServantBase::_repository_id_thru_poa_skel, 0},
     };
@@ -486,28 +486,28 @@ TAO_Pub_Sub_Notifier_Perfect_Hash_OpTable::lookup (const char *str, unsigned int
   return 0;
 }
 
-static TAO_Pub_Sub_Notifier_Perfect_Hash_OpTable tao_Pub_Sub_Notifier_optable;
+static TAO_Event_Comm_Notifier_Perfect_Hash_OpTable tao_Event_Comm_Notifier_optable;
 
 // TAO_IDL - Generated from
 // be/be_visitor_interface/interface_ss.cpp:93
 
-POA_Pub_Sub::Notifier::Notifier (void)
+POA_Event_Comm::Notifier::Notifier (void)
   : TAO_ServantBase ()
 {
-  this->optable_ = &tao_Pub_Sub_Notifier_optable;
+  this->optable_ = &tao_Event_Comm_Notifier_optable;
 }
 
-POA_Pub_Sub::Notifier::Notifier (const Notifier& rhs)
+POA_Event_Comm::Notifier::Notifier (const Notifier& rhs)
   : TAO_Abstract_ServantBase (rhs),
     TAO_ServantBase (rhs)
 {
 }
 
-POA_Pub_Sub::Notifier::~Notifier (void)
+POA_Event_Comm::Notifier::~Notifier (void)
 {
 }
 
-namespace POA_Pub_Sub
+namespace POA_Event_Comm
 {
   
 
@@ -519,7 +519,7 @@ namespace POA_Pub_Sub
   {
   public:
     inline disconnect_Notifier (
-      POA_Pub_Sub::Notifier * servant,
+      POA_Event_Comm::Notifier * servant,
       TAO_Operation_Details const * operation_details,
       TAO::Argument * const args[])
       : servant_ (servant)
@@ -541,7 +541,7 @@ namespace POA_Pub_Sub
     }
   
   private:
-    POA_Pub_Sub::Notifier * const servant_;
+    POA_Event_Comm::Notifier * const servant_;
     TAO_Operation_Details const * const operation_details_;
     TAO::Argument * const * const args_;
   };
@@ -550,7 +550,7 @@ namespace POA_Pub_Sub
 // TAO_IDL - Generated from
 // be/be_visitor_operation/operation_ss.cpp:171
 
-void POA_Pub_Sub::Notifier::disconnect_skel (
+void POA_Event_Comm::Notifier::disconnect_skel (
   TAO_ServerRequest & server_request,
   TAO::Portable_Server::Servant_Upcall *TAO_INTERCEPTOR (servant_upcall),
   TAO_ServantBase *servant)
@@ -571,8 +571,8 @@ void POA_Pub_Sub::Notifier::disconnect_skel (
   
   static size_t const nargs = 2;
 
-  POA_Pub_Sub::Notifier * const impl =
-    dynamic_cast<POA_Pub_Sub::Notifier *> (servant);
+  POA_Event_Comm::Notifier * const impl =
+    dynamic_cast<POA_Event_Comm::Notifier *> (servant);
 
   if (!impl)
     {
@@ -598,7 +598,7 @@ void POA_Pub_Sub::Notifier::disconnect_skel (
 }
 
 
-namespace POA_Pub_Sub
+namespace POA_Event_Comm
 {
   
 
@@ -610,7 +610,7 @@ namespace POA_Pub_Sub
   {
   public:
     inline push_Notifier (
-      POA_Pub_Sub::Notifier * servant,
+      POA_Event_Comm::Notifier * servant,
       TAO_Operation_Details const * operation_details,
       TAO::Argument * const args[])
       : servant_ (servant)
@@ -621,8 +621,8 @@ namespace POA_Pub_Sub
 
     virtual void execute (void)
     {
-      TAO::SArg_Traits< ::Pub_Sub::Event>::in_arg_type arg_1 =
-        TAO::Portable_Server::get_in_arg< ::Pub_Sub::Event> (
+      TAO::SArg_Traits< ::Event_Comm::Event>::in_arg_type arg_1 =
+        TAO::Portable_Server::get_in_arg< ::Event_Comm::Event> (
           this->operation_details_,
           this->args_,
           1);
@@ -632,7 +632,7 @@ namespace POA_Pub_Sub
     }
   
   private:
-    POA_Pub_Sub::Notifier * const servant_;
+    POA_Event_Comm::Notifier * const servant_;
     TAO_Operation_Details const * const operation_details_;
     TAO::Argument * const * const args_;
   };
@@ -641,7 +641,7 @@ namespace POA_Pub_Sub
 // TAO_IDL - Generated from
 // be/be_visitor_operation/operation_ss.cpp:171
 
-void POA_Pub_Sub::Notifier::push_skel (
+void POA_Event_Comm::Notifier::push_skel (
   TAO_ServerRequest & server_request,
   TAO::Portable_Server::Servant_Upcall *TAO_INTERCEPTOR (servant_upcall),
   TAO_ServantBase *servant)
@@ -652,7 +652,7 @@ void POA_Pub_Sub::Notifier::push_skel (
 #endif /* TAO_HAS_INTERCEPTORS */
 
   TAO::SArg_Traits< void>::ret_val retval;
-  TAO::SArg_Traits< ::Pub_Sub::Event>::in_arg_val _tao_event_instance;
+  TAO::SArg_Traits< ::Event_Comm::Event>::in_arg_val _tao_event_instance;
 
   TAO::Argument * const args[] =
     {
@@ -662,8 +662,8 @@ void POA_Pub_Sub::Notifier::push_skel (
   
   static size_t const nargs = 2;
 
-  POA_Pub_Sub::Notifier * const impl =
-    dynamic_cast<POA_Pub_Sub::Notifier *> (servant);
+  POA_Event_Comm::Notifier * const impl =
+    dynamic_cast<POA_Event_Comm::Notifier *> (servant);
 
   if (!impl)
     {
@@ -689,7 +689,7 @@ void POA_Pub_Sub::Notifier::push_skel (
 }
 
 
-namespace POA_Pub_Sub
+namespace POA_Event_Comm
 {
   
 
@@ -701,7 +701,7 @@ namespace POA_Pub_Sub
   {
   public:
     inline subscribe_Notifier (
-      POA_Pub_Sub::Notifier * servant,
+      POA_Event_Comm::Notifier * servant,
       TAO_Operation_Details const * operation_details,
       TAO::Argument * const args[])
       : servant_ (servant)
@@ -712,8 +712,8 @@ namespace POA_Pub_Sub
 
     virtual void execute (void)
     {
-      TAO::SArg_Traits< ::Pub_Sub::Consumer>::in_arg_type arg_1 =
-        TAO::Portable_Server::get_in_arg< ::Pub_Sub::Consumer> (
+      TAO::SArg_Traits< ::Event_Comm::Consumer>::in_arg_type arg_1 =
+        TAO::Portable_Server::get_in_arg< ::Event_Comm::Consumer> (
           this->operation_details_,
           this->args_,
           1);
@@ -730,7 +730,7 @@ namespace POA_Pub_Sub
     }
   
   private:
-    POA_Pub_Sub::Notifier * const servant_;
+    POA_Event_Comm::Notifier * const servant_;
     TAO_Operation_Details const * const operation_details_;
     TAO::Argument * const * const args_;
   };
@@ -739,7 +739,7 @@ namespace POA_Pub_Sub
 // TAO_IDL - Generated from
 // be/be_visitor_operation/operation_ss.cpp:171
 
-void POA_Pub_Sub::Notifier::subscribe_skel (
+void POA_Event_Comm::Notifier::subscribe_skel (
   TAO_ServerRequest & server_request,
   TAO::Portable_Server::Servant_Upcall *TAO_INTERCEPTOR (servant_upcall),
   TAO_ServantBase *servant)
@@ -747,13 +747,13 @@ void POA_Pub_Sub::Notifier::subscribe_skel (
 #if TAO_HAS_INTERCEPTORS == 1
   static ::CORBA::TypeCode_ptr const exceptions[] = 
     {
-      Pub_Sub::Notifier::_tc_CannotSubscribe
+      Event_Comm::Notifier::_tc_CannotSubscribe
     };
   static ::CORBA::ULong const nexceptions = 1;
 #endif /* TAO_HAS_INTERCEPTORS */
 
   TAO::SArg_Traits< void>::ret_val retval;
-  TAO::SArg_Traits< ::Pub_Sub::Consumer>::in_arg_val _tao_subscriber;
+  TAO::SArg_Traits< ::Event_Comm::Consumer>::in_arg_val _tao_subscriber;
   TAO::SArg_Traits< char *>::in_arg_val _tao_filtering_criteria;
 
   TAO::Argument * const args[] =
@@ -765,8 +765,8 @@ void POA_Pub_Sub::Notifier::subscribe_skel (
   
   static size_t const nargs = 3;
 
-  POA_Pub_Sub::Notifier * const impl =
-    dynamic_cast<POA_Pub_Sub::Notifier *> (servant);
+  POA_Event_Comm::Notifier * const impl =
+    dynamic_cast<POA_Event_Comm::Notifier *> (servant);
 
   if (!impl)
     {
@@ -792,7 +792,7 @@ void POA_Pub_Sub::Notifier::subscribe_skel (
 }
 
 
-namespace POA_Pub_Sub
+namespace POA_Event_Comm
 {
   
 
@@ -804,7 +804,7 @@ namespace POA_Pub_Sub
   {
   public:
     inline unsubscribe_Notifier (
-      POA_Pub_Sub::Notifier * servant,
+      POA_Event_Comm::Notifier * servant,
       TAO_Operation_Details const * operation_details,
       TAO::Argument * const args[])
       : servant_ (servant)
@@ -815,8 +815,8 @@ namespace POA_Pub_Sub
 
     virtual void execute (void)
     {
-      TAO::SArg_Traits< ::Pub_Sub::Consumer>::in_arg_type arg_1 =
-        TAO::Portable_Server::get_in_arg< ::Pub_Sub::Consumer> (
+      TAO::SArg_Traits< ::Event_Comm::Consumer>::in_arg_type arg_1 =
+        TAO::Portable_Server::get_in_arg< ::Event_Comm::Consumer> (
           this->operation_details_,
           this->args_,
           1);
@@ -833,7 +833,7 @@ namespace POA_Pub_Sub
     }
   
   private:
-    POA_Pub_Sub::Notifier * const servant_;
+    POA_Event_Comm::Notifier * const servant_;
     TAO_Operation_Details const * const operation_details_;
     TAO::Argument * const * const args_;
   };
@@ -842,7 +842,7 @@ namespace POA_Pub_Sub
 // TAO_IDL - Generated from
 // be/be_visitor_operation/operation_ss.cpp:171
 
-void POA_Pub_Sub::Notifier::unsubscribe_skel (
+void POA_Event_Comm::Notifier::unsubscribe_skel (
   TAO_ServerRequest & server_request,
   TAO::Portable_Server::Servant_Upcall *TAO_INTERCEPTOR (servant_upcall),
   TAO_ServantBase *servant)
@@ -850,13 +850,13 @@ void POA_Pub_Sub::Notifier::unsubscribe_skel (
 #if TAO_HAS_INTERCEPTORS == 1
   static ::CORBA::TypeCode_ptr const exceptions[] = 
     {
-      Pub_Sub::Notifier::_tc_CannotUnsubscribe
+      Event_Comm::Notifier::_tc_CannotUnsubscribe
     };
   static ::CORBA::ULong const nexceptions = 1;
 #endif /* TAO_HAS_INTERCEPTORS */
 
   TAO::SArg_Traits< void>::ret_val retval;
-  TAO::SArg_Traits< ::Pub_Sub::Consumer>::in_arg_val _tao_unsubscriber;
+  TAO::SArg_Traits< ::Event_Comm::Consumer>::in_arg_val _tao_unsubscriber;
   TAO::SArg_Traits< char *>::in_arg_val _tao_filtering_criteria;
 
   TAO::Argument * const args[] =
@@ -868,8 +868,8 @@ void POA_Pub_Sub::Notifier::unsubscribe_skel (
   
   static size_t const nargs = 3;
 
-  POA_Pub_Sub::Notifier * const impl =
-    dynamic_cast<POA_Pub_Sub::Notifier *> (servant);
+  POA_Event_Comm::Notifier * const impl =
+    dynamic_cast<POA_Event_Comm::Notifier *> (servant);
 
   if (!impl)
     {
@@ -901,13 +901,13 @@ void POA_Pub_Sub::Notifier::unsubscribe_skel (
 
 
 
-::CORBA::Boolean POA_Pub_Sub::Notifier::_is_a (const char* value)
+::CORBA::Boolean POA_Event_Comm::Notifier::_is_a (const char* value)
 {
   return
     (
       ACE_OS::strcmp (
           value,
-          "IDL:Pub_Sub/Notifier:1.0"
+          "IDL:Event_Comm/Notifier:1.0"
         ) == 0 ||
       !ACE_OS::strcmp (
           value,
@@ -916,15 +916,15 @@ void POA_Pub_Sub::Notifier::unsubscribe_skel (
     );
 }
 
-const char* POA_Pub_Sub::Notifier::_interface_repository_id (void) const
+const char* POA_Event_Comm::Notifier::_interface_repository_id (void) const
 {
-  return "IDL:Pub_Sub/Notifier:1.0";
+  return "IDL:Event_Comm/Notifier:1.0";
 }
 
 // TAO_IDL - Generated from
 // be/be_visitor_interface/interface_ss.cpp:426
 
-void POA_Pub_Sub::Notifier::_dispatch (
+void POA_Event_Comm::Notifier::_dispatch (
   TAO_ServerRequest & req,
   TAO::Portable_Server::Servant_Upcall* servant_upcall)
 {
@@ -934,8 +934,8 @@ void POA_Pub_Sub::Notifier::_dispatch (
 // TAO_IDL - Generated from
 // be/be_visitor_interface/interface_ss.cpp:373
 
-Pub_Sub::Notifier *
-POA_Pub_Sub::Notifier::_this (void)
+Event_Comm::Notifier *
+POA_Event_Comm::Notifier::_this (void)
 {
   TAO_Stub *stub = this->_create_stub ();
 
@@ -953,7 +953,7 @@ POA_Pub_Sub::Notifier::_this (void)
   ::CORBA::Object_var obj = tmp;
   (void) safe_stub.release ();
 
-  typedef ::Pub_Sub::Notifier STUB_SCOPED_NAME;
+  typedef ::Event_Comm::Notifier STUB_SCOPED_NAME;
   return
     TAO::Narrow_Utils<STUB_SCOPED_NAME>::unchecked_narrow (
         obj.in ());
