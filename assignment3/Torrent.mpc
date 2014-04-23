@@ -1,0 +1,47 @@
+// -*- MPC -*-
+// $Id$
+
+project(*idl): taoidldefaults {
+  idlflags += -Sp
+  IDL_Files {
+    Torrent.idl
+  }
+  custom_only = 1
+}
+
+project(*Tracker): taoserver {
+  after += *idl
+  exename = tracker
+  Source_Files {
+    Tracker.cpp
+  }
+  Source_Files {
+    P2TS.cpp
+  }
+  Header_Files {
+    Tracker.h
+    Torrent_i.h
+  }
+  IDL_Files {
+  }
+}
+
+project(*Peer): taoserver {
+  after += *idl
+  exename = peer
+  Source_Files {
+    peer_client_role.cpp
+    Peer.cpp
+    Torrent_i.cpp
+    peer_server_role.cpp    
+  }
+  Source_Files {
+    P2TS.cpp
+  }
+  Header_Files {
+    Peer.h
+    Torrent_i.h
+  }
+  IDL_Files {
+  }
+}

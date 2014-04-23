@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="torrent" />
+		<Option pch_mode="2" />
+		<Option compiler="make" />
+		<Build>
+			<Target title="Debug">
+				<Option output="bin/Debug/torrent" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Debug/" />
+				<Option type="1" />
+				<Option compiler="make" />
+				<Compiler>
+					<Add option="-g" />
+				</Compiler>
+			</Target>
+			<Target title="Release">
+				<Option output="bin/Release/torrent" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Release/" />
+				<Option type="1" />
+				<Option compiler="make" />
+				<Compiler>
+					<Add option="-O2" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+				</Linker>
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="-Wall" />
+		</Compiler>
+		<Unit filename="Peer.cpp" />
+		<Unit filename="Peer.h" />
+		<Unit filename="Torrent.idl" />
+		<Unit filename="Torrent.mpc" />
+		<Unit filename="TorrentC.cpp" />
+		<Unit filename="TorrentC.h" />
+		<Unit filename="TorrentC.inl" />
+		<Unit filename="TorrentI.cpp" />
+		<Unit filename="TorrentI.h" />
+		<Unit filename="TorrentS.cpp" />
+		<Unit filename="TorrentS.h" />
+		<Unit filename="Tracker.cpp" />
+		<Unit filename="Tracker.h" />
+		<Unit filename="peer_client_role.cpp" />
+		<Unit filename="peer_server_role.cpp" />
+		<Unit filename="tracker_server_role.cpp" />
+		<Extensions>
+			<code_completion />
+			<debugger />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>

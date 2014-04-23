@@ -1,0 +1,77 @@
+//
+// $Id$
+//
+//
+// Homework 2, Ace-Tao BitTorrent client/tracker for CS381, Spring 2014
+// Based on TAO/tests/Hello
+// 
+// Author: Michael A. Walker
+//       : Violetta Vylegzhanina
+// Date:   March 17, 2014
+//
+
+  typedef sequence <octet> Chunk;
+  typedef sequence <long> ChunkNumbers;
+  const long CHUNK_SIZE = 1024*256;
+
+  // the info of what chunks a peer owns, sent from tracker to peers
+  struct PeerToChunkMap{
+    string client_id;
+    string peer_ior_val;
+    ChunkNumbers chunks_owned;
+    unsigned long num_chunks_owned;
+  };
+  
+  // So a function can return all the chunks owned by all the peers
+  typedef sequence <PeerToChunkMap> OwnershipList;
+
+  // registration reply from tracker
+  struct RegReply{
+    long num_chunks;
+    long num_chunks_from_server;
+    string server_ior_val;
+  };
+
+
+/// Put the interfaces in a module, to avoid global namespace pollution
+module Torrent
+{
+  exception NotFound {
+    string msg;
+  };
+
+  /// A very simple interface for Peer-to-Tracker communication
+  interface P2T
+  {
+    // peer registers with tracker
+    RegReply register(in string client_id, in string peer_ior_val, in string file_name) raises (NotFound);
+    
+    // peer leaves tracker
+    void leave(in string client_id, in unsigned long long time_in_miliseconds) raises (NotFound);
+    
+    // peer gets info of other peers from tracker
+    OwnershipList refresh(in string client_id, in string file_name, in ChunkNumbers chunks_owned) raises (NotFound);
+  
+    // peer starting sharing, declare to tracker file contained
+    void sendNumChunks(in string file_name, in string server_ior_val, in long number_of_chunks) raises (NotFound);
+
+    /// A method to shutdown the ORB
+    /**
+     * This method is used to simplify the test shutdown process
+     */
+    oneway void shutdown ();
+  };
+
+  /// A very simple interface
+  interface P2P
+  {
+    // get a chunk of the file, from the other peeer
+    Chunk getChunk (in string file_name, in long chunckNumber) raises (NotFound);
+
+    /// A method to shutdown the ORB
+    /**
+     * This method is used to simplify the test shutdown process
+     */
+    oneway void shutdown ();
+  };
+};
