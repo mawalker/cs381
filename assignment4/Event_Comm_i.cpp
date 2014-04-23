@@ -227,7 +227,7 @@ Notifier_i::unsubscribe (Event_Comm::Consumer_ptr consumer_ref,
 
   // Locate <Consumer_Entry> and free up resources.  @@ Note, we don't
   // properly handle deallocation of KEYS!
-
+/*
   for (MAP_ENTRY *me = 0;
        mi.next (me) != 0;
        mi.advance ())
@@ -263,6 +263,7 @@ Notifier_i::unsubscribe (Event_Comm::Consumer_ptr consumer_ref,
   if (found == 0)
     throw Event_Comm::Notifier::CannotUnsubscribe (
       "The Consumer and filtering criteria were not found.");
+      */
 }
 
 // Disconnect all the consumers, giving them the <reason>.
