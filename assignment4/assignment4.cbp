@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="assignment4" />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<Build>
+			<Target title="Debug">
+				<Option output="bin/Debug/assignment4" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Debug/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-g" />
+				</Compiler>
+			</Target>
+			<Target title="Release">
+				<Option output="bin/Release/assignment4" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Release/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-O2" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+				</Linker>
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="-Wall" />
+		</Compiler>
+		<Unit filename="Consumer_Handler.cpp" />
+		<Unit filename="Consumer_Handler.h" />
+		<Unit filename="Consumer_Input_Handler.cpp" />
+		<Unit filename="Consumer_Input_Handler.h" />
+		<Unit filename="Event_Comm.idl" />
+		<Unit filename="Event_Comm.mpc" />
+		<Unit filename="Event_Comm.mwc" />
+		<Unit filename="Event_CommC.cpp" />
+		<Unit filename="Event_CommC.h" />
+		<Unit filename="Event_CommC.inl" />
+		<Unit filename="Event_CommI.cpp" />
+		<Unit filename="Event_CommI.h" />
+		<Unit filename="Event_CommS.cpp" />
+		<Unit filename="Event_CommS.h" />
+		<Unit filename="Event_Comm_i.cpp" />
+		<Unit filename="Event_Comm_i.h" />
+		<Unit filename="GNUmakefile" />
+		<Unit filename="GNUmakefile.Event_Comm_Consumer" />
+		<Unit filename="GNUmakefile.Event_Comm_IDL" />
+		<Unit filename="GNUmakefile.Event_Comm_Notifier" />
+		<Unit filename="GNUmakefile.Event_Comm_Supplier" />
+		<Unit filename="Notifier_Handler.cpp" />
+		<Unit filename="Notifier_Handler.h" />
+		<Unit filename="Notifier_Server.cpp" />
+		<Unit filename="Notifier_Server.h" />
+		<Unit filename="README" />
+		<Unit filename="Supplier_Input_Handler.cpp" />
+		<Unit filename="Supplier_Input_Handler.h" />
+		<Unit filename="consumer.cpp" />
+		<Unit filename="notifier.cpp" />
+		<Unit filename="notifier.h" />
+		<Unit filename="supplier.cpp" />
+		<Unit filename="supplier.h" />
+		<Extensions>
+			<code_completion />
+			<debugger />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>
