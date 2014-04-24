@@ -218,8 +218,8 @@ Notifier_i::unsubscribe (Event_Comm::Consumer_ptr consumer_ref,
                          const char *filtering_criteria)
 {
   ACE_DEBUG ((LM_DEBUG,
-              "in Notifier_i::unsubscribe for %x\n",
-              consumer_ref));
+              "in Notifier_i::unsubscribe for %x with criteria %s \n",
+              consumer_ref, filtering_criteria));
 
   Consumer_Entry *nr_entry = 0;
   MAP_ITERATOR mi (this->map_);
